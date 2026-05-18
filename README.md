@@ -1,2 +1,0 @@
-# Veloura
-wheel of fortune

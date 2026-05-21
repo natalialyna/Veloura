@@ -1,461 +1,283 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Veloura — Entscheiden, aber make it fun</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Veloura</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getFirestore, collection, doc, addDoc, updateDoc, onSnapshot, query, orderBy, getDoc }
+      from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+    const cfg = {
+      apiKey:"AIzaSyBszQQ9O3EsHwS-E2B9C6pclkurBL8Tn3I",
+      authDomain:"valoura-cf295.firebaseapp.com",
+      projectId:"valoura-cf295",
+      storageBucket:"valoura-cf295.firebasestorage.app",
+      messagingSenderId:"638222090779",
+      appId:"1:638222090779:web:fc78e9589e1f5a347deebe"
+    };
+    const app = initializeApp(cfg);
+    window._db = getFirestore(app);
+    window._fb = { collection, doc, addDoc, updateDoc, onSnapshot, query, orderBy, getDoc };
+    window._fbReady = true;
+    document.dispatchEvent(new Event('fbReady'));
+  </script>
   <style>
-    :root {
-      --forest: #40594f;
-      --lime: #ecf38f;
-      --sky: #a1baf5;
-      --lavender: #9698dc;
-      --coral: #df663a;
-      --cream: #f5f2eb;
-      --offwhite: #faf9f6;
-      --text: #1a1a1a;
-      --muted: #888;
-      --card: rgba(255,255,255,0.72);
-      --radius: 20px;
-      --shadow: 0 8px 40px rgba(0,0,0,0.07);
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: 'DM Sans', sans-serif;
-      background: var(--offwhite);
-      color: var(--text);
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
-
-    /* BG blobs */
-    .bg-blob {
-      position: fixed; border-radius: 50%; filter: blur(80px); opacity: 0.35; pointer-events: none; z-index: 0;
-    }
-    .blob1 { width: 500px; height: 500px; background: var(--lime); top: -100px; left: -150px; }
-    .blob2 { width: 400px; height: 400px; background: var(--sky); bottom: -80px; right: -100px; }
-    .blob3 { width: 300px; height: 300px; background: var(--lavender); top: 40%; left: 60%; }
+    :root{--forest:#40594f;--lime:#ecf38f;--sky:#a1baf5;--lavender:#9698dc;--coral:#df663a;--cream:#f5f2eb;--offwhite:#faf9f6;--text:#1a1a1a;--muted:#888;--card:rgba(255,255,255,0.82);--r:20px;--sh:0 8px 40px rgba(0,0,0,0.08);}
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:'DM Sans',sans-serif;background:var(--offwhite);color:var(--text);height:100vh;overflow:hidden;}
+    .blob{position:fixed;border-radius:50%;filter:blur(90px);opacity:.3;pointer-events:none;z-index:0;}
+    .b1{width:520px;height:520px;background:var(--lime);top:-120px;left:-160px;}
+    .b2{width:420px;height:420px;background:var(--sky);bottom:-100px;right:-120px;}
+    .b3{width:320px;height:320px;background:var(--lavender);top:35%;left:55%;}
 
     /* NAV */
-    nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 16px 40px;
-      background: rgba(250,249,246,0.85);
-      backdrop-filter: blur(20px);
-      border-bottom: 1px solid rgba(0,0,0,0.06);
-    }
-    .nav-logo {
-      display: flex; align-items: center; gap: 12px; cursor: pointer;
-    }
-    .logo-circle {
-      width: 38px; height: 38px; border-radius: 50%;
-      background: var(--forest); color: var(--lime);
-      display: flex; align-items: center; justify-content: center;
-      font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700;
-      box-shadow: 0 0 0 3px rgba(161,186,245,0.4);
-    }
-    .nav-name { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; }
-    .nav-links { display: flex; gap: 8px; }
-    .nav-btn {
-      padding: 8px 20px; border-radius: 50px; border: none; cursor: pointer;
-      font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500;
-      background: transparent; color: var(--text); transition: all 0.2s;
-    }
-    .nav-btn:hover { background: rgba(0,0,0,0.05); }
-    .nav-btn.active { background: var(--forest); color: var(--lime); }
+    nav{position:fixed;top:0;left:0;right:0;height:62px;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:0 32px;background:rgba(250,249,246,0.92);backdrop-filter:blur(24px);border-bottom:1px solid rgba(0,0,0,0.06);}
+    .logo{display:flex;align-items:center;gap:10px;cursor:pointer;text-decoration:none;}
+    .logo-dot{width:36px;height:36px;border-radius:50%;background:var(--forest);color:var(--lime);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:17px;font-weight:700;box-shadow:0 0 0 3px rgba(161,186,245,.35);}
+    .logo-name{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:var(--text);}
+    .nav-links{display:flex;gap:6px;}
+    .nb{padding:7px 18px;border-radius:50px;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;background:transparent;color:var(--text);transition:all .2s;}
+    .nb:hover{background:rgba(0,0,0,.05);}
+    .nb.on{background:var(--forest);color:var(--lime);}
 
-    /* PAGES */
-    .page { display: none; position: relative; z-index: 1; }
-    .page.active { display: block; min-height: 100vh; }
+    /* PAGES — fixed below nav, scrollable inside */
+    .pg{display:none;position:fixed;top:62px;left:0;right:0;bottom:0;overflow-y:auto;z-index:1;}
+    .pg.on{display:block;}
 
     /* HOME */
-    #home {
-      min-height: 100vh;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      text-align: center; padding: 120px 40px 80px;
-    }
-    .home-logo {
-      width: 90px; height: 90px; border-radius: 50%;
-      background: var(--forest); color: var(--lime);
-      display: flex; align-items: center; justify-content: center;
-      font-family: 'Playfair Display', serif; font-size: 42px; font-weight: 700;
-      margin: 0 auto 24px;
-      box-shadow: 0 0 0 6px rgba(161,186,245,0.3), 0 20px 60px rgba(64,89,79,0.2);
-      animation: float 4s ease-in-out infinite;
-    }
-    @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
-    .home-title {
-      font-family: 'Playfair Display', serif; font-size: clamp(48px,7vw,80px);
-      line-height: 1.1; margin-bottom: 20px;
-    }
-    .home-title em { color: var(--coral); font-style: italic; }
-    .home-sub { font-size: 18px; color: var(--muted); max-width: 440px; margin: 0 auto 48px; line-height: 1.6; }
-    .btn-row { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
-    .btn-primary {
-      padding: 16px 36px; border-radius: 50px; border: none; cursor: pointer;
-      background: var(--forest); color: var(--lime);
-      font-family: 'DM Sans', sans-serif; font-size: 16px; font-weight: 500;
-      display: flex; align-items: center; gap: 8px;
-      transition: transform 0.2s, box-shadow 0.2s;
-      box-shadow: 0 4px 20px rgba(64,89,79,0.25);
-    }
-    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(64,89,79,0.35); }
-    .btn-secondary {
-      padding: 16px 36px; border-radius: 50px; border: 1.5px solid rgba(0,0,0,0.12);
-      cursor: pointer; background: white; color: var(--text);
-      font-family: 'DM Sans', sans-serif; font-size: 16px; font-weight: 500;
-      transition: all 0.2s;
-    }
-    .btn-secondary:hover { background: var(--cream); }
+    .hw{min-height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:60px 28px;}
+    .hlogo{width:90px;height:90px;border-radius:50%;background:var(--forest);color:var(--lime);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:42px;font-weight:700;margin:0 auto 24px;box-shadow:0 0 0 6px rgba(161,186,245,.25),0 20px 60px rgba(64,89,79,.18);animation:fl 4s ease-in-out infinite;}
+    @keyframes fl{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+    .ht{font-family:'Playfair Display',serif;font-size:clamp(38px,7vw,74px);line-height:1.1;margin-bottom:18px;}
+    .ht em{color:var(--coral);font-style:italic;}
+    .hs{font-size:17px;color:var(--muted);max-width:370px;margin:0 auto 44px;line-height:1.6;}
+    .br{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
+    .bp{padding:15px 34px;border-radius:50px;border:none;cursor:pointer;background:var(--forest);color:var(--lime);font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;transition:all .2s;box-shadow:0 4px 20px rgba(64,89,79,.22);}
+    .bp:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(64,89,79,.32);}
+    .bs{padding:15px 34px;border-radius:50px;border:1.5px solid rgba(0,0,0,.12);cursor:pointer;background:white;color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;transition:all .2s;}
+    .bs:hover{background:var(--cream);}
 
-    /* CREATE PAGE */
-    #create { padding: 120px 40px 80px; max-width: 720px; margin: 0 auto; }
-    .page-label { font-size: 11px; font-weight: 500; letter-spacing: 2px; color: var(--coral); text-transform: uppercase; margin-bottom: 8px; }
-    .page-title { font-family: 'Playfair Display', serif; font-size: 42px; margin-bottom: 40px; }
-    .card {
-      background: var(--card); backdrop-filter: blur(20px);
-      border-radius: var(--radius); padding: 36px;
-      box-shadow: var(--shadow); border: 1px solid rgba(255,255,255,0.8);
-    }
-    .field-label { font-size: 13px; font-weight: 500; color: var(--muted); margin-bottom: 8px; letter-spacing: 0.5px; }
-    .field-group { margin-bottom: 24px; }
-    .input-field {
-      width: 100%; padding: 14px 18px; border-radius: 14px;
-      border: 1.5px solid rgba(0,0,0,0.08); background: rgba(255,255,255,0.8);
-      font-family: 'DM Sans', sans-serif; font-size: 15px; color: var(--text);
-      outline: none; transition: border-color 0.2s;
-    }
-    .input-field:focus { border-color: var(--forest); }
-    .input-field::placeholder { color: #bbb; }
-    .select-wrap { position: relative; }
-    .select-field {
-      width: 100%; padding: 14px 18px; border-radius: 14px;
-      border: 1.5px solid rgba(0,0,0,0.08); background: rgba(255,255,255,0.8);
-      font-family: 'DM Sans', sans-serif; font-size: 15px; color: var(--text);
-      outline: none; appearance: none; cursor: pointer;
-    }
-    .select-arrow { position: absolute; right: 18px; top: 50%; transform: translateY(-50%); pointer-events: none; color: var(--muted); }
+    /* CREATE */
+    .pi{max-width:680px;margin:0 auto;padding:40px 28px 80px;}
+    .plabel{font-size:11px;font-weight:500;letter-spacing:2px;color:var(--coral);text-transform:uppercase;margin-bottom:8px;}
+    .ptitle{font-family:'Playfair Display',serif;font-size:36px;margin-bottom:30px;}
+    .card{background:var(--card);backdrop-filter:blur(20px);border-radius:var(--r);padding:30px;box-shadow:var(--sh);border:1px solid rgba(255,255,255,.85);}
+    .fl{font-size:12px;font-weight:500;color:var(--muted);margin-bottom:7px;letter-spacing:.5px;}
+    .fg{margin-bottom:20px;}
+    .inp{width:100%;padding:13px 15px;border-radius:12px;border:1.5px solid rgba(0,0,0,.08);background:rgba(255,255,255,.85);font-family:'DM Sans',sans-serif;font-size:14px;color:var(--text);outline:none;transition:border-color .2s;}
+    .inp:focus{border-color:var(--forest);}
+    .inp::placeholder{color:#bbb;}
+    .sw{position:relative;}
+    .sel{width:100%;padding:13px 15px;border-radius:12px;border:1.5px solid rgba(0,0,0,.08);background:rgba(255,255,255,.85);font-family:'DM Sans',sans-serif;font-size:14px;color:var(--text);outline:none;appearance:none;cursor:pointer;}
+    .sa{position:absolute;right:15px;top:50%;transform:translateY(-50%);pointer-events:none;color:var(--muted);}
+    .oh{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
+    .aib{background:none;border:none;cursor:pointer;color:var(--lavender);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;display:flex;align-items:center;gap:5px;transition:opacity .2s;}
+    .aib:hover{opacity:.7;}
+    .aib:disabled{opacity:.4;cursor:not-allowed;}
+    .oi{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+    .od{width:13px;height:13px;border-radius:50%;flex-shrink:0;}
+    .oinp{flex:1;padding:10px 13px;border-radius:10px;border:1.5px solid rgba(0,0,0,.08);background:rgba(255,255,255,.85);font-family:'DM Sans',sans-serif;font-size:13px;outline:none;transition:border-color .2s;}
+    .oinp:focus{border-color:var(--forest);}
+    .orm{background:none;border:none;cursor:pointer;color:#ccc;font-size:16px;transition:color .2s;}
+    .orm:hover{color:var(--coral);}
+    .aob{background:none;border:none;cursor:pointer;color:var(--muted);font-family:'DM Sans',sans-serif;font-size:13px;display:flex;align-items:center;gap:5px;padding:6px 0;transition:color .2s;}
+    .aob:hover{color:var(--forest);}
+    .stb{width:100%;padding:14px;border-radius:12px;border:none;cursor:pointer;background:var(--forest);color:var(--lime);font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;margin-top:22px;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .2s;box-shadow:0 4px 20px rgba(64,89,79,.18);}
+    .stb:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 8px 28px rgba(64,89,79,.28);}
+    .stb:disabled{opacity:.6;cursor:not-allowed;transform:none;}
+    .ail{display:flex;align-items:center;gap:8px;color:var(--lavender);font-size:13px;padding:8px 0;}
+    .sp{width:15px;height:15px;border:2px solid rgba(150,152,220,.2);border-top-color:var(--lavender);border-radius:50%;animation:spin .8s linear infinite;}
+    @keyframes spin{to{transform:rotate(360deg)}}
 
-    .options-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
-    .ai-btn {
-      background: none; border: none; cursor: pointer;
-      color: var(--lavender); font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500;
-      display: flex; align-items: center; gap: 6px; transition: opacity 0.2s;
-    }
-    .ai-btn:hover { opacity: 0.7; }
-    .option-item {
-      display: flex; align-items: center; gap: 12px; margin-bottom: 10px;
-    }
-    .option-dot { width: 14px; height: 14px; border-radius: 50%; flex-shrink: 0; }
-    .option-input {
-      flex: 1; padding: 12px 16px; border-radius: 12px;
-      border: 1.5px solid rgba(0,0,0,0.08); background: rgba(255,255,255,0.8);
-      font-family: 'DM Sans', sans-serif; font-size: 14px; outline: none;
-      transition: border-color 0.2s;
-    }
-    .option-input:focus { border-color: var(--forest); }
-    .option-remove {
-      background: none; border: none; cursor: pointer; color: #ccc; font-size: 18px;
-      transition: color 0.2s; line-height: 1;
-    }
-    .option-remove:hover { color: var(--coral); }
-    .add-option-btn {
-      background: none; border: none; cursor: pointer;
-      color: var(--muted); font-family: 'DM Sans', sans-serif; font-size: 14px;
-      display: flex; align-items: center; gap: 6px; padding: 8px 0;
-      transition: color 0.2s;
-    }
-    .add-option-btn:hover { color: var(--forest); }
-    .start-btn {
-      width: 100%; padding: 16px; border-radius: 14px; border: none; cursor: pointer;
-      background: var(--forest); color: var(--lime);
-      font-family: 'DM Sans', sans-serif; font-size: 16px; font-weight: 500;
-      margin-top: 28px; display: flex; align-items: center; justify-content: center; gap: 8px;
-      transition: transform 0.2s, box-shadow 0.2s;
-      box-shadow: 0 4px 20px rgba(64,89,79,0.2);
-    }
-    .start-btn:hover { transform: translateY(-1px); box-shadow: 0 8px 30px rgba(64,89,79,0.3); }
+    /* VOTE */
+    .vi{max-width:1040px;margin:0 auto;padding:32px 28px 80px;}
+    .bdg{padding:4px 11px;border-radius:50px;font-size:12px;font-weight:500;}
+    .bak{background:var(--lime);color:var(--forest);}
+    .bnd{background:#f0f0f0;color:var(--muted);}
+    .vt{font-family:'Playfair Display',serif;font-size:clamp(20px,4vw,40px);margin:10px 0 26px;}
+    .bkb{background:none;border:none;cursor:pointer;color:var(--muted);font-family:'DM Sans',sans-serif;font-size:13px;display:flex;align-items:center;gap:5px;transition:color .2s;}
+    .bkb:hover{color:var(--text);}
+    .lkb,.enb{padding:7px 18px;border-radius:50px;font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;}
+    .lkb{border:1.5px solid rgba(0,0,0,.12);background:white;color:var(--text);transition:all .2s;}
+    .lkb:hover{background:var(--cream);}
+    .enb{border:1.5px solid var(--coral);background:white;color:var(--coral);transition:all .2s;}
+    .enb:hover{background:var(--coral);color:white;}
+    .vg{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+    @media(max-width:700px){.vg{grid-template-columns:1fr;}}
+    .wc{background:var(--card);backdrop-filter:blur(20px);border-radius:var(--r);padding:26px;box-shadow:var(--sh);border:1px solid rgba(255,255,255,.85);display:flex;flex-direction:column;align-items:center;}
+    .wrl{font-family:'Playfair Display',serif;font-size:17px;margin-bottom:18px;padding:8px 20px;background:white;border-radius:50px;box-shadow:0 2px 12px rgba(0,0,0,.07);min-width:140px;text-align:center;}
+    .ww{position:relative;margin-bottom:20px;}
+    .wp{position:absolute;top:-15px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:9px solid transparent;border-right:9px solid transparent;border-top:22px solid var(--lavender);filter:drop-shadow(0 2px 6px rgba(150,152,220,.45));}
+    .wctrl{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;}
+    .spb{padding:10px 24px;border-radius:50px;border:none;cursor:pointer;background:var(--forest);color:var(--lime);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;display:flex;align-items:center;gap:6px;transition:all .2s;}
+    .spb:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 5px 18px rgba(64,89,79,.28);}
+    .spb:disabled{opacity:.5;cursor:not-allowed;}
+    .ctb{padding:10px 16px;border-radius:50px;border:1.5px solid rgba(0,0,0,.12);background:white;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:13px;display:flex;align-items:center;gap:5px;color:var(--text);transition:all .2s;}
+    .ctb:hover:not(:disabled){background:var(--cream);}
+    .ctb:disabled{opacity:.4;cursor:not-allowed;}
+    .vp{display:flex;flex-direction:column;gap:13px;}
+    .vlc,.rc{background:var(--card);backdrop-filter:blur(20px);border-radius:var(--r);padding:22px;box-shadow:var(--sh);border:1px solid rgba(255,255,255,.85);}
+    .ptt{font-family:'Playfair Display',serif;font-size:19px;margin-bottom:14px;}
+    .vo{display:flex;align-items:center;justify-content:space-between;padding:8px 9px;border-radius:8px;transition:all .2s;}
+    .vo:hover{background:rgba(0,0,0,.02);}
+    .vo.vd{background:rgba(64,89,79,.06);}
+    .ol{display:flex;align-items:center;gap:9px;flex:1;}
+    .odd{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+    .on2{font-size:14px;}
+    .oc{font-size:13px;color:var(--muted);}
+    .vib{padding:5px 13px;border-radius:50px;border:1.5px solid rgba(0,0,0,.12);background:white;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:11px;transition:all .2s;color:var(--text);white-space:nowrap;}
+    .vib:hover{background:var(--forest);color:var(--lime);border-color:var(--forest);}
+    .vib.vd{background:var(--forest);color:var(--lime);border-color:var(--forest);}
+    .nv{color:var(--muted);font-size:13px;text-align:center;padding:18px 0;}
 
-    /* VOTE PAGE */
-    #vote { padding: 100px 40px 80px; max-width: 1100px; margin: 0 auto; }
-    .vote-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
-    .back-btn {
-      background: none; border: none; cursor: pointer; color: var(--muted);
-      font-family: 'DM Sans', sans-serif; font-size: 14px; display: flex; align-items: center; gap: 6px;
-      transition: color 0.2s;
-    }
-    .back-btn:hover { color: var(--text); }
-    .vote-meta { display: flex; align-items: center; gap: 12px; }
-    .badge {
-      padding: 4px 12px; border-radius: 50px; font-size: 12px; font-weight: 500;
-    }
-    .badge-aktiv { background: var(--lime); color: var(--forest); }
-    .badge-beendet { background: #f0f0f0; color: var(--muted); }
-    .vote-code { color: var(--muted); font-size: 13px; }
-    .vote-title { font-family: 'Playfair Display', serif; font-size: clamp(28px,4vw,48px); margin: 12px 0 36px; }
-    .vote-btns { display: flex; gap: 12px; }
-    .link-btn, .end-btn {
-      padding: 8px 20px; border-radius: 50px; font-family: 'DM Sans', sans-serif; font-size: 14px; cursor: pointer;
-    }
-    .link-btn { border: 1.5px solid rgba(0,0,0,0.12); background: white; color: var(--text); transition: all 0.2s; }
-    .link-btn:hover { background: var(--cream); }
-    .end-btn { border: 1.5px solid var(--coral); background: white; color: var(--coral); transition: all 0.2s; }
-    .end-btn:hover { background: var(--coral); color: white; }
-
-    .vote-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
-    @media(max-width:768px){ .vote-grid{grid-template-columns:1fr;} }
-
-    /* WHEEL */
-    .wheel-card { background: var(--card); backdrop-filter: blur(20px); border-radius: var(--radius); padding: 36px; box-shadow: var(--shadow); border: 1px solid rgba(255,255,255,0.8); display: flex; flex-direction: column; align-items: center; }
-    .wheel-result-label {
-      font-family: 'Playfair Display', serif; font-size: 18px; margin-bottom: 24px;
-      padding: 10px 24px; background: white; border-radius: 50px;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.08); min-width: 160px; text-align: center;
-    }
-    .wheel-wrap { position: relative; margin-bottom: 28px; }
-    #wheelCanvas { display: block; }
-    .wheel-pointer {
-      position: absolute; top: -18px; left: 50%; transform: translateX(-50%);
-      width: 0; height: 0;
-      border-left: 10px solid transparent;
-      border-right: 10px solid transparent;
-      border-top: 24px solid var(--lavender);
-      filter: drop-shadow(0 2px 6px rgba(150,152,220,0.5));
-    }
-    .wheel-controls { display: flex; gap: 12px; }
-    .spin-btn {
-      padding: 12px 28px; border-radius: 50px; border: none; cursor: pointer;
-      background: var(--forest); color: var(--lime);
-      font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500;
-      display: flex; align-items: center; gap: 8px; transition: all 0.2s;
-    }
-    .spin-btn:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(64,89,79,0.3); }
-    .spin-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-    .ctrl-btn {
-      padding: 12px 20px; border-radius: 50px; border: 1.5px solid rgba(0,0,0,0.12);
-      background: white; cursor: pointer; font-family: 'DM Sans', sans-serif; font-size: 14px;
-      display: flex; align-items: center; gap: 6px; color: var(--text); transition: all 0.2s;
-    }
-    .ctrl-btn:hover:not(:disabled) { background: var(--cream); }
-    .ctrl-btn:disabled { opacity: 0.4; cursor: not-allowed; }
-
-    /* VOTE PANEL */
-    .vote-panel { display: flex; flex-direction: column; gap: 16px; }
-    .vote-list-card { background: var(--card); backdrop-filter: blur(20px); border-radius: var(--radius); padding: 28px; box-shadow: var(--shadow); border: 1px solid rgba(255,255,255,0.8); }
-    .panel-title { font-family: 'Playfair Display', serif; font-size: 22px; margin-bottom: 20px; }
-    .vote-option {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 12px 0; border-bottom: 1px solid rgba(0,0,0,0.05); cursor: pointer;
-      transition: all 0.2s; border-radius: 8px; padding: 10px 12px;
-    }
-    .vote-option:hover { background: rgba(0,0,0,0.02); }
-    .vote-option.voted { background: rgba(64,89,79,0.06); }
-    .opt-left { display: flex; align-items: center; gap: 12px; }
-    .opt-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
-    .opt-name { font-size: 15px; font-weight: 400; }
-    .opt-count { font-size: 14px; color: var(--muted); }
-    .vote-it-btn {
-      padding: 6px 16px; border-radius: 50px; border: 1.5px solid rgba(0,0,0,0.12);
-      background: white; cursor: pointer; font-family: 'DM Sans', sans-serif; font-size: 12px;
-      transition: all 0.2s; color: var(--text);
-    }
-    .vote-it-btn:hover { background: var(--forest); color: var(--lime); border-color: var(--forest); }
-    .vote-it-btn.voted { background: var(--forest); color: var(--lime); border-color: var(--forest); }
-
-    .results-card { background: var(--card); backdrop-filter: blur(20px); border-radius: var(--radius); padding: 28px; box-shadow: var(--shadow); border: 1px solid rgba(255,255,255,0.8); }
-    .no-votes { color: var(--muted); font-size: 14px; text-align: center; padding: 24px 0; }
-
-    /* RECIPE MODAL */
-    .modal-overlay {
-      display: none; position: fixed; inset: 0; z-index: 200;
-      background: rgba(0,0,0,0.4); backdrop-filter: blur(8px);
-      align-items: center; justify-content: center; padding: 24px;
-    }
-    .modal-overlay.open { display: flex; }
-    .modal {
-      background: white; border-radius: 24px; padding: 40px; max-width: 540px; width: 100%;
-      max-height: 80vh; overflow-y: auto; box-shadow: 0 24px 80px rgba(0,0,0,0.15);
-      animation: modalIn 0.3s ease;
-    }
-    @keyframes modalIn { from{transform:translateY(20px);opacity:0} to{transform:translateY(0);opacity:1} }
-    .modal-close { float: right; background: none; border: none; cursor: pointer; font-size: 22px; color: var(--muted); }
-    .modal-title { font-family: 'Playfair Display', serif; font-size: 26px; margin-bottom: 6px; }
-    .modal-sub { color: var(--muted); font-size: 13px; margin-bottom: 24px; }
-    .recipe-section { margin-bottom: 20px; }
-    .recipe-section h4 { font-size: 12px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--coral); margin-bottom: 10px; }
-    .recipe-section ul { list-style: none; }
-    .recipe-section li { font-size: 14px; padding: 6px 0; border-bottom: 1px solid #f0f0f0; color: #444; }
-    .recipe-section p { font-size: 14px; line-height: 1.7; color: #444; }
-    .nutrition-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; }
-    .nutr-item { background: var(--cream); border-radius: 12px; padding: 12px; text-align: center; }
-    .nutr-val { font-size: 20px; font-weight: 600; color: var(--forest); }
-    .nutr-label { font-size: 11px; color: var(--muted); margin-top: 2px; }
-
-    /* AI LOADING */
-    .ai-loading { display: flex; align-items: center; gap: 8px; color: var(--lavender); font-size: 13px; padding: 8px 0; }
-    .spinner { width: 16px; height: 16px; border: 2px solid rgba(150,152,220,0.2); border-top-color: var(--lavender); border-radius: 50%; animation: spin 0.8s linear infinite; }
-    @keyframes spin { to{transform:rotate(360deg)} }
+    /* MODAL */
+    .mo{display:none;position:fixed;inset:0;z-index:300;background:rgba(0,0,0,.42);backdrop-filter:blur(8px);align-items:center;justify-content:center;padding:20px;}
+    .mo.on{display:flex;}
+    .md{background:white;border-radius:22px;padding:34px;max-width:500px;width:100%;max-height:82vh;overflow-y:auto;box-shadow:0 24px 80px rgba(0,0,0,.14);animation:mdin .3s ease;}
+    @keyframes mdin{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
+    .mc{float:right;background:none;border:none;cursor:pointer;font-size:20px;color:var(--muted);}
+    .mt{font-family:'Playfair Display',serif;font-size:23px;margin-bottom:5px;}
+    .ms{color:var(--muted);font-size:12px;margin-bottom:20px;}
+    .rs{margin-bottom:16px;}
+    .rs h4{font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--coral);margin-bottom:7px;}
+    .rs ul{list-style:none;}
+    .rs li{font-size:13px;padding:4px 0;border-bottom:1px solid #f2f2f2;color:#444;}
+    .rs p{font-size:13px;line-height:1.7;color:#444;}
+    .ng{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;}
+    .ni{background:var(--cream);border-radius:10px;padding:9px;text-align:center;}
+    .nv2{font-size:17px;font-weight:600;color:var(--forest);}
+    .nl{font-size:10px;color:var(--muted);margin-top:2px;}
 
     /* ARCHIV */
-    #archiv { padding: 120px 40px 80px; max-width: 1100px; margin: 0 auto; }
-    .archive-controls { display: flex; gap: 12px; margin-bottom: 36px; flex-wrap: wrap; }
-    .search-input {
-      flex: 1; min-width: 200px; padding: 12px 18px; border-radius: 50px;
-      border: 1.5px solid rgba(0,0,0,0.08); background: white;
-      font-family: 'DM Sans', sans-serif; font-size: 14px; outline: none;
-    }
-    .search-input:focus { border-color: var(--forest); }
-    .filter-select {
-      padding: 12px 18px; border-radius: 50px; border: 1.5px solid rgba(0,0,0,0.08);
-      background: white; font-family: 'DM Sans', sans-serif; font-size: 14px; cursor: pointer; outline: none;
-    }
-    .archive-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px,1fr)); gap: 20px; }
-    .archive-card {
-      background: var(--card); backdrop-filter: blur(20px); border-radius: 18px;
-      padding: 24px; box-shadow: var(--shadow); border: 1px solid rgba(255,255,255,0.8);
-      cursor: pointer; transition: transform 0.2s, box-shadow 0.2s;
-    }
-    .archive-card:hover { transform: translateY(-3px); box-shadow: 0 16px 50px rgba(0,0,0,0.1); }
-    .arc-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
-    .arc-cat { font-size: 11px; padding: 4px 10px; border-radius: 50px; background: rgba(0,0,0,0.05); color: var(--muted); }
-    .arc-q { font-family: 'Playfair Display', serif; font-size: 18px; margin-bottom: 12px; line-height: 1.3; }
-    .arc-votes { font-size: 13px; color: var(--muted); margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
-    .arc-dots { display: flex; gap: 5px; }
-    .arc-dot { width: 10px; height: 10px; border-radius: 50%; }
-    .empty-state { grid-column: 1/-1; text-align: center; padding: 80px 0; color: var(--muted); font-size: 16px; }
+    .ai{max-width:1040px;margin:0 auto;padding:38px 28px 80px;}
+    .ac{display:flex;gap:10px;margin-bottom:26px;flex-wrap:wrap;}
+    .si{flex:1;min-width:170px;padding:10px 15px;border-radius:50px;border:1.5px solid rgba(0,0,0,.08);background:white;font-family:'DM Sans',sans-serif;font-size:13px;outline:none;}
+    .si:focus{border-color:var(--forest);}
+    .fs{padding:10px 15px;border-radius:50px;border:1.5px solid rgba(0,0,0,.08);background:white;font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;outline:none;}
+    .ag{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:15px;}
+    .acd{background:var(--card);backdrop-filter:blur(20px);border-radius:16px;padding:20px;box-shadow:var(--sh);border:1px solid rgba(255,255,255,.85);cursor:pointer;transition:all .2s;}
+    .acd:hover{transform:translateY(-3px);box-shadow:0 14px 45px rgba(0,0,0,.1);}
+    .at{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:9px;}
+    .acat{font-size:10px;padding:3px 9px;border-radius:50px;background:rgba(0,0,0,.05);color:var(--muted);}
+    .aq{font-family:'Playfair Display',serif;font-size:15px;margin-bottom:9px;line-height:1.3;}
+    .av{font-size:12px;color:var(--muted);margin-bottom:9px;}
+    .ads{display:flex;gap:4px;}
+    .add{width:9px;height:9px;border-radius:50%;}
+    .es{grid-column:1/-1;text-align:center;padding:65px 0;color:var(--muted);font-size:15px;}
 
     /* TOAST */
-    .toast {
-      position: fixed; bottom: 32px; left: 50%; transform: translateX(-50%) translateY(100px);
-      background: var(--forest); color: var(--lime); padding: 14px 28px; border-radius: 50px;
-      font-size: 14px; font-weight: 500; z-index: 300; transition: transform 0.3s ease;
-      box-shadow: 0 8px 30px rgba(64,89,79,0.3);
-    }
-    .toast.show { transform: translateX(-50%) translateY(0); }
-    /* CONFETTI */
-    #confettiCanvas {
-      position: fixed; inset: 0; pointer-events: none; z-index: 999; display: none;
-    }
+    .toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(110px);background:var(--forest);color:var(--lime);padding:11px 24px;border-radius:50px;font-size:13px;font-weight:500;z-index:400;transition:transform .3s ease;box-shadow:0 8px 28px rgba(64,89,79,.28);}
+    .toast.on{transform:translateX(-50%) translateY(0);}
+    #cc{position:fixed;inset:0;pointer-events:none;z-index:999;display:none;}
   </style>
 </head>
 <body>
+<div class="blob b1"></div>
+<div class="blob b2"></div>
+<div class="blob b3"></div>
 
-<!-- Background -->
-<div class="bg-blob blob1"></div>
-<div class="bg-blob blob2"></div>
-<div class="bg-blob blob3"></div>
-
-<!-- NAV -->
 <nav>
-  <div class="nav-logo" onclick="showPage('home')">
-    <div class="logo-circle">V</div>
-    <span class="nav-name">Veloura</span>
-  </div>
+  <a class="logo" onclick="go('home')">
+    <div class="logo-dot">V</div>
+    <span class="logo-name">Veloura</span>
+  </a>
   <div class="nav-links">
-    <button class="nav-btn active" id="nav-home" onclick="showPage('home')">🏠 Home</button>
-    <button class="nav-btn" id="nav-create" onclick="showPage('create')">+ Erstellen</button>
-    <button class="nav-btn" id="nav-archiv" onclick="showPage('archiv')">🗃 Archiv</button>
+    <button class="nb on" id="nb-home"   onclick="go('home')">🏠 Home</button>
+    <button class="nb"    id="nb-create" onclick="go('create')">+ Erstellen</button>
+    <button class="nb"    id="nb-archiv" onclick="go('archiv')">🗃 Archiv</button>
   </div>
 </nav>
 
 <!-- HOME -->
-<div class="page active" id="home">
-  <div style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:120px 40px 80px">
-    <div class="home-logo">V</div>
-    <h1 class="home-title">Entscheide, aber <em>make it fun</em></h1>
-    <p class="home-sub">Lass das Rad entscheiden und trau dich etwas Neues.</p>
-    <div class="btn-row">
-      <button class="btn-primary" onclick="showPage('create')">Abstimmung erstellen →</button>
-      <button class="btn-secondary" onclick="showPage('archiv')">Archiv durchstöbern</button>
+<div class="pg on" id="pg-home">
+  <div class="hw">
+    <div class="hlogo">V</div>
+    <h1 class="ht">Entscheide, aber <em>make it fun</em></h1>
+    <p class="hs">Lass das Rad entscheiden und trau dich etwas Neues.</p>
+    <div class="br">
+      <button class="bp" onclick="go('create')">Abstimmung erstellen →</button>
+      <button class="bs" onclick="go('archiv')">Archiv durchstöbern</button>
     </div>
   </div>
 </div>
 
 <!-- CREATE -->
-<div class="page" id="create">
-  <div style="max-width:720px;margin:0 auto;padding:120px 40px 80px">
-    <div class="page-label">NEU ERSTELLEN</div>
-    <h1 class="page-title">Deine Abstimmung</h1>
+<div class="pg" id="pg-create">
+  <div class="pi">
+    <div class="plabel">NEU ERSTELLEN</div>
+    <h1 class="ptitle">Deine Abstimmung</h1>
     <div class="card">
-      <div class="field-group">
-        <div class="field-label">FRAGE</div>
-        <input type="text" id="questionInput" class="input-field" placeholder="Was essen wir heute Abend?">
+      <div class="fg">
+        <div class="fl">FRAGE</div>
+        <input type="text" id="qIn" class="inp" placeholder="Welches Auto soll ich kaufen?">
       </div>
-      <div class="field-group">
-        <div class="field-label">KATEGORIE</div>
-        <div class="select-wrap">
-          <select id="categorySelect" class="select-field">
-            <option>Sonstiges</option>
-            <option>Outdoor</option>
-            <option>Indoor</option>
-            <option>Activity</option>
-            <option>Natur</option>
-            <option>Gesundheit</option>
-            <option>Food</option>
-            <option>Design</option>
-            <option>Reisen</option>
-            <option>Essen</option>
+      <div class="fg">
+        <div class="fl">KATEGORIE</div>
+        <div class="sw">
+          <select id="catSel" class="sel">
+            <option>Sonstiges</option><option>Outdoor</option><option>Indoor</option>
+            <option>Activity</option><option>Natur</option><option>Gesundheit</option>
+            <option>Food</option><option>Essen</option><option>Trinken</option>
+            <option>Design</option><option>Reisen</option><option>Ausflüge</option>
+            <option>Kaufentscheidungen</option><option>Nice to have</option><option>Fun</option>
           </select>
-          <span class="select-arrow">∨</span>
+          <span class="sa">∨</span>
         </div>
       </div>
-      <div class="field-group">
-        <div class="options-header">
-          <div class="field-label" style="margin:0">OPTIONEN</div>
-          <button class="ai-btn" onclick="generateAIIdeas()">✦ KI-Ideen generieren</button>
+      <div class="fg">
+        <div class="oh">
+          <div class="fl" style="margin:0">OPTIONEN</div>
+          <button class="aib" id="aiBtn" onclick="genAI()">✦ KI-Ideen generieren</button>
         </div>
-        <div id="optionsList"></div>
-        <div id="aiLoadingMsg" style="display:none" class="ai-loading"><div class="spinner"></div> KI denkt nach…</div>
-        <button class="add-option-btn" onclick="addOption()">+ Option hinzufügen</button>
+        <div id="optList"></div>
+        <div id="aiLoad" style="display:none" class="ail"><div class="sp"></div> KI sucht die besten Optionen…</div>
+        <button class="aob" onclick="addOpt()">+ Option hinzufügen</button>
       </div>
-      <button class="start-btn" onclick="startVote()">Abstimmung starten →</button>
+      <button class="stb" id="stBtn" onclick="startVote()">Abstimmung starten →</button>
     </div>
   </div>
 </div>
 
 <!-- VOTE -->
-<div class="page" id="vote">
-  <div style="max-width:1100px;margin:0 auto;padding:100px 40px 80px">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;flex-wrap:wrap;gap:12px">
-      <button class="back-btn" onclick="showPage('archiv')">← Zurück</button>
-      <div style="display:flex;gap:12px">
-        <button class="link-btn" onclick="copyLink()">🔗 Link</button>
-        <button class="end-btn" onclick="endVote()">Beenden</button>
+<div class="pg" id="pg-vote">
+  <div class="vi">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;flex-wrap:wrap;gap:10px">
+      <button class="bkb" onclick="goBack()">← Zurück</button>
+      <div style="display:flex;gap:10px">
+        <button class="lkb" onclick="copyLink()">🔗 Link</button>
+        <button class="enb" onclick="endVote()">Beenden</button>
       </div>
     </div>
-    <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">
-      <span class="badge badge-aktiv" id="voteBadge">Aktiv</span>
-      <span class="vote-code" id="voteCode">#VELOURA</span>
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px">
+      <span class="bdg bak" id="vBadge">Aktiv</span>
+      <span style="color:var(--muted);font-size:12px" id="vCode"></span>
     </div>
-    <h2 class="vote-title" id="voteTitle">Frage</h2>
-    <div class="vote-grid">
-      <!-- Wheel -->
-      <div class="wheel-card">
-        <div class="wheel-result-label" id="wheelLabel">—</div>
-        <div class="wheel-wrap">
-          <canvas id="wheelCanvas" width="300" height="300"></canvas>
-          <div class="wheel-pointer"></div>
+    <h2 class="vt" id="vTitle"></h2>
+    <div class="vg">
+      <div class="wc">
+        <div class="wrl" id="wLabel">—</div>
+        <div class="ww">
+          <canvas id="wCanvas" width="270" height="270"></canvas>
+          <div class="wp"></div>
         </div>
-        <div class="wheel-controls">
-          <button class="spin-btn" id="spinBtn" onclick="spinWheel()">▶ Spin</button>
-          <button class="ctrl-btn" id="stopBtn" onclick="stopWheel()" disabled>◻ Stop</button>
-          <button class="ctrl-btn" onclick="generateAIIdeasVote()">✦ KI-Ideen</button>
+        <div class="wctrl">
+          <button class="spb" id="spBtn" onclick="spinW()">▶ Spin</button>
+          <button class="ctb" id="stpBtn" onclick="stopW()" disabled>◻ Stop</button>
+          <button class="ctb" onclick="genAIVote()">✦ KI-Ideen</button>
         </div>
       </div>
-      <!-- Panel -->
-      <div class="vote-panel">
-        <div class="vote-list-card">
-          <div class="panel-title">Abstimmen</div>
-          <div id="voteOptionsList"></div>
+      <div class="vp">
+        <div class="vlc">
+          <div class="ptt">Abstimmen</div>
+          <div id="vOptList"></div>
         </div>
-        <div class="results-card">
-          <div class="panel-title">Ergebnisse</div>
-          <div id="resultsArea"><div class="no-votes">Noch keine Stimmen abgegeben</div></div>
-          <canvas id="resultsChart" style="display:none;margin-top:16px"></canvas>
+        <div class="rc">
+          <div class="ptt">Ergebnisse</div>
+          <div id="resArea"><div class="nv">Noch keine Stimmen abgegeben</div></div>
+          <canvas id="resChart" style="display:none;margin-top:12px;max-height:170px"></canvas>
         </div>
       </div>
     </div>
@@ -463,569 +285,466 @@
 </div>
 
 <!-- ARCHIV -->
-<div class="page" id="archiv">
-  <div style="max-width:1100px;margin:0 auto;padding:120px 40px 80px">
-    <div class="page-label">ARCHIV</div>
-    <h1 class="page-title">Vergangene Abstimmungen</h1>
-    <div class="archive-controls">
-      <input type="text" class="search-input" placeholder="Suchen…" id="searchInput" oninput="renderArchive()">
-      <select class="filter-select" id="filterCat" onchange="renderArchive()">
+<div class="pg" id="pg-archiv">
+  <div class="ai">
+    <div class="plabel">ARCHIV</div>
+    <h1 class="ptitle">Vergangene Abstimmungen</h1>
+    <div class="ac">
+      <input type="text" class="si" placeholder="Suchen…" id="srch" oninput="renderArch()">
+      <select class="fs" id="fCat" onchange="renderArch()">
         <option value="">Alle Kategorien</option>
         <option>Outdoor</option><option>Indoor</option><option>Activity</option>
         <option>Natur</option><option>Gesundheit</option><option>Food</option>
-        <option>Design</option><option>Reisen</option><option>Essen</option><option>Sonstiges</option>
+        <option>Essen</option><option>Trinken</option><option>Design</option>
+        <option>Reisen</option><option>Ausflüge</option>
+        <option>Kaufentscheidungen</option><option>Nice to have</option><option>Fun</option><option>Sonstiges</option>
       </select>
-      <select class="filter-select" id="filterStatus" onchange="renderArchive()">
-        <option value="">Alle Status</option>
-        <option>Aktiv</option><option>Beendet</option>
+      <select class="fs" id="fSt" onchange="renderArch()">
+        <option value="">Alle Status</option><option>Aktiv</option><option>Beendet</option>
       </select>
     </div>
-    <div class="archive-grid" id="archiveGrid"></div>
+    <div class="ag" id="archGrid"><div class="es">Laden…</div></div>
   </div>
 </div>
 
-<!-- RECIPE MODAL -->
-<div class="modal-overlay" id="recipeModal">
-  <div class="modal">
-    <button class="modal-close" onclick="closeRecipe()">✕</button>
-    <div id="recipeContent"></div>
-  </div>
-</div>
-
-<!-- TOAST -->
+<div class="mo" id="recMo"><div class="md"><div id="recCon"></div></div></div>
 <div class="toast" id="toast"></div>
-
-<!-- CONFETTI -->
-<canvas id="confettiCanvas"></canvas>
+<canvas id="cc"></canvas>
 
 <script>
-// ─── STATE ─────────────────────────────────────────────────────────────────
-const COLORS = ['#40594f','#a1baf5','#9698dc','#ecf38f','#6db088','#c4d4f8','#b8b9e8','#f2f7a0','#df663a','#f5a88a'];
-let polls = JSON.parse(localStorage.getItem('veloura_polls') || '[]');
-let currentPoll = null;
-let userVote = null;
-let chartInstance = null;
+// ── COLORS ──────────────────────────────────────────────────────────────────
+const C=['#40594f','#a1baf5','#9698dc','#ecf38f','#6db088','#c4d4f8','#b8b9e8','#f2f7a0','#df663a','#f5a88a'];
 
-// Wheel state
-let wheelAngle = 0;
-let wheelVelocity = 0;
-let wheelSpinning = false;
-let wheelRAF = null;
-let wheelStopping = false;
-
-function savePols() { localStorage.setItem('veloura_polls', JSON.stringify(polls)); }
-
-// ─── NAVIGATION ────────────────────────────────────────────────────────────
-function showPage(id) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  const target = document.getElementById(id);
-  if (target) target.classList.add('active');
-  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-  const nb = document.getElementById('nav-' + id);
-  if (nb) nb.classList.add('active');
-  if (id === 'archiv') renderArchive();
-  if (id === 'create') initCreate();
-  // Scroll to very top reliably
-  document.documentElement.scrollTop = 0;
-  document.body.scrollTop = 0;
-  window.scrollTo({ top: 0, behavior: 'instant' });
+// ── FALLBACKS — object-first, verb-last ──────────────────────────────────────
+function fallback(q){
+  const t=q.toLowerCase();
+  if(/auto|fahrzeug|wagen|pkw|e-auto|elektroauto|cabrio|suv|limousine/i.test(t))
+    return['VW Golf','BMW 3er','Toyota Yaris','Tesla Model 3','Skoda Octavia','Hyundai i30'];
+  if(/schuh|sneaker|boot|sandale|stiefel|turnschuh/i.test(t))
+    return['Nike Air Max','New Balance 574','Adidas Samba','Veja V-10','Salomon XT-6','On Cloud 5'];
+  if(/laptop|computer|macbook|notebook/i.test(t))
+    return['MacBook Air M3','Dell XPS 13','Lenovo ThinkPad X1','Surface Pro','ASUS ZenBook','HP Spectre'];
+  if(/handy|smartphone|iphone|android/i.test(t))
+    return['iPhone 16','Samsung Galaxy S25','Google Pixel 9','OnePlus 13','Xiaomi 14','Fairphone 5'];
+  if(/uhr|watch|armbanduhr/i.test(t))
+    return['Apple Watch Ultra','Garmin Fenix 8','Tissot PRX','Casio G-Shock','Nomos Club','Swatch Bioceramic'];
+  if(/tasche|rucksack|handtasche|bag/i.test(t))
+    return['Fjällräven Kånken','Tumi Alpha','Longchamp Pliage','Carhartt WIP','Rimowa Hybrid','Aesther Ekme'];
+  if(/sofa|couch|möbel|sessel|bett|stuhl/i.test(t))
+    return['IKEA Kivik','Hay Mags Soft','Muuto Rest','Menu Chaise','Hem Mono','USM Haller'];
+  if(/fahrrad|bike|e-bike|velo/i.test(t))
+    return['Trek FX 3','Canyon Commuter','Specialized Sirrus','Riese & Müller Nevo','Cube Hyde','Brompton Electric'];
+  if(/kamera|camera|foto/i.test(t))
+    return['Sony A7 IV','Fujifilm X100VI','Canon R50','Leica Q3','Nikon Z6 III','GoPro Hero 13'];
+  if(/essen|kochen|gericht|food|abend|mittag|frühstück|lunch|dinner/i.test(t))
+    return['Miso-Aubergine','Kichererbsensalat','Zucchini-Nudeln','Kokos-Curry','Süßkartoffel Bowl','Mediterrane Bowl'];
+  if(/trinken|getränk|cocktail|drink|kaffee|tee/i.test(t))
+    return['Matcha Latte','Aperol Spritz','Cold Brew','Kombucha','Mojito','Chai Latte'];
+  if(/reise|urlaub|ferien|ausflug|wohin/i.test(t))
+    return['Lissabon','Kyoto','Kopenhagen','Oaxaca','Ljubljana','Tbilisi'];
+  if(/film|kino|serie|schauen|netflix/i.test(t))
+    return['Action','Komödie','Drama','Dokumentation','Thriller','Romantik'];
+  if(/sport|fitness|workout/i.test(t))
+    return['Yoga','Pilates','Klettern','Tanzen','Schwimmen','Radfahren'];
+  if(/aktivität|freizeit|fun|spaß/i.test(t))
+    return['Escape Room','Karaoke','Bowling','Minigolf','Kochkurs','Töpfern'];
+  if(/gesundheit|wellness|entspannung/i.test(t))
+    return['Meditation','Waldspaziergang','Digital Detox','Atemübungen','Journaling','Sauna'];
+  // kaufen only as last resort — never triggered for "welches X kaufen"
+  if(/kaufen|bestellen|shoppen/i.test(t))
+    return['Jetzt kaufen','Noch warten','Second-hand','Leihen','Selbst machen','Verzichten'];
+  return['Idee 1','Idee 2','Idee 3','Idee 4','Idee 5','Idee 6'];
 }
 
-// ─── CREATE ────────────────────────────────────────────────────────────────
-let options = [];
-function initCreate() {
-  document.getElementById('questionInput').value = '';
-  document.getElementById('categorySelect').value = 'Sonstiges';
-  options = [{val:''},{val:''}];
-  renderOptions();
-}
-function renderOptions() {
-  const list = document.getElementById('optionsList');
-  list.innerHTML = '';
-  options.forEach((o, i) => {
-    const div = document.createElement('div');
-    div.className = 'option-item';
-    div.innerHTML = `
-      <div class="option-dot" style="background:${COLORS[i % COLORS.length]}"></div>
-      <input class="option-input" value="${o.val}" placeholder="Option ${i+1}" oninput="options[${i}].val=this.value">
-      ${options.length > 2 ? `<button class="option-remove" onclick="removeOption(${i})">✕</button>` : ''}
-    `;
-    list.appendChild(div);
+// ── STATE ────────────────────────────────────────────────────────────────────
+let polls=[],curPoll=null,curId=null,uVote=null,chartI=null;
+let vUnsub=null,aUnsub=null;
+let wAngle=0,wVel=0,wSpin=false,wStop=false;
+
+// ── FIREBASE ─────────────────────────────────────────────────────────────────
+const db=()=>window._db;
+const fb=()=>window._fb;
+async function fbSave(p){const{collection:c,addDoc:a}=fb();return(await a(c(db(),'polls'),p)).id;}
+async function fbUpd(id,d){const{doc:D,updateDoc:u}=fb();await u(D(db(),'polls',id),d);}
+function fbAll(cb){
+  const{collection:c,query:q,orderBy:o,onSnapshot:s}=fb();
+  return s(q(c(db(),'polls'),o('created','desc')),snap=>{
+    polls=snap.docs.map(d=>({...d.data(),_fid:d.id}));cb();
   });
 }
-function addOption() {
-  if (options.length >= 10) return;
-  options.push({val:''});
-  renderOptions();
-}
-function removeOption(i) {
-  options.splice(i,1);
-  renderOptions();
+function fbOne(id,cb){
+  const{doc:D,onSnapshot:s}=fb();
+  return s(D(db(),'polls',id),snap=>{if(snap.exists())cb({...snap.data(),_fid:snap.id});});
 }
 
-// ─── SMART FALLBACKS (used if API unavailable) ───────────────────────────────
-const FALLBACKS = {
-  Food: ['Miso-Aubergine mit Sesamreis', 'Kichererbsensalat mit Feta', 'Zucchini-Nudeln mit Lachs', 'Ofensüßkartoffel mit Tahini', 'Grünes Kokos-Curry', 'Mediterrane Bowl'],
-  Essen: ['Miso-Aubergine mit Sesamreis', 'Quinoa-Bowl mit Granatapfel', 'Lachspasta mit Limette', 'Edamame-Reisschale', 'Linsensuppe mit Kokos', 'Griechischer Kichererbsensalat'],
-  Outdoor: ['Wandern', 'Klettern', 'Radtour', 'Kajakfahren', 'Camping', 'Trailrunning'],
-  Indoor: ['Yoga', 'Pilates', 'Kletterpark', 'Tanzen', 'Bouldern', 'Schwimmen'],
-  Activity: ['Escape Room', 'Bowling', 'Minigolf', 'Karaoke', 'Kochen lernen', 'Töpfern'],
-  Natur: ['Pilze sammeln', 'Picknick', 'Vogelbeobachtung', 'Badeausflug', 'Bergwanderung', 'Wildkräuter'],
-  Gesundheit: ['Meditation', 'Kältedusche', 'Digital Detox', 'Waldspaziergang', 'Atemübungen', 'Journaling'],
-  Design: ['Minimalistisch', 'Editorial', 'Brutalistisch', 'Organic Shapes', 'Glassmorphism', 'Typografisch'],
-  Reisen: ['Lissabon', 'Kyoto', 'Kopenhagen', 'Oaxaca', 'Ljubljana', 'Tbilisi'],
-  Sonstiges: ['Option A', 'Option B', 'Option C', 'Option D', 'Option E', 'Option F']
-};
-
-function getFallback(cat, q) {
-  const isFood = /essen|kochen|gericht|food|abend|mittag|frühstück/i.test(q);
-  if (isFood) return FALLBACKS['Food'];
-  return FALLBACKS[cat] || FALLBACKS['Sonstiges'];
+// ── NAVIGATION ───────────────────────────────────────────────────────────────
+function go(id){
+  // hide all pages
+  document.querySelectorAll('.pg').forEach(p=>{p.classList.remove('on');});
+  // show target
+  const pg=document.getElementById('pg-'+id);
+  if(pg){pg.classList.add('on');pg.scrollTop=0;}
+  // nav buttons
+  document.querySelectorAll('.nb').forEach(b=>b.classList.remove('on'));
+  const nb=document.getElementById('nb-'+id);
+  if(nb)nb.classList.add('on');
+  // side effects
+  if(id==='archiv')startArch();
+  if(id==='create')initCreate();
 }
 
-async function callClaude(prompt) {
-  const res = await fetch('https://api.anthropic.com/v1/messages', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      model: 'claude-sonnet-4-20250514',
-      max_tokens: 400,
-      messages: [{ role: 'user', content: prompt }]
-    })
-  });
-  if (!res.ok) throw new Error('API error');
-  const data = await res.json();
-  const text = data.content?.map(c => c.text || '').join('') || '[]';
-  return text.replace(/```json|```/g, '').trim();
+function goBack(){
+  if(vUnsub){vUnsub();vUnsub=null;}
+  go('archiv');
 }
 
-async function generateAIIdeas() {
-  const q = document.getElementById('questionInput').value.trim();
-  const cat = document.getElementById('categorySelect').value;
-  if (!q) { showToast('Bitte zuerst eine Frage eingeben'); return; }
-  document.getElementById('aiLoadingMsg').style.display = 'flex';
-
-  try {
-    const isFood = cat === 'Food' || cat === 'Essen' || /essen|gericht|kochen|food|abend|mittag/i.test(q);
-    const prompt = isFood
-      ? `Du bist ein Foodie mit Fokus auf gesunde, moderne Küche. Generiere 6 außergewöhnliche, nährstoffreiche Gerichte als kurze Namen (2-5 Wörter, deutsch) für die Frage: "${q}". 
-Beispiele guter Antworten: "Miso-Aubergine mit Sesamreis", "Kichererbsensalat mit Feta", "Zucchini-Nudeln mit Lachs".
-Antworte NUR mit einem validen JSON-Array: ["Name1","Name2","Name3","Name4","Name5","Name6"]`
-      : `Generiere 6 kreative, konkrete Antwortoptionen (1-4 Wörter, deutsch) für die Abstimmungsfrage: "${q}" (Kategorie: ${cat}).
-Beispiele: Für "Wohin Reisen?" → ["Lissabon","Kyoto","Kopenhagen","Oaxaca","Ljubljana","Tbilisi"]. Für "Welchen Sport?" → ["Klettern","Yoga","Padel","Tanzen","Schwimmen","Radfahren"].
-Antworte NUR mit einem validen JSON-Array: ["Option1","Option2","Option3","Option4","Option5","Option6"]`;
-
-    const raw = await callClaude(prompt);
-    const ideas = JSON.parse(raw);
-    if (Array.isArray(ideas) && ideas.length >= 2 && ideas.every(i => typeof i === 'string')) {
-      options = ideas.slice(0, 8).map(v => ({ val: String(v) }));
-    } else {
-      throw new Error('invalid response');
-    }
-  } catch(e) {
-    // Smart fallback — real curated answers, not "Idee A"
-    const fb = getFallback(cat, q);
-    options = fb.map(v => ({ val: v }));
-  }
-  renderOptions();
-  document.getElementById('aiLoadingMsg').style.display = 'none';
+// ── CREATE ───────────────────────────────────────────────────────────────────
+let opts=[];
+function initCreate(){
+  document.getElementById('qIn').value='';
+  document.getElementById('catSel').value='Sonstiges';
+  opts=[{v:''},{v:''}];
+  renderOpts();
 }
-
-function startVote() {
-  const q = document.getElementById('questionInput').value.trim();
-  const cat = document.getElementById('categorySelect').value;
-  const opts = options.map(o=>o.val.trim()).filter(Boolean);
-  if (!q) { showToast('Bitte eine Frage eingeben'); return; }
-  if (opts.length < 2) { showToast('Mindestens 2 Optionen nötig'); return; }
-
-  const code = '#' + Math.random().toString(36).substr(2,6).toUpperCase();
-  const poll = {
-    id: Date.now(), code, question: q, category: cat,
-    options: opts.map((v,i) => ({name:v, votes:0, color:COLORS[i%COLORS.length]})),
-    status: 'Aktiv', created: new Date().toISOString()
-  };
-  polls.unshift(poll);
-  savePols();
-  openVote(poll);
-}
-
-// ─── VOTE ───────────────────────────────────────────────────────────────────
-function openVote(poll) {
-  currentPoll = poll;
-  userVote = null;
-  document.getElementById('voteTitle').textContent = poll.question;
-  document.getElementById('voteCode').textContent = poll.code;
-  const badge = document.getElementById('voteBadge');
-  badge.textContent = poll.status;
-  badge.className = 'badge ' + (poll.status === 'Aktiv' ? 'badge-aktiv' : 'badge-beendet');
-  renderVoteOptions();
-  drawWheel();
-  renderResults();
-  showPage('vote');
-}
-
-function renderVoteOptions() {
-  const list = document.getElementById('voteOptionsList');
-  list.innerHTML = '';
-  currentPoll.options.forEach((o, i) => {
-    const isFood = currentPoll.category === 'Food' || currentPoll.category === 'Essen' || /essen|gericht|kochen/i.test(currentPoll.question);
-    const div = document.createElement('div');
-    div.className = 'vote-option' + (userVote === i ? ' voted' : '');
-    div.innerHTML = `
-      <div class="opt-left">
-        <div class="opt-dot" style="background:${o.color}"></div>
-        <span class="opt-name">${o.name}</span>
-        ${isFood ? `<button onclick="showRecipe('${o.name}')" style="background:none;border:none;cursor:pointer;color:var(--coral);font-size:12px;margin-left:4px">↗ Rezept</button>` : ''}
-      </div>
-      <div style="display:flex;align-items:center;gap:12px">
-        <span class="opt-count">${o.votes}</span>
-        <button class="vote-it-btn ${userVote===i?'voted':''}" onclick="castVote(${i})">${userVote===i?'✓':'Stimme'}</button>
-      </div>
-    `;
-    list.appendChild(div);
+function renderOpts(){
+  const l=document.getElementById('optList');
+  l.innerHTML='';
+  opts.forEach((o,i)=>{
+    const d=document.createElement('div');
+    d.className='oi';
+    d.innerHTML=`<div class="od" style="background:${C[i%C.length]}"></div>
+      <input class="oinp" value="${o.v.replace(/"/g,'&quot;')}" placeholder="Option ${i+1}" oninput="opts[${i}].v=this.value">
+      ${opts.length>2?`<button class="orm" onclick="rmOpt(${i})">✕</button>`:''}`;
+    l.appendChild(d);
   });
 }
+function addOpt(){if(opts.length<10){opts.push({v:''});renderOpts();}}
+function rmOpt(i){opts.splice(i,1);renderOpts();}
 
-function castVote(i) {
-  if (currentPoll.status !== 'Aktiv') { showToast('Abstimmung beendet'); return; }
-  if (userVote !== null) {
-    currentPoll.options[userVote].votes--;
-  }
-  userVote = i;
-  currentPoll.options[i].votes++;
-  savePols();
-  renderVoteOptions();
-  renderResults();
-}
-
-function endVote() {
-  currentPoll.status = 'Beendet';
-  savePols();
-  const badge = document.getElementById('voteBadge');
-  badge.textContent = 'Beendet';
-  badge.className = 'badge badge-beendet';
-  showToast('Abstimmung beendet');
-}
-
-function copyLink() {
-  navigator.clipboard?.writeText(window.location.href + '?poll=' + currentPoll.id).catch(()=>{});
-  showToast('Link kopiert!');
-}
-
-// ─── RESULTS ────────────────────────────────────────────────────────────────
-function renderResults() {
-  const total = currentPoll.options.reduce((s,o)=>s+o.votes,0);
-  const area = document.getElementById('resultsArea');
-  const chartCanvas = document.getElementById('resultsChart');
-
-  if (total === 0) {
-    area.innerHTML = '<div class="no-votes">Noch keine Stimmen abgegeben</div>';
-    chartCanvas.style.display = 'none';
-    if (chartInstance) { chartInstance.destroy(); chartInstance = null; }
-    return;
-  }
-
-  area.innerHTML = currentPoll.options.map(o => {
-    const pct = total ? Math.round(o.votes/total*100) : 0;
-    return `<div style="margin-bottom:10px">
-      <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px">
-        <span style="display:flex;align-items:center;gap:6px"><span style="width:8px;height:8px;border-radius:50%;background:${o.color};display:inline-block"></span>${o.name}</span>
-        <span style="font-weight:500">${pct}%</span>
-      </div>
-      <div style="background:#f0f0f0;border-radius:50px;height:6px;overflow:hidden">
-        <div style="width:${pct}%;height:100%;background:${o.color};border-radius:50px;transition:width 0.5s ease"></div>
-      </div>
-    </div>`;
-  }).join('');
-
-  chartCanvas.style.display = 'block';
-  if (chartInstance) chartInstance.destroy();
-  chartInstance = new Chart(chartCanvas, {
-    type: 'doughnut',
-    data: {
-      labels: currentPoll.options.map(o=>o.name),
-      datasets: [{ data: currentPoll.options.map(o=>o.votes||0.001), backgroundColor: currentPoll.options.map(o=>o.color), borderWidth: 0 }]
-    },
-    options: { plugins: { legend: { display: false } }, cutout: '65%', animation: { duration: 600 } }
+// ── CLAUDE API (with web_search tool) ───────────────────────────────────────
+async function claude(prompt, useSearch=false){
+  const body={model:'claude-sonnet-4-20250514',max_tokens:500,messages:[{role:'user',content:prompt}]};
+  if(useSearch) body.tools=[{type:'web_search_20250305',name:'web_search'}];
+  const r=await fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)
   });
+  if(!r.ok)throw new Error('API '+r.status);
+  const data=await r.json();
+  // collect only text blocks (ignore tool_use blocks)
+  return data.content?.filter(c=>c.type==='text').map(c=>c.text).join('').replace(/```json|```/g,'').trim()||'';
 }
 
-// ─── WHEEL ──────────────────────────────────────────────────────────────────
-function drawWheel() {
-  const canvas = document.getElementById('wheelCanvas');
-  const ctx = canvas.getContext('2d');
-  const cx = 150, cy = 150, r = 140;
-  ctx.clearRect(0,0,300,300);
-  const n = currentPoll.options.length;
-  const arc = (2*Math.PI) / n;
+async function genAI(){
+  const q=document.getElementById('qIn').value.trim();
+  if(!q){toast('Bitte zuerst eine Frage eingeben');return;}
+  const btn=document.getElementById('aiBtn');
+  btn.disabled=true;
+  document.getElementById('aiLoad').style.display='flex';
 
-  for (let i = 0; i < n; i++) {
-    const start = wheelAngle + i * arc;
-    const end = start + arc;
-    const o = currentPoll.options[i];
-    ctx.beginPath();
-    ctx.moveTo(cx, cy);
-    ctx.arc(cx, cy, r, start, end);
-    ctx.closePath();
-    ctx.fillStyle = o.color;
-    ctx.fill();
+  try{
+    // Use web_search so Claude can find current/popular examples
+    const prompt=`Du hilfst bei einer Abstimmungs-App. Die Frage lautet: "${q}"
 
-    // Gloss overlay
-    ctx.save();
-    ctx.globalAlpha = 0.15;
-    const grad = ctx.createRadialGradient(cx, cy, 10, cx, cy, r);
-    grad.addColorStop(0, 'white');
-    grad.addColorStop(1, 'transparent');
-    ctx.fillStyle = grad;
-    ctx.beginPath();
-    ctx.moveTo(cx, cy);
-    ctx.arc(cx, cy, r, start, end);
-    ctx.closePath();
-    ctx.fill();
-    ctx.restore();
+WICHTIG: Bestimme das OBJEKT der Frage (worüber abgestimmt wird), NICHT das Verb.
+- "Welches AUTO soll ich kaufen?" → Objekt = Auto → nenne populäre Automodelle
+- "Welche SCHUHE kaufen?" → Objekt = Schuhe → nenne beliebte Schuhmodelle  
+- "Was ESSEN wir heute?" → Objekt = Gericht → nenne Gerichte
+- "Wohin REISEN?" → Objekt = Reiseziel → nenne Reiseziele
 
-    // Label
-    ctx.save();
-    ctx.translate(cx, cy);
-    ctx.rotate(start + arc/2);
-    ctx.textAlign = 'right';
-    ctx.fillStyle = '#fff';
-    ctx.font = 'bold 13px DM Sans, sans-serif';
-    ctx.shadowColor = 'rgba(0,0,0,0.3)';
-    ctx.shadowBlur = 4;
-    const name = o.name.length > 10 ? o.name.substr(0,10)+'…' : o.name;
-    ctx.fillText(name, r - 10, 5);
-    ctx.restore();
+Nutze dein Wissen über aktuelle, populäre Optionen. Gib 6 konkrete, kurze Antworten (1-4 Wörter) auf Deutsch.
+Antworte NUR mit JSON-Array: ["Opt1","Opt2","Opt3","Opt4","Opt5","Opt6"]`;
+
+    const raw=await claude(prompt, true);
+    // extract JSON array from response
+    const match=raw.match(/\[[\s\S]*?\]/);
+    if(!match)throw new Error('no array');
+    const ideas=JSON.parse(match[0]);
+    if(Array.isArray(ideas)&&ideas.length>=2&&ideas.every(x=>typeof x==='string')){
+      opts=ideas.slice(0,8).map(v=>({v:String(v)}));
+    } else throw new Error('bad');
+  }catch(e){
+    console.warn('AI fallback:',e.message);
+    opts=fallback(q).map(v=>({v}));
   }
-
-  // Center dot
-  ctx.beginPath();
-  ctx.arc(cx, cy, 12, 0, 2*Math.PI);
-  ctx.fillStyle = 'white';
-  ctx.fill();
-  ctx.beginPath();
-  ctx.arc(cx, cy, 6, 0, 2*Math.PI);
-  ctx.fillStyle = '#ccc';
-  ctx.fill();
-
-  // Update label
-  const labelIdx = getCurrentSegment();
-  document.getElementById('wheelLabel').textContent = currentPoll.options[labelIdx]?.name || '—';
+  renderOpts();
+  document.getElementById('aiLoad').style.display='none';
+  btn.disabled=false;
 }
 
-function getCurrentSegment() {
-  const n = currentPoll.options.length;
-  const arc = (2*Math.PI)/n;
-  // Pointer at top = -π/2
-  const normalized = ((-Math.PI/2 - wheelAngle) % (2*Math.PI) + 2*Math.PI) % (2*Math.PI);
-  return Math.floor(normalized / arc) % n;
-}
+async function startVote(){
+  const q=document.getElementById('qIn').value.trim();
+  const cat=document.getElementById('catSel').value;
+  const clean=opts.map(o=>o.v.trim()).filter(Boolean);
+  if(!q){toast('Bitte eine Frage eingeben');return;}
+  if(clean.length<2){toast('Mindestens 2 Optionen nötig');return;}
 
-function spinWheel() {
-  if (wheelSpinning) return;
-  wheelSpinning = true;
-  wheelStopping = false;
-  wheelVelocity = 0.15 + Math.random() * 0.1;
-  document.getElementById('spinBtn').disabled = true;
-  document.getElementById('stopBtn').disabled = false;
-  animateWheel();
-}
+  const btn=document.getElementById('stBtn');
+  btn.disabled=true;btn.textContent='Wird gespeichert…';
 
-function stopWheel() {
-  wheelStopping = true;
-  document.getElementById('stopBtn').disabled = true;
-}
+  if(!window._fbReady)await new Promise(r=>document.addEventListener('fbReady',r,{once:true}));
 
-function animateWheel() {
-  if (!wheelSpinning) return;
-  if (wheelStopping) {
-    wheelVelocity *= 0.965;
-  } else {
-    if (wheelVelocity < 0.18) wheelVelocity += 0.004;
-  }
-  wheelAngle += wheelVelocity;
-  drawWheel();
-  if (wheelStopping && wheelVelocity < 0.002) {
-    wheelSpinning = false;
-    wheelStopping = false;
-    document.getElementById('spinBtn').disabled = false;
-    document.getElementById('stopBtn').disabled = true;
-    const winner = getCurrentSegment();
-    castVote(winner);
-    showToast('🎯 ' + currentPoll.options[winner].name + ' wurde gewählt!');
-    launchConfetti();
-    return;
-  }
-  wheelRAF = requestAnimationFrame(animateWheel);
-}
-
-// ─── CONFETTI ────────────────────────────────────────────────────────────────
-function launchConfetti() {
-  const canvas = document.getElementById('confettiCanvas');
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-  canvas.style.display = 'block';
-  const ctx = canvas.getContext('2d');
-  const colors = ['#ecf38f','#a1baf5','#9698dc','#df663a','#40594f','#f5a88a','#c4d4f8'];
-  const pieces = Array.from({length: 120}, () => ({
-    x: Math.random() * canvas.width,
-    y: -20 - Math.random() * 100,
-    r: 4 + Math.random() * 7,
-    color: colors[Math.floor(Math.random()*colors.length)],
-    rot: Math.random() * Math.PI * 2,
-    vx: (Math.random() - 0.5) * 4,
-    vy: 2 + Math.random() * 4,
-    vr: (Math.random() - 0.5) * 0.15,
-    shape: Math.random() > 0.5 ? 'rect' : 'circle'
-  }));
-  let frame = 0;
-  function draw() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    let alive = false;
-    pieces.forEach(p => {
-      p.x += p.vx; p.y += p.vy; p.rot += p.vr; p.vy += 0.1;
-      if (p.y < canvas.height + 20) alive = true;
-      ctx.save();
-      ctx.globalAlpha = Math.max(0, 1 - frame/90);
-      ctx.translate(p.x, p.y);
-      ctx.rotate(p.rot);
-      ctx.fillStyle = p.color;
-      if (p.shape === 'rect') {
-        ctx.fillRect(-p.r, -p.r/2, p.r*2, p.r);
-      } else {
-        ctx.beginPath(); ctx.arc(0,0,p.r,0,Math.PI*2); ctx.fill();
-      }
-      ctx.restore();
-    });
-    frame++;
-    if (alive && frame < 120) requestAnimationFrame(draw);
-    else { ctx.clearRect(0,0,canvas.width,canvas.height); canvas.style.display='none'; }
-  }
-  draw();
-}
-
-// ─── AI IDEAS IN VOTE ───────────────────────────────────────────────────────
-async function generateAIIdeasVote() {
-  showToast('KI denkt nach…');
-  const q = currentPoll.question;
-  const cat = currentPoll.category;
-  try {
-    const isFood = cat === 'Food' || cat === 'Essen' || /essen|gericht|kochen/i.test(q);
-    const prompt = isFood
-      ? `Schlage 4 gesunde, außergewöhnliche Gerichte (2-5 Wörter, deutsch) vor für: "${q}". Nur JSON-Array z.B. ["Miso-Aubergine","Quinoa-Bowl","Lachspasta","Edamame-Bowl"]. Keine Erklärungen.`
-      : `Schlage 4 kreative, konkrete Optionen (1-3 Wörter, deutsch) vor für: "${q}" (${cat}). Nur JSON-Array. Keine Erklärungen.`;
-    const raw = await callClaude(prompt);
-    const ideas = JSON.parse(raw);
-    if (Array.isArray(ideas) && ideas.length) {
-      ideas.forEach(v => {
-        if (currentPoll.options.length < 10) {
-          currentPoll.options.push({name:String(v), votes:0, color:COLORS[currentPoll.options.length%COLORS.length]});
-        }
-      });
-      savePols(); renderVoteOptions(); drawWheel();
-      showToast('KI-Ideen hinzugefügt!');
-    }
-  } catch(e) {
-    // Use curated fallback
-    const fb = getFallback(cat, q).slice(0, 3);
-    fb.forEach(v => {
-      if (currentPoll.options.length < 10 && !currentPoll.options.find(o=>o.name===v)) {
-        currentPoll.options.push({name:v, votes:0, color:COLORS[currentPoll.options.length%COLORS.length]});
-      }
-    });
-    savePols(); renderVoteOptions(); drawWheel();
-    showToast('Ideen hinzugefügt!');
+  const code='#'+Math.random().toString(36).substr(2,6).toUpperCase();
+  const poll={code,question:q,category:cat,
+    options:clean.map((v,i)=>({name:v,votes:0,color:C[i%C.length]})),
+    status:'Aktiv',created:new Date().toISOString()};
+  try{
+    const fid=await fbSave(poll);
+    poll._fid=fid;
+    btn.disabled=false;btn.textContent='Abstimmung starten →';
+    openVote(poll);
+  }catch(e){
+    toast('Fehler: '+e.message);
+    btn.disabled=false;btn.textContent='Abstimmung starten →';
+    console.error(e);
   }
 }
 
-// ─── RECIPE ─────────────────────────────────────────────────────────────────
-async function showRecipe(dish) {
-  document.getElementById('recipeModal').classList.add('open');
-  document.getElementById('recipeContent').innerHTML = `<div class="ai-loading" style="justify-content:center;padding:40px 0"><div class="spinner"></div> Rezept wird geladen…</div>`;
-  try {
-    const prompt = `Erstelle ein kurzes, elegantes Rezept für "${dish}". Antworte NUR als JSON:
-{"title":"${dish}","time":"X Min","servings":2,"ingredients":["200g Zutat","..."],"steps":["Schritt 1...","..."],"calories":350,"protein":"20g","carbs":"40g"}
-Keine Erklärungen, nur das JSON-Objekt.`;
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ model:'claude-sonnet-4-20250514', max_tokens:600, messages:[{role:'user',content:prompt}] })
-    });
-    const data = await res.json();
-    const text = data.content?.map(c=>c.text||'').join('')||'{}';
-    const r = JSON.parse(text.replace(/```json|```/g,'').trim());
-    document.getElementById('recipeContent').innerHTML = `
-      <button class="modal-close" onclick="closeRecipe()">✕</button>
-      <div class="modal-title">${r.title}</div>
-      <div class="modal-sub">⏱ ${r.time} · 🍽 ${r.servings} Portionen</div>
-      <div class="recipe-section"><h4>Zutaten</h4><ul>${(r.ingredients||[]).map(i=>`<li>${i}</li>`).join('')}</ul></div>
-      <div class="recipe-section"><h4>Zubereitung</h4>${(r.steps||[]).map((s,i)=>`<p style="margin-bottom:8px"><strong>${i+1}.</strong> ${s}</p>`).join('')}</div>
-      <div class="recipe-section"><h4>Nährwerte</h4>
-        <div class="nutrition-grid">
-          <div class="nutr-item"><div class="nutr-val">${r.calories||'—'}</div><div class="nutr-label">Kalorien</div></div>
-          <div class="nutr-item"><div class="nutr-val">${r.protein||'—'}</div><div class="nutr-label">Protein</div></div>
-          <div class="nutr-item"><div class="nutr-val">${r.carbs||'—'}</div><div class="nutr-label">Kohlenhydrate</div></div>
-        </div>
+// ── VOTE ─────────────────────────────────────────────────────────────────────
+function openVote(poll){
+  if(vUnsub){vUnsub();vUnsub=null;}
+  curPoll=poll;curId=poll._fid;uVote=null;
+  document.getElementById('vTitle').textContent=poll.question;
+  document.getElementById('vCode').textContent=poll.code;
+  setBadge(poll.status);
+  renderVOpts();drawW();renderRes();
+  go('vote');
+  vUnsub=fbOne(curId,up=>{curPoll=up;setBadge(up.status);renderVOpts();drawW();renderRes();});
+}
+
+function setBadge(s){
+  const b=document.getElementById('vBadge');
+  b.textContent=s;b.className='bdg '+(s==='Aktiv'?'bak':'bnd');
+}
+
+function hasFood(p){return/essen|gericht|kochen|food|dinner|lunch|frühstück/i.test(p.category+' '+p.question);}
+
+function renderVOpts(){
+  const l=document.getElementById('vOptList');
+  l.innerHTML='';
+  curPoll.options.forEach((o,i)=>{
+    const d=document.createElement('div');
+    d.className='vo'+(uVote===i?' vd':'');
+    const food=hasFood(curPoll);
+    d.innerHTML=`
+      <div class="ol">
+        <div class="odd" style="background:${o.color}"></div>
+        <span class="on2">${o.name}</span>
+        ${food?`<button onclick="showRec(event,'${o.name.replace(/'/g,"\\'").replace(/"/g,'&quot;')}')" style="background:none;border:none;cursor:pointer;color:var(--coral);font-size:11px;margin-left:4px">↗ Rezept</button>`:''}
+      </div>
+      <div style="display:flex;align-items:center;gap:9px">
+        <span class="oc">${o.votes}</span>
+        <button class="vib${uVote===i?' vd':''}" onclick="vote(${i})">${uVote===i?'✓':'Stimme'}</button>
       </div>`;
-  } catch(e) {
-    document.getElementById('recipeContent').innerHTML = `<button class="modal-close" onclick="closeRecipe()">✕</button><p style="padding:20px;color:var(--muted)">Rezept konnte nicht geladen werden.</p>`;
-  }
-}
-function closeRecipe() { document.getElementById('recipeModal').classList.remove('open'); }
-
-// ─── ARCHIVE ────────────────────────────────────────────────────────────────
-function renderArchive() {
-  const q = (document.getElementById('searchInput')?.value||'').toLowerCase();
-  const cat = document.getElementById('filterCat')?.value||'';
-  const st = document.getElementById('filterStatus')?.value||'';
-  let filtered = polls.filter(p => {
-    if (q && !p.question.toLowerCase().includes(q)) return false;
-    if (cat && p.category !== cat) return false;
-    if (st && p.status !== st) return false;
-    return true;
+    l.appendChild(d);
   });
-  const grid = document.getElementById('archiveGrid');
-  if (!filtered.length) {
-    grid.innerHTML = '<div class="empty-state">Keine Abstimmungen gefunden</div>';
+}
+
+async function vote(i){
+  if(curPoll.status!=='Aktiv'){toast('Abstimmung beendet');return;}
+  const newO=curPoll.options.map((o,x)=>({...o,votes:x===i?o.votes+1:(uVote===x?Math.max(0,o.votes-1):o.votes)}));
+  uVote=i;
+  curPoll={...curPoll,options:newO};
+  renderVOpts();renderRes();
+  try{await fbUpd(curId,{options:newO});}catch(e){toast('Speicherfehler');console.error(e);}
+}
+
+async function endVote(){
+  try{await fbUpd(curId,{status:'Beendet'});toast('Abstimmung beendet');}
+  catch{toast('Fehler');}
+}
+function copyLink(){
+  navigator.clipboard?.writeText(location.href.split('?')[0]+'?poll='+curId).catch(()=>{});
+  toast('Link kopiert! 🔗');
+}
+
+// ── RESULTS ──────────────────────────────────────────────────────────────────
+function renderRes(){
+  const tot=curPoll.options.reduce((s,o)=>s+o.votes,0);
+  const ar=document.getElementById('resArea'),cc=document.getElementById('resChart');
+  if(!tot){
+    ar.innerHTML='<div class="nv">Noch keine Stimmen abgegeben</div>';
+    cc.style.display='none';
+    if(chartI){chartI.destroy();chartI=null;}
     return;
   }
-  grid.innerHTML = filtered.map(p => {
-    const total = p.options.reduce((s,o)=>s+o.votes,0);
-    return `<div class="archive-card" onclick="openVote(polls.find(x=>x.id===${p.id}))">
-      <div class="arc-top">
-        <span class="arc-cat">${p.category}</span>
-        <span class="badge ${p.status==='Aktiv'?'badge-aktiv':'badge-beendet'}">${p.status}</span>
+  ar.innerHTML=curPoll.options.map(o=>{
+    const p=Math.round(o.votes/tot*100);
+    return`<div style="margin-bottom:8px">
+      <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px">
+        <span style="display:flex;align-items:center;gap:5px">
+          <span style="width:7px;height:7px;border-radius:50%;background:${o.color};display:inline-block"></span>${o.name}
+        </span><span style="font-weight:500">${p}%</span>
       </div>
-      <div class="arc-q">${p.question}</div>
-      <div class="arc-votes">👥 ${total} Stimmen</div>
-      <div class="arc-dots">${p.options.map(o=>`<div class="arc-dot" style="background:${o.color}"></div>`).join('')}</div>
+      <div style="background:#f0f0f0;border-radius:50px;height:5px;overflow:hidden">
+        <div style="width:${p}%;height:100%;background:${o.color};border-radius:50px;transition:width .5s ease"></div>
+      </div></div>`;
+  }).join('');
+  cc.style.display='block';
+  if(chartI)chartI.destroy();
+  chartI=new Chart(cc,{type:'doughnut',
+    data:{labels:curPoll.options.map(o=>o.name),datasets:[{data:curPoll.options.map(o=>o.votes||.001),backgroundColor:curPoll.options.map(o=>o.color),borderWidth:0}]},
+    options:{plugins:{legend:{display:false}},cutout:'65%',animation:{duration:500}}});
+}
+
+// ── WHEEL ────────────────────────────────────────────────────────────────────
+function drawW(){
+  const cv=document.getElementById('wCanvas'),ctx=cv.getContext('2d');
+  const cx=135,cy=135,r=128;
+  ctx.clearRect(0,0,270,270);
+  const n=curPoll.options.length,arc=(2*Math.PI)/n;
+  for(let i=0;i<n;i++){
+    const s=wAngle+i*arc,e=s+arc,o=curPoll.options[i];
+    ctx.beginPath();ctx.moveTo(cx,cy);ctx.arc(cx,cy,r,s,e);ctx.closePath();
+    ctx.fillStyle=o.color;ctx.fill();
+    ctx.save();ctx.globalAlpha=.12;
+    const g=ctx.createRadialGradient(cx,cy,6,cx,cy,r);
+    g.addColorStop(0,'white');g.addColorStop(1,'transparent');
+    ctx.fillStyle=g;ctx.beginPath();ctx.moveTo(cx,cy);ctx.arc(cx,cy,r,s,e);ctx.closePath();ctx.fill();ctx.restore();
+    ctx.save();ctx.translate(cx,cy);ctx.rotate(s+arc/2);ctx.textAlign='right';
+    ctx.fillStyle='#fff';ctx.font='bold 11px DM Sans,sans-serif';
+    ctx.shadowColor='rgba(0,0,0,.3)';ctx.shadowBlur=4;
+    ctx.fillText(o.name.length>10?o.name.substr(0,10)+'…':o.name,r-7,4);ctx.restore();
+  }
+  ctx.beginPath();ctx.arc(cx,cy,10,0,2*Math.PI);ctx.fillStyle='white';ctx.fill();
+  ctx.beginPath();ctx.arc(cx,cy,5,0,2*Math.PI);ctx.fillStyle='#ccc';ctx.fill();
+  document.getElementById('wLabel').textContent=curPoll.options[getSeg()]?.name||'—';
+}
+function getSeg(){
+  const n=curPoll.options.length,arc=(2*Math.PI)/n;
+  return Math.floor((((-Math.PI/2-wAngle)%(2*Math.PI)+2*Math.PI)%(2*Math.PI))/arc)%n;
+}
+function spinW(){
+  if(wSpin)return;wSpin=true;wStop=false;wVel=.15+Math.random()*.1;
+  document.getElementById('spBtn').disabled=true;document.getElementById('stpBtn').disabled=false;
+  animW();
+}
+function stopW(){wStop=true;document.getElementById('stpBtn').disabled=true;}
+function animW(){
+  if(!wSpin)return;
+  wVel=wStop?wVel*.965:Math.min(wVel+.004,.18);
+  wAngle+=wVel;drawW();
+  if(wStop&&wVel<.002){
+    wSpin=false;wStop=false;
+    document.getElementById('spBtn').disabled=false;document.getElementById('stpBtn').disabled=true;
+    const w=getSeg();vote(w);toast('🎯 '+curPoll.options[w].name+' wurde gewählt!');confetti();return;
+  }
+  requestAnimationFrame(animW);
+}
+
+// ── CONFETTI ─────────────────────────────────────────────────────────────────
+function confetti(){
+  const cv=document.getElementById('cc');
+  cv.width=innerWidth;cv.height=innerHeight;cv.style.display='block';
+  const ctx=cv.getContext('2d');
+  const cols=['#ecf38f','#a1baf5','#9698dc','#df663a','#40594f','#f5a88a'];
+  const p=Array.from({length:100},()=>({x:Math.random()*cv.width,y:-20,r:4+Math.random()*5,
+    col:cols[0|Math.random()*cols.length],rot:Math.random()*Math.PI*2,
+    vx:(Math.random()-.5)*4,vy:2+Math.random()*3,vr:(Math.random()-.5)*.15,rect:Math.random()>.5}));
+  let f=0;
+  (function dr(){
+    ctx.clearRect(0,0,cv.width,cv.height);let alive=false;
+    p.forEach(q=>{q.x+=q.vx;q.y+=q.vy;q.rot+=q.vr;q.vy+=.08;
+      if(q.y<cv.height+20)alive=true;
+      ctx.save();ctx.globalAlpha=Math.max(0,1-f/80);ctx.translate(q.x,q.y);ctx.rotate(q.rot);ctx.fillStyle=q.col;
+      if(q.rect)ctx.fillRect(-q.r,-q.r/2,q.r*2,q.r);else{ctx.beginPath();ctx.arc(0,0,q.r,0,Math.PI*2);ctx.fill();}
+      ctx.restore();});
+    f++;if(alive&&f<100)requestAnimationFrame(dr);
+    else{ctx.clearRect(0,0,cv.width,cv.height);cv.style.display='none';}
+  })();
+}
+
+// ── AI IDEAS IN VOTE ──────────────────────────────────────────────────────────
+async function genAIVote(){
+  toast('KI denkt nach…');
+  try{
+    const prompt=`Frage: "${curPoll.question}". Bestimme das Objekt der Frage und schlage 4 weitere konkrete Optionen vor (1-4 Wörter, Deutsch). Nur JSON-Array: ["Opt1","Opt2","Opt3","Opt4"]`;
+    const raw=await claude(prompt,true);
+    const m=raw.match(/\[[\s\S]*?\]/);
+    if(!m)throw new Error('no array');
+    const ideas=JSON.parse(m[0]);
+    if(Array.isArray(ideas)&&ideas.length){
+      const no=[...curPoll.options];
+      ideas.forEach(v=>{if(no.length<10)no.push({name:String(v),votes:0,color:C[no.length%C.length]});});
+      await fbUpd(curId,{options:no});toast('KI-Ideen hinzugefügt!');
+    }
+  }catch{
+    const fb2=fallback(curPoll.question).slice(0,3);
+    const no=[...curPoll.options];
+    fb2.forEach(v=>{if(no.length<10&&!no.find(o=>o.name===v))no.push({name:v,votes:0,color:C[no.length%C.length]});});
+    await fbUpd(curId,{options:no}).catch(()=>{});toast('Ideen hinzugefügt!');
+  }
+}
+
+// ── RECIPE ───────────────────────────────────────────────────────────────────
+async function showRec(e,dish){
+  e.stopPropagation();
+  document.getElementById('recMo').classList.add('on');
+  document.getElementById('recCon').innerHTML=`<div class="ail" style="justify-content:center;padding:38px 0"><div class="sp"></div> Rezept wird geladen…</div>`;
+  try{
+    const raw=await claude(`Rezept für "${dish}". NUR JSON:
+{"title":"${dish}","time":"25 Min","servings":2,"ingredients":["200g X"],"steps":["Schritt 1"],"calories":400,"protein":"18g","carbs":"35g"}`);
+    const m=raw.match(/\{[\s\S]*\}/);
+    const r=JSON.parse(m?m[0]:raw);
+    document.getElementById('recCon').innerHTML=`
+      <button class="mc" onclick="closeRec()">✕</button>
+      <div class="mt">${r.title}</div><div class="ms">⏱ ${r.time} · 🍽 ${r.servings} Portionen</div>
+      <div class="rs"><h4>Zutaten</h4><ul>${(r.ingredients||[]).map(x=>`<li>${x}</li>`).join('')}</ul></div>
+      <div class="rs"><h4>Zubereitung</h4>${(r.steps||[]).map((s,i)=>`<p style="margin-bottom:6px"><strong>${i+1}.</strong> ${s}</p>`).join('')}</div>
+      <div class="rs"><h4>Nährwerte</h4><div class="ng">
+        <div class="ni"><div class="nv2">${r.calories||'—'}</div><div class="nl">Kalorien</div></div>
+        <div class="ni"><div class="nv2">${r.protein||'—'}</div><div class="nl">Protein</div></div>
+        <div class="ni"><div class="nv2">${r.carbs||'—'}</div><div class="nl">Kohlenhydrate</div></div>
+      </div></div>`;
+  }catch{document.getElementById('recCon').innerHTML=`<button class="mc" onclick="closeRec()">✕</button><p style="padding:20px;color:var(--muted)">Rezept nicht verfügbar.</p>`;}
+}
+function closeRec(){document.getElementById('recMo').classList.remove('on');}
+
+// ── ARCHIVE ──────────────────────────────────────────────────────────────────
+function startArch(){
+  if(aUnsub){renderArch();return;}
+  if(!window._fbReady){document.addEventListener('fbReady',()=>{aUnsub=fbAll(renderArch);},{once:true});return;}
+  aUnsub=fbAll(renderArch);
+}
+function renderArch(){
+  const q=(document.getElementById('srch')?.value||'').toLowerCase();
+  const cat=document.getElementById('fCat')?.value||'';
+  const st=document.getElementById('fSt')?.value||'';
+  const f=polls.filter(p=>(!q||p.question.toLowerCase().includes(q))&&(!cat||p.category===cat)&&(!st||p.status===st));
+  const g=document.getElementById('archGrid');
+  if(!f.length){g.innerHTML='<div class="es">Keine Abstimmungen gefunden</div>';return;}
+  g.innerHTML=f.map(p=>{
+    const tot=p.options.reduce((s,o)=>s+o.votes,0);
+    return`<div class="acd" data-fid="${p._fid}" onclick="openFromArch('${p._fid}')">
+      <div class="at"><span class="acat">${p.category}</span>
+        <span class="bdg ${p.status==='Aktiv'?'bak':'bnd'}">${p.status}</span></div>
+      <div class="aq">${p.question}</div>
+      <div class="av">👥 ${tot} Stimmen</div>
+      <div class="ads">${p.options.map(o=>`<div class="add" style="background:${o.color}"></div>`).join('')}</div>
     </div>`;
   }).join('');
 }
-
-// ─── TOAST ──────────────────────────────────────────────────────────────────
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'), 2800);
+function openFromArch(fid){
+  const p=polls.find(x=>x._fid===fid);
+  if(p)openVote(p);
 }
 
-// ─── INIT ────────────────────────────────────────────────────────────────────
+// ── TOAST ────────────────────────────────────────────────────────────────────
+function toast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('on');
+  setTimeout(()=>t.classList.remove('on'),2800);
+}
+
+// ── INIT ─────────────────────────────────────────────────────────────────────
 initCreate();
-
-// Seed demo data if empty
-if (!polls.length) {
-  const demoPolls = [
-    { id:1, code:'#DEMO01', question:'Was essen wir heute Abend?', category:'Essen', status:'Aktiv', created: new Date().toISOString(),
-      options:[{name:'Miso-Aubergine',votes:5,color:'#40594f'},{name:'Quinoa-Bowl',votes:4,color:'#ecf38f'},{name:'Lachspasta',votes:3,color:'#a1baf5'}]},
-    { id:2, code:'#DEMO02', question:'Welches Design für unser nächstes Projekt?', category:'Design', status:'Beendet', created: new Date().toISOString(),
-      options:[{name:'Minimalistisch',votes:12,color:'#40594f'},{name:'Maximalistisch',votes:8,color:'#a1baf5'},{name:'Editorial',votes:4,color:'#9698dc'}]},
-    { id:3, code:'#DEMO03', question:'Wohin geht die nächste Reise?', category:'Reisen', status:'Aktiv', created: new Date().toISOString(),
-      options:[{name:'Lissabon',votes:3,color:'#40594f'},{name:'Kyoto',votes:5,color:'#ecf38f'},{name:'Kopenhagen',votes:2,color:'#df663a'}]}
-  ];
-  polls = demoPolls;
-  savePols();
+function checkUrl(){
+  const id=new URLSearchParams(location.search).get('poll');
+  if(!id)return;
+  const{doc:D,getDoc:G}=fb();
+  G(D(db(),'polls',id)).then(s=>{if(s.exists())openVote({...s.data(),_fid:s.id});}).catch(()=>{});
 }
+if(window._fbReady)checkUrl();
+else document.addEventListener('fbReady',checkUrl,{once:true});
 </script>
 </body>
 </html>

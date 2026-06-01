@@ -58,7 +58,7 @@
     .bs{padding:15px 34px;border-radius:50px;border:1.5px solid rgba(0,0,0,.12);cursor:pointer;background:white;color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;transition:all .2s;}
     .bs:hover{background:var(--cream);}
 
-    /* CREATE */
+    /* SHARED CARD STYLES */
     .pi{max-width:680px;margin:0 auto;padding:40px 28px 80px;}
     .plabel{font-size:11px;font-weight:500;letter-spacing:2px;color:var(--coral);text-transform:uppercase;margin-bottom:8px;}
     .ptitle{font-family:'Playfair Display',serif;font-size:36px;margin-bottom:30px;}
@@ -90,7 +90,48 @@
     .sp{width:15px;height:15px;border:2px solid rgba(150,152,220,.2);border-top-color:var(--lavender);border-radius:50%;animation:spin .8s linear infinite;flex-shrink:0;}
     @keyframes spin{to{transform:rotate(360deg)}}
 
-    /* VOTE */
+    /* ── COLLECT PAGE ──────────────────────────────────────────────────────── */
+    .collect-wrap{max-width:620px;margin:0 auto;padding:40px 28px 80px;}
+    .collect-question{font-family:'Playfair Display',serif;font-size:28px;margin-bottom:8px;line-height:1.2;}
+    .collect-sub{font-size:14px;color:var(--muted);margin-bottom:32px;}
+
+    /* Big share box */
+    .share-box{background:var(--forest);border-radius:var(--r);padding:28px;margin-bottom:24px;text-align:center;}
+    .share-box-title{font-family:'Playfair Display',serif;font-size:20px;color:var(--lime);margin-bottom:6px;}
+    .share-box-sub{font-size:13px;color:rgba(236,243,143,.7);margin-bottom:18px;}
+    .share-url-display{background:rgba(255,255,255,.12);border-radius:10px;padding:10px 16px;font-size:12px;color:white;word-break:break-all;margin-bottom:14px;text-align:left;}
+    .share-copy-btn{padding:12px 28px;border-radius:50px;border:none;cursor:pointer;background:var(--lime);color:var(--forest);font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;transition:all .2s;}
+    .share-copy-btn:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(0,0,0,.2);}
+    .share-icons{display:flex;gap:10px;justify-content:center;margin-top:12px;flex-wrap:wrap;}
+    .share-icon-btn{padding:8px 16px;border-radius:50px;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;display:flex;align-items:center;gap:6px;transition:all .2s;}
+    .share-wa{background:#25D366;color:white;}
+    .share-mail{background:#f0f0f0;color:var(--text);}
+
+    /* Live options list in collect phase */
+    .collect-card{background:var(--card);backdrop-filter:blur(20px);border-radius:var(--r);padding:24px;box-shadow:var(--sh);border:1px solid rgba(255,255,255,.9);margin-bottom:16px;}
+    .collect-card-title{font-family:'Playfair Display',serif;font-size:18px;margin-bottom:4px;}
+    .collect-card-sub{font-size:12px;color:var(--muted);margin-bottom:16px;}
+    .opt-chip{display:flex;align-items:center;gap:10px;padding:10px 14px;background:rgba(255,255,255,.8);border-radius:12px;margin-bottom:8px;border:1.5px solid rgba(0,0,0,.05);}
+    .opt-chip-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+    .opt-chip-name{font-size:14px;flex:1;}
+    .opt-chip-new{font-size:10px;color:var(--coral);font-weight:600;background:rgba(223,102,58,.1);padding:2px 8px;border-radius:50px;}
+
+    /* Add option row in collect */
+    .add-opt-row{display:flex;gap:10px;margin-top:12px;}
+    .add-opt-inp{flex:1;padding:11px 14px;border-radius:12px;border:1.5px solid rgba(0,0,0,.08);background:white;font-family:'DM Sans',sans-serif;font-size:13px;outline:none;transition:border-color .2s;}
+    .add-opt-inp:focus{border-color:var(--forest);}
+    .add-opt-btn{padding:11px 20px;border-radius:12px;border:none;cursor:pointer;background:var(--forest);color:var(--lime);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;white-space:nowrap;transition:all .2s;}
+    .add-opt-btn:hover:not(:disabled){transform:translateY(-1px);}
+    .add-opt-btn:disabled{opacity:.5;cursor:not-allowed;}
+    .max-note{font-size:11px;color:var(--muted);text-align:center;margin-top:8px;}
+
+    /* Start vote button */
+    .start-vote-btn{width:100%;padding:16px;border-radius:14px;border:none;cursor:pointer;background:var(--coral);color:white;font-family:'DM Sans',sans-serif;font-size:16px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .2s;box-shadow:0 4px 20px rgba(223,102,58,.3);margin-top:8px;}
+    .start-vote-btn:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 8px 28px rgba(223,102,58,.4);}
+    .start-vote-btn:disabled{opacity:.6;cursor:not-allowed;transform:none;}
+    .waiting-note{font-size:13px;color:var(--muted);text-align:center;margin-top:12px;}
+
+    /* VOTE PAGE */
     .vi{max-width:1040px;margin:0 auto;padding:32px 28px 80px;}
     .bdg{padding:4px 11px;border-radius:50px;font-size:12px;font-weight:500;}
     .bak{background:var(--lime);color:var(--forest);}
@@ -98,10 +139,7 @@
     .vt{font-family:'Playfair Display',serif;font-size:clamp(20px,4vw,40px);margin:10px 0 26px;}
     .bkb{background:none;border:none;cursor:pointer;color:var(--muted);font-family:'DM Sans',sans-serif;font-size:13px;display:flex;align-items:center;gap:5px;transition:color .2s;}
     .bkb:hover{color:var(--text);}
-    .lkb,.enb{padding:8px 20px;border-radius:50px;font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;font-weight:500;}
-    .lkb{border:1.5px solid rgba(0,0,0,.12);background:white;color:var(--text);transition:all .2s;}
-    .lkb:hover{background:var(--cream);}
-    .enb{border:1.5px solid var(--coral);background:white;color:var(--coral);transition:all .2s;}
+    .enb{padding:8px 20px;border-radius:50px;font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;font-weight:500;border:1.5px solid var(--coral);background:white;color:var(--coral);transition:all .2s;}
     .enb:hover{background:var(--coral);color:white;}
     .vg{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
     @media(max-width:700px){.vg{grid-template-columns:1fr;}}
@@ -111,7 +149,7 @@
     .wp{position:absolute;top:-15px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:9px solid transparent;border-right:9px solid transparent;border-top:22px solid var(--lavender);filter:drop-shadow(0 2px 6px rgba(150,152,220,.45));}
     .wctrl{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;}
     .spb{padding:10px 24px;border-radius:50px;border:none;cursor:pointer;background:var(--forest);color:var(--lime);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;display:flex;align-items:center;gap:6px;transition:all .2s;}
-    .spb:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 5px 18px rgba(64,89,79,.28);}
+    .spb:hover:not(:disabled){transform:translateY(-1px);}
     .spb:disabled{opacity:.5;cursor:not-allowed;}
     .ctb{padding:10px 16px;border-radius:50px;border:1.5px solid rgba(0,0,0,.12);background:white;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:13px;display:flex;align-items:center;gap:5px;color:var(--text);transition:all .2s;}
     .ctb:hover:not(:disabled){background:var(--cream);}
@@ -129,13 +167,8 @@
     .vib{padding:5px 13px;border-radius:50px;border:1.5px solid rgba(0,0,0,.12);background:white;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:11px;transition:all .2s;color:var(--text);white-space:nowrap;}
     .vib:hover{background:var(--forest);color:var(--lime);border-color:var(--forest);}
     .vib.vd{background:var(--forest);color:var(--lime);border-color:var(--forest);}
-    .nv{color:var(--muted);font-size:13px;text-align:center;padding:18px 0;}
+    .nvotes{color:var(--muted);font-size:13px;text-align:center;padding:18px 0;}
     .recbtn{background:none;border:none;cursor:pointer;color:var(--coral);font-size:11px;margin-left:4px;text-decoration:underline;padding:0;font-family:'DM Sans',sans-serif;}
-
-    /* SHARE BANNER */
-    .share-bar{background:rgba(64,89,79,.08);border-radius:12px;padding:12px 16px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
-    .share-url{font-size:12px;color:var(--muted);flex:1;word-break:break-all;}
-    .share-copy{padding:7px 16px;border-radius:50px;border:none;cursor:pointer;background:var(--forest);color:var(--lime);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;white-space:nowrap;}
 
     /* MODAL */
     .mo{display:none;position:fixed;inset:0;z-index:300;background:rgba(0,0,0,.45);backdrop-filter:blur(8px);align-items:center;justify-content:center;padding:20px;}
@@ -169,8 +202,14 @@
     .aq{font-family:'Playfair Display',serif;font-size:15px;margin-bottom:9px;line-height:1.3;}
     .av{font-size:12px;color:var(--muted);margin-bottom:9px;}
     .ads{display:flex;gap:4px;}
-    .add{width:9px;height:9px;border-radius:50%;}
+    .adot{width:9px;height:9px;border-radius:50%;}
     .es{grid-column:1/-1;text-align:center;padding:65px 0;color:var(--muted);font-size:15px;}
+
+    /* phase badge */
+    .phase-badge{display:inline-flex;align-items:center;gap:5px;padding:4px 12px;border-radius:50px;font-size:11px;font-weight:600;}
+    .phase-collect{background:rgba(161,186,245,.2);color:#5a7ed4;}
+    .phase-vote{background:rgba(236,243,143,.5);color:var(--forest);}
+    .phase-done{background:#f0f0f0;color:var(--muted);}
 
     .toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(110px);background:var(--forest);color:var(--lime);padding:11px 24px;border-radius:50px;font-size:13px;font-weight:500;z-index:400;transition:transform .3s ease;box-shadow:0 8px 28px rgba(64,89,79,.28);}
     .toast.on{transform:translateX(-50%) translateY(0);}
@@ -215,7 +254,7 @@
     <div class="card">
       <div class="fg">
         <div class="fl">FRAGE</div>
-        <input type="text" id="qIn" class="inp" placeholder="Welches Auto soll ich kaufen?">
+        <input type="text" id="qIn" class="inp" placeholder="z.B. Welches Auto soll ich kaufen?">
       </div>
       <div class="fg">
         <div class="fl">KATEGORIE</div>
@@ -234,33 +273,68 @@
       </div>
       <div class="fg">
         <div class="oh">
-          <div class="fl" style="margin:0">OPTIONEN</div>
-          <button class="aib" id="aiBtn" onclick="genAI()">✦ KI-Ideen generieren</button>
+          <div class="fl" style="margin:0">OPTIONEN <span style="color:var(--muted);font-weight:400">(optional — andere können auch noch hinzufügen)</span></div>
+          <button class="aib" id="aiBtn" onclick="genAI()">✦ KI-Ideen</button>
         </div>
         <div id="optList"></div>
         <div id="aiLoad" style="display:none" class="ail"><div class="sp"></div> KI sucht passende Optionen…</div>
         <button class="aob" onclick="addOpt()">+ Option hinzufügen</button>
       </div>
-      <button class="stb" id="stBtn" onclick="startVote()">Abstimmung starten →</button>
+      <button class="stb" id="stBtn" onclick="startCollect()">Weiter & Link teilen →</button>
       <div id="errMsg" style="display:none;color:var(--coral);font-size:13px;margin-top:12px;text-align:center;"></div>
     </div>
   </div>
 </div>
 
-<!-- VOTE -->
+<!-- COLLECT PHASE — share link + add options together -->
+<div class="pg" id="pg-collect">
+  <div class="collect-wrap">
+    <div class="plabel">SAMMELN</div>
+    <div class="collect-question" id="collectQ"></div>
+    <div class="collect-sub">Teile den Link — alle können Antworten hinzufügen</div>
+
+    <!-- Share box -->
+    <div class="share-box">
+      <div class="share-box-title">🔗 Link teilen</div>
+      <div class="share-box-sub">Schick diesen Link an alle, die mitmachen sollen</div>
+      <div class="share-url-display" id="collectUrl"></div>
+      <button class="share-copy-btn" onclick="copyCollectLink()">Link kopieren</button>
+      <div class="share-icons">
+        <button class="share-icon-btn share-wa" onclick="shareWhatsApp()">💬 WhatsApp</button>
+        <button class="share-icon-btn share-mail" onclick="shareMail()">✉️ E-Mail</button>
+      </div>
+    </div>
+
+    <!-- Live options -->
+    <div class="collect-card">
+      <div class="collect-card-title">Antworten sammeln</div>
+      <div class="collect-card-sub" id="optCountNote">0 / 10 Antworten</div>
+      <div id="collectOptList"></div>
+      <div class="add-opt-row" id="addOptRow">
+        <input type="text" class="add-opt-inp" id="newOptInp" placeholder="Deine Antwort eingeben…" onkeydown="if(event.key==='Enter')addCollectOpt()">
+        <button class="add-opt-btn" id="addOptBtn" onclick="addCollectOpt()">+ Hinzufügen</button>
+      </div>
+      <div class="max-note" id="maxNote" style="display:none">Maximum von 10 Antworten erreicht</div>
+    </div>
+
+    <!-- Start voting -->
+    <button class="start-vote-btn" id="startVoteBtn" onclick="startVotingPhase()">
+      🗳 Abstimmung starten
+    </button>
+    <div class="waiting-note" id="waitingNote">Warte bis alle ihre Antworten hinzugefügt haben, dann starte die Abstimmung.</div>
+  </div>
+</div>
+
+<!-- VOTE PAGE -->
 <div class="pg" id="pg-vote">
   <div class="vi">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:10px">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:10px">
       <button class="bkb" onclick="goBack()">← Zurück</button>
       <button class="enb" onclick="endVote()">Abstimmung beenden</button>
     </div>
-    <!-- SHARE BAR -->
-    <div class="share-bar" id="shareBar">
-      <span class="share-url" id="shareUrl"></span>
-      <button class="share-copy" onclick="copyLink()">🔗 Link kopieren & teilen</button>
-    </div>
-    <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap">
       <span class="bdg bak" id="vBadge">Aktiv</span>
+      <span id="vPhaseBadge" class="phase-badge phase-vote">🗳 Abstimmung läuft</span>
       <span style="color:var(--muted);font-size:12px" id="vCode"></span>
     </div>
     <h2 class="vt" id="vTitle"></h2>
@@ -284,7 +358,7 @@
         </div>
         <div class="rc">
           <div class="ptt">Ergebnisse</div>
-          <div id="resArea"><div class="nv">Noch keine Stimmen abgegeben</div></div>
+          <div id="resArea"><div class="nvotes">Noch keine Stimmen abgegeben</div></div>
           <canvas id="resChart" style="display:none;margin-top:12px;max-height:170px"></canvas>
         </div>
       </div>
@@ -309,98 +383,66 @@
         <option>Kaufentscheidungen</option><option>Nice to have</option><option>Fun</option><option>Sonstiges</option>
       </select>
       <select class="fs" id="fSt" onchange="renderArch()">
-        <option value="">Alle Status</option><option>Aktiv</option><option>Beendet</option>
+        <option value="">Alle Status</option>
+        <option>Sammeln</option><option>Aktiv</option><option>Beendet</option>
       </select>
     </div>
     <div class="ag" id="archGrid"><div class="es">Laden…</div></div>
   </div>
 </div>
 
-<!-- RECIPE / OUTFIT MODAL -->
-<div class="mo" id="recMo">
-  <div class="md"><div id="recCon"></div></div>
-</div>
-
+<!-- MODAL -->
+<div class="mo" id="recMo"><div class="md"><div id="recCon"></div></div></div>
 <div class="toast" id="toast"></div>
 <canvas id="cc"></canvas>
 
 <script>
 const C=['#40594f','#a1baf5','#9698dc','#ecf38f','#6db088','#c4d4f8','#b8b9e8','#f2f7a0','#df663a','#f5a88a'];
 
-// ── SMART FALLBACKS — object-first ────────────────────────────────────────────
+// ── FALLBACKS ────────────────────────────────────────────────────────────────
 function fallback(q){
   const t=q.toLowerCase();
-  // Detect the NOUN/OBJECT first, before any verb
   if(/schokolade|schoki|praline|tafel/i.test(t)) return['Lindt Excellence','Ritter Sport Marzipan','Milka Oreo','Ferrero Rocher','Tony Chocolonely','Green & Black'];
-  if(/auto|fahrzeug|wagen|pkw|e-auto|elektroauto|cabrio|suv/i.test(t)) return['VW Golf','BMW 3er','Toyota Yaris','Tesla Model 3','Skoda Octavia','Hyundai i30'];
-  if(/schuh|sneaker|boot|sandale|stiefel|turnschuh/i.test(t)) return['Nike Air Max','New Balance 574','Adidas Samba','Veja V-10','Salomon XT-6','On Cloud 5'];
+  if(/auto|fahrzeug|wagen|pkw|e-auto|suv/i.test(t)) return['VW Golf','BMW 3er','Toyota Yaris','Tesla Model 3','Skoda Octavia','Hyundai i30'];
+  if(/schuh|sneaker|boot|sandale|stiefel/i.test(t)) return['Nike Air Max','New Balance 574','Adidas Samba','Veja V-10','Salomon XT-6','On Cloud 5'];
   if(/laptop|computer|macbook|notebook/i.test(t)) return['MacBook Air M3','Dell XPS 13','Lenovo ThinkPad','Surface Pro','ASUS ZenBook','HP Spectre'];
   if(/handy|smartphone|iphone|android/i.test(t)) return['iPhone 16','Samsung S25','Google Pixel 9','OnePlus 13','Xiaomi 14','Fairphone 5'];
   if(/uhr|watch|armbanduhr/i.test(t)) return['Apple Watch','Garmin Fenix','Tissot PRX','Casio G-Shock','Nomos Club','Swatch'];
-  if(/tasche|rucksack|handtasche|bag/i.test(t)) return['Fjällräven Kånken','Tumi Alpha','Longchamp Pliage','Carhartt WIP','Rimowa','Aesther Ekme'];
+  if(/tasche|rucksack|handtasche/i.test(t)) return['Fjällräven Kånken','Tumi Alpha','Longchamp Pliage','Carhartt WIP','Rimowa','Aesther Ekme'];
   if(/fahrrad|bike|e-bike/i.test(t)) return['Trek FX 3','Canyon Commuter','Specialized Sirrus','Riese & Müller','Cube Hyde','Brompton'];
-  if(/outfit|anziehen|kleidung|look|kino|party|event/i.test(t)) return['Casual Jeans Look','Elegantes Kleid','Blazer & Chino','Streetwear','Smart Casual','Monochrom Look'];
+  if(/outfit|anziehen|kleidung|look|kino|party/i.test(t)) return['Casual Jeans Look','Elegantes Kleid','Blazer & Chino','Streetwear','Smart Casual','Monochrom Look'];
   if(/essen|kochen|gericht|food|abend|mittag|frühstück|lunch|dinner/i.test(t)){
-    // Randomize food to get variety each time
-    const food=[
-      ['Miso-Aubergine','Kichererbsensalat','Zucchini-Nudeln','Kokos-Curry','Süßkartoffel Bowl','Mediterrane Bowl'],
-      ['Pad Thai','Ramen','Griechischer Salat','Linsen-Dhal','Falafel Bowl','Avocado Toast'],
-      ['Tacos','Poké Bowl','Pasta Primavera','Kürbissuppe','Buddha Bowl','Shakshuka'],
-      ['Sushi','Wrap mit Hühnchen','Quinoa-Salat','Ofengemüse','Risotto','Flammkuchen']
-    ];
+    const food=[['Miso-Aubergine','Kichererbsensalat','Zucchini-Nudeln','Kokos-Curry','Süßkartoffel Bowl','Mediterrane Bowl'],['Pad Thai','Ramen','Griechischer Salat','Linsen-Dhal','Falafel Bowl','Avocado Toast'],['Tacos','Poké Bowl','Pasta Primavera','Kürbissuppe','Buddha Bowl','Shakshuka']];
     return food[Math.floor(Math.random()*food.length)];
   }
   if(/trinken|getränk|cocktail|drink|kaffee|tee/i.test(t)){
-    const drinks=[
-      ['Matcha Latte','Aperol Spritz','Cold Brew','Kombucha','Mojito','Chai Latte'],
-      ['Espresso Tonic','Hugo Spritz','Oat Milk Latte','Elderflower Tonic','Negroni','Iced Matcha']
-    ];
-    return drinks[Math.floor(Math.random()*drinks.length)];
+    const d=[['Matcha Latte','Aperol Spritz','Cold Brew','Kombucha','Mojito','Chai Latte'],['Espresso Tonic','Hugo Spritz','Oat Milk Latte','Elderflower Tonic','Negroni','Iced Matcha']];
+    return d[Math.floor(Math.random()*d.length)];
   }
   if(/reise|urlaub|ferien|ausflug|wohin/i.test(t)){
-    const reise=[
-      ['Lissabon','Kyoto','Kopenhagen','Oaxaca','Ljubljana','Tbilisi'],
-      ['Barcelona','Kapstadt','Island','Bali','Porto','Marrakesch']
-    ];
-    return reise[Math.floor(Math.random()*reise.length)];
+    const r=[['Lissabon','Kyoto','Kopenhagen','Oaxaca','Ljubljana','Tbilisi'],['Barcelona','Kapstadt','Island','Bali','Porto','Marrakesch']];
+    return r[Math.floor(Math.random()*r.length)];
   }
   if(/film|kino|serie|schauen/i.test(t)) return['Action','Komödie','Drama','Dokumentation','Thriller','Romantik'];
   if(/sport|fitness|workout/i.test(t)) return['Yoga','Pilates','Klettern','Tanzen','Schwimmen','Radfahren'];
   if(/aktivität|freizeit|fun|spaß/i.test(t)) return['Escape Room','Karaoke','Bowling','Minigolf','Kochkurs','Töpfern'];
   if(/gesundheit|wellness/i.test(t)) return['Meditation','Waldspaziergang','Digital Detox','Atemübungen','Journaling','Sauna'];
+  if(/kaufen|bestellen|shoppen/i.test(t)) return['Sofort kaufen','Noch warten','Second-hand','Leihen','Vergleichen','Verzichten'];
   return['Option 1','Option 2','Option 3','Option 4','Option 5','Option 6'];
 }
 
-// ── STATE ─────────────────────────────────────────────────────────────────────
+// ── STATE ────────────────────────────────────────────────────────────────────
 let polls=[],curPoll=null,curId=null,uVote=null,chartI=null;
-let vUnsub=null,aUnsub=null;
+let vUnsub=null,aUnsub=null,collectUnsub=null;
 let wAngle=0,wVel=0,wSpin=false,wStop=false;
 
-// ── FIREBASE ──────────────────────────────────────────────────────────────────
+// ── FIREBASE ─────────────────────────────────────────────────────────────────
 const getDB=()=>window._db;
 const getFB=()=>window._fb;
-
-async function fbSave(poll){
-  const{collection:col,addDoc}=getFB();
-  const ref=await addDoc(col(getDB(),'polls'),poll);
-  return ref.id;
-}
-async function fbUpdate(id,data){
-  const{doc:D,updateDoc:upd}=getFB();
-  await upd(D(getDB(),'polls',id),data);
-}
-function fbListenAll(cb){
-  const{collection:col,query:q,orderBy:ob,onSnapshot:sn}=getFB();
-  return sn(q(col(getDB(),'polls'),ob('created','desc')),snap=>{
-    polls=snap.docs.map(d=>({...d.data(),_fid:d.id}));cb();
-  });
-}
-function fbListenOne(id,cb){
-  const{doc:D,onSnapshot:sn}=getFB();
-  return sn(D(getDB(),'polls',id),snap=>{
-    if(snap.exists())cb({...snap.data(),_fid:snap.id});
-  });
-}
+async function fbSave(p){const{collection:c,addDoc:a}=getFB();return(await a(c(getDB(),'polls'),p)).id;}
+async function fbUpd(id,d){const{doc:D,updateDoc:u}=getFB();await u(D(getDB(),'polls',id),d);}
+function fbAll(cb){const{collection:c,query:q,orderBy:o,onSnapshot:s}=getFB();return s(q(c(getDB(),'polls'),o('created','desc')),snap=>{polls=snap.docs.map(d=>({...d.data(),_fid:d.id}));cb();});}
+function fbOne(id,cb){const{doc:D,onSnapshot:s}=getFB();return s(D(getDB(),'polls',id),snap=>{if(snap.exists())cb({...snap.data(),_fid:snap.id});});}
 
 // ── NAVIGATION ────────────────────────────────────────────────────────────────
 function go(id){
@@ -415,24 +457,22 @@ function go(id){
 }
 function goBack(){
   if(vUnsub){vUnsub();vUnsub=null;}
+  if(collectUnsub){collectUnsub();collectUnsub=null;}
   go('archiv');
 }
 
-// ── CREATE ────────────────────────────────────────────────────────────────────
+// ── CREATE ───────────────────────────────────────────────────────────────────
 let opts=[];
 function initCreate(){
   document.getElementById('qIn').value='';
   document.getElementById('catSel').value='Sonstiges';
   document.getElementById('errMsg').style.display='none';
-  opts=[{v:''},{v:''}];
-  renderOpts();
+  opts=[{v:''},{v:''}];renderOpts();
 }
 function renderOpts(){
-  const l=document.getElementById('optList');
-  l.innerHTML='';
+  const l=document.getElementById('optList');l.innerHTML='';
   opts.forEach((o,i)=>{
-    const d=document.createElement('div');
-    d.className='oi';
+    const d=document.createElement('div');d.className='oi';
     d.innerHTML=`<div class="od" style="background:${C[i%C.length]}"></div>
       <input class="oinp" value="${o.v.replace(/"/g,'&quot;')}" placeholder="Option ${i+1}" oninput="opts[${i}].v=this.value">
       ${opts.length>2?`<button class="orm" onclick="rmOpt(${i})">✕</button>`:''}`;
@@ -445,166 +485,193 @@ function rmOpt(i){opts.splice(i,1);renderOpts();}
 // ── CLAUDE API ────────────────────────────────────────────────────────────────
 async function callClaude(prompt){
   const res=await fetch('https://api.anthropic.com/v1/messages',{
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({
-      model:'claude-sonnet-4-20250514',
-      max_tokens:600,
-      messages:[{role:'user',content:prompt}]
-    })
+    method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:600,messages:[{role:'user',content:prompt}]})
   });
-  if(!res.ok)throw new Error('Claude API Fehler '+res.status);
+  if(!res.ok)throw new Error('API '+res.status);
   const data=await res.json();
-  const text=data.content?.filter(c=>c.type==='text').map(c=>c.text).join('')||'';
-  return text.replace(/```json|```/g,'').trim();
+  return data.content?.filter(c=>c.type==='text').map(c=>c.text).join('').replace(/```json|```/g,'').trim()||'';
 }
 
-// ── AI IDEAS ──────────────────────────────────────────────────────────────────
 async function genAI(){
   const q=document.getElementById('qIn').value.trim();
   if(!q){showToast('Bitte zuerst eine Frage eingeben');return;}
   const btn=document.getElementById('aiBtn');
   btn.disabled=true;
   document.getElementById('aiLoad').style.display='flex';
-
-  // Use a random seed to ensure variety each time
-  const seed=Math.floor(Math.random()*10000);
-
+  const seed=Math.floor(Math.random()*9999);
   try{
-    const prompt=`Du hilfst bei einer Abstimmungs-App. Seed für Variation: ${seed}
-
-Die Frage lautet: "${q}"
-
-WICHTIGSTE REGEL: Finde das OBJEKT der Frage (das HAUPTNOMEN, worüber entschieden wird). Das Verb ist NICHT relevant.
-
+    const prompt=`Seed:${seed}. Frage: "${q}"
+REGEL: Finde das HAUPTOBJEKT (das Nomen, worüber entschieden wird). Ignoriere Verben wie "kaufen","essen","machen".
 Beispiele:
-- "Welche SCHOKOLADE kaufen?" → Schokoladen-Marken: Lindt, Milka, Ritter Sport, Tony's...
-- "Welches AUTO kaufen?" → Auto-Modelle: VW Golf, BMW, Tesla, Toyota...
-- "Was ANZIEHEN heute Abend?" → Outfit-Ideen: Elegantes Kleid, Casual Jeans, Blazer...
-- "Was ESSEN wir?" → Gerichte: Pasta, Curry, Salat...
-- "Wohin REISEN?" → Reiseziele: Lissabon, Kyoto...
-
-Identifiziere jetzt das Hauptobjekt in: "${q}"
-Dann nenne 6 konkrete, abwechslungsreiche Beispiele dieses Objekts auf Deutsch (1-4 Wörter).
-Antworte NUR mit JSON-Array: ["Opt1","Opt2","Opt3","Opt4","Opt5","Opt6"]`;
-
+- "Welche SCHOKOLADE kaufen?" → Schokoladen: ["Lindt","Milka Oreo","Ritter Sport","Tony Chocolonely","Ferrero","Green & Black"]
+- "Welches AUTO kaufen?" → Autos: ["VW Golf","BMW 3er","Tesla Model 3","Toyota Yaris","Skoda Octavia","Audi A3"]
+- "Was ANZIEHEN ins Kino?" → Outfits: ["Casual Jeans","Elegantes Kleid","Oversized Hoodie","Smart Casual","Streetwear","Monochrom"]
+- "Was ESSEN?" → Gerichte: ["Pasta","Curry","Sushi","Salat","Bowl","Tacos"]
+Gib 6 konkrete Beispiele (1-4 Wörter, Deutsch). NUR JSON-Array: ["Opt1","Opt2","Opt3","Opt4","Opt5","Opt6"]`;
     const raw=await callClaude(prompt);
-    const match=raw.match(/\[[\s\S]*?\]/);
-    if(!match)throw new Error('Kein Array gefunden');
-    const ideas=JSON.parse(match[0]);
+    const m=raw.match(/\[[\s\S]*?\]/);
+    if(!m)throw new Error('no array');
+    const ideas=JSON.parse(m[0]);
     if(Array.isArray(ideas)&&ideas.length>=2&&ideas.every(x=>typeof x==='string'&&x.length>0)){
       opts=ideas.slice(0,8).map(v=>({v:String(v).trim()}));
-    }else throw new Error('Ungültiges Format');
-  }catch(e){
-    console.warn('KI Fallback aktiv:',e.message);
-    opts=fallback(q).map(v=>({v}));
-  }
+    }else throw new Error('bad');
+  }catch(e){console.warn('Fallback:',e.message);opts=fallback(q).map(v=>({v}));}
   renderOpts();
   document.getElementById('aiLoad').style.display='none';
   btn.disabled=false;
 }
 
-// ── START VOTE ────────────────────────────────────────────────────────────────
-async function startVote(){
+// ── START COLLECT PHASE ───────────────────────────────────────────────────────
+async function startCollect(){
   const q=document.getElementById('qIn').value.trim();
   const cat=document.getElementById('catSel').value;
   const clean=opts.map(o=>o.v.trim()).filter(Boolean);
   const errEl=document.getElementById('errMsg');
-
   errEl.style.display='none';
   if(!q){showToast('Bitte eine Frage eingeben');return;}
-  if(clean.length<2){showToast('Mindestens 2 Optionen nötig');return;}
 
   const btn=document.getElementById('stBtn');
-  btn.disabled=true;
-  btn.textContent='Wird gespeichert…';
+  btn.disabled=true;btn.textContent='Wird erstellt…';
 
-  // Wait for Firebase with timeout
   if(!window._fbReady){
-    try{
-      await Promise.race([
-        new Promise(r=>document.addEventListener('fbReady',r,{once:true})),
-        new Promise((_,reject)=>setTimeout(()=>reject(new Error('Firebase Timeout')),8000))
-      ]);
-    }catch(e){
-      errEl.textContent='Firebase konnte nicht geladen werden. Bitte Seite neu laden.';
-      errEl.style.display='block';
-      btn.disabled=false;btn.textContent='Abstimmung starten →';
-      return;
-    }
+    try{await Promise.race([new Promise(r=>document.addEventListener('fbReady',r,{once:true})),new Promise((_,rej)=>setTimeout(()=>rej(new Error('Timeout')),8000))]);}
+    catch(e){errEl.textContent='Firebase nicht erreichbar. Bitte Seite neu laden.';errEl.style.display='block';btn.disabled=false;btn.textContent='Weiter & Link teilen →';return;}
   }
 
   const code='#'+Math.random().toString(36).substr(2,6).toUpperCase();
   const poll={
     code,question:q,category:cat,
     options:clean.map((v,i)=>({name:v,votes:0,color:C[i%C.length]})),
-    status:'Aktiv',created:new Date().toISOString()
+    status:'Sammeln',phase:'collect',created:new Date().toISOString()
   };
-
   try{
     const fid=await fbSave(poll);
     poll._fid=fid;
-    btn.disabled=false;
-    btn.textContent='Abstimmung starten →';
-    openVote(poll);
+    btn.disabled=false;btn.textContent='Weiter & Link teilen →';
+    openCollect(poll);
   }catch(e){
-    console.error('Firebase Save Error:',e);
-    errEl.textContent='Speichern fehlgeschlagen: '+e.message+'. Bitte Firebase-Regeln prüfen.';
-    errEl.style.display='block';
-    btn.disabled=false;
-    btn.textContent='Abstimmung starten →';
+    console.error(e);
+    errEl.textContent='Fehler: '+e.message;errEl.style.display='block';
+    btn.disabled=false;btn.textContent='Weiter & Link teilen →';
   }
 }
 
-// ── OPEN VOTE ─────────────────────────────────────────────────────────────────
+// ── COLLECT PHASE ─────────────────────────────────────────────────────────────
+function openCollect(poll){
+  if(collectUnsub){collectUnsub();collectUnsub=null;}
+  curPoll=poll;curId=poll._fid;
+  document.getElementById('collectQ').textContent=poll.question;
+  const url=location.origin+location.pathname+'?poll='+poll._fid;
+  document.getElementById('collectUrl').textContent=url;
+  renderCollectOpts();
+  go('collect');
+  // Live updates
+  collectUnsub=fbOne(curId,up=>{
+    curPoll=up;
+    renderCollectOpts();
+    // If owner started voting, redirect everyone
+    if(up.phase==='vote')openVote(up);
+  });
+}
+
+function renderCollectOpts(){
+  const list=document.getElementById('collectOptList');
+  const opts2=curPoll.options||[];
+  const count=opts2.length;
+  document.getElementById('optCountNote').textContent=count+' / 10 Antworten';
+  list.innerHTML=opts2.map((o,i)=>`
+    <div class="opt-chip">
+      <div class="opt-chip-dot" style="background:${o.color}"></div>
+      <span class="opt-chip-name">${o.name}</span>
+    </div>`).join('');
+  const full=count>=10;
+  const row=document.getElementById('addOptRow');
+  const maxNote=document.getElementById('maxNote');
+  row.style.display=full?'none':'flex';
+  maxNote.style.display=full?'block':'none';
+  document.getElementById('addOptBtn').disabled=full;
+}
+
+async function addCollectOpt(){
+  const inp=document.getElementById('newOptInp');
+  const val=inp.value.trim();
+  if(!val){showToast('Bitte einen Text eingeben');return;}
+  if((curPoll.options||[]).length>=10){showToast('Maximum von 10 Antworten erreicht');return;}
+  const newOpts=[...curPoll.options,{name:val,votes:0,color:C[curPoll.options.length%C.length]}];
+  inp.value='';
+  document.getElementById('addOptBtn').disabled=true;
+  try{
+    await fbUpd(curId,{options:newOpts});
+    document.getElementById('addOptBtn').disabled=false;
+  }catch(e){
+    showToast('Fehler beim Hinzufügen');
+    document.getElementById('addOptBtn').disabled=false;
+  }
+}
+
+async function startVotingPhase(){
+  if((curPoll.options||[]).length<2){showToast('Mindestens 2 Antworten nötig');return;}
+  const btn=document.getElementById('startVoteBtn');
+  btn.disabled=true;btn.textContent='Wird gestartet…';
+  try{
+    await fbUpd(curId,{status:'Aktiv',phase:'vote'});
+    // openVote wird durch den Listener ausgelöst
+  }catch(e){
+    showToast('Fehler: '+e.message);
+    btn.disabled=false;btn.textContent='🗳 Abstimmung starten';
+  }
+}
+
+function copyCollectLink(){
+  const url=location.origin+location.pathname+'?poll='+curId;
+  navigator.clipboard?.writeText(url).then(()=>showToast('Link kopiert! Jetzt teilen 🔗')).catch(()=>{
+    const el=document.createElement('textarea');el.value=url;document.body.appendChild(el);el.select();document.execCommand('copy');document.body.removeChild(el);showToast('Link kopiert! 🔗');
+  });
+}
+function shareWhatsApp(){
+  const url=location.origin+location.pathname+'?poll='+curId;
+  const msg=encodeURIComponent('Mach mit bei unserer Abstimmung! '+curPoll.question+'\n'+url);
+  window.open('https://wa.me/?text='+msg,'_blank');
+}
+function shareMail(){
+  const url=location.origin+location.pathname+'?poll='+curId;
+  const subject=encodeURIComponent('Mach mit bei unserer Abstimmung!');
+  const body=encodeURIComponent('Hallo!\n\nMach mit bei unserer Abstimmung:\n'+curPoll.question+'\n\n'+url);
+  window.open('mailto:?subject='+subject+'&body='+body);
+}
+
+// ── VOTE ──────────────────────────────────────────────────────────────────────
 function openVote(poll){
   if(vUnsub){vUnsub();vUnsub=null;}
+  if(collectUnsub){collectUnsub();collectUnsub=null;}
   curPoll=poll;curId=poll._fid;uVote=null;
-
   document.getElementById('vTitle').textContent=poll.question;
   document.getElementById('vCode').textContent=poll.code;
   setBadge(poll.status);
-
-  // Share bar
-  const url=location.origin+location.pathname+'?poll='+poll._fid;
-  document.getElementById('shareUrl').textContent=url;
-
   renderVOpts();drawW();renderRes();
   go('vote');
-
-  // Live listener
-  vUnsub=fbListenOne(curId,up=>{
-    curPoll=up;
-    setBadge(up.status);
-    renderVOpts();drawW();renderRes();
-  });
+  vUnsub=fbOne(curId,up=>{curPoll=up;setBadge(up.status);renderVOpts();drawW();renderRes();});
 }
 
 function setBadge(s){
   const b=document.getElementById('vBadge');
-  b.textContent=s;
-  b.className='bdg '+(s==='Aktiv'?'bak':'bnd');
+  b.textContent=s;b.className='bdg '+(s==='Aktiv'?'bak':'bnd');
 }
 
 function isFood(p){return/essen|gericht|kochen|food|dinner|lunch|frühstück/i.test(p.category+' '+p.question);}
 function isOutfit(p){return/outfit|anziehen|kleidung|look|mode|elegant|simpel/i.test(p.category+' '+p.question);}
 
 function renderVOpts(){
-  const l=document.getElementById('vOptList');
-  l.innerHTML='';
+  const l=document.getElementById('vOptList');l.innerHTML='';
   curPoll.options.forEach((o,i)=>{
-    const d=document.createElement('div');
-    d.className='vo'+(uVote===i?' vd':'');
-    const food=isFood(curPoll);
-    const outfit=isOutfit(curPoll);
+    const d=document.createElement('div');d.className='vo'+(uVote===i?' vd':'');
+    const food=isFood(curPoll),outfit=isOutfit(curPoll);
     let extra='';
     if(food)extra=`<button class="recbtn" onclick="showModal(event,'recipe','${encodeURIComponent(o.name)}')">↗ Rezept</button>`;
     else if(outfit)extra=`<button class="recbtn" onclick="showModal(event,'outfit','${encodeURIComponent(o.name)}')">↗ Inspiration</button>`;
     d.innerHTML=`
-      <div class="ol">
-        <div class="odd" style="background:${o.color}"></div>
-        <span class="on2">${o.name}</span>${extra}
-      </div>
+      <div class="ol"><div class="odd" style="background:${o.color}"></div><span class="on2">${o.name}</span>${extra}</div>
       <div style="display:flex;align-items:center;gap:9px">
         <span class="oc">${o.votes}</span>
         <button class="vib${uVote===i?' vd':''}" onclick="castVote(${i})">${uVote===i?'✓':'Stimme'}</button>
@@ -616,46 +683,26 @@ function renderVOpts(){
 async function castVote(i){
   if(curPoll.status!=='Aktiv'){showToast('Abstimmung bereits beendet');return;}
   const newO=curPoll.options.map((o,x)=>({...o,votes:x===i?o.votes+1:(uVote===x?Math.max(0,o.votes-1):o.votes)}));
-  uVote=i;
-  curPoll={...curPoll,options:newO};
+  uVote=i;curPoll={...curPoll,options:newO};
   renderVOpts();renderRes();
-  try{await fbUpdate(curId,{options:newO});}
-  catch(e){showToast('Speicherfehler');console.error(e);}
+  try{await fbUpd(curId,{options:newO});}catch(e){showToast('Speicherfehler');console.error(e);}
 }
-
 async function endVote(){
-  try{await fbUpdate(curId,{status:'Beendet'});showToast('Abstimmung beendet');}
-  catch{showToast('Fehler beim Beenden');}
-}
-
-function copyLink(){
-  const url=location.origin+location.pathname+'?poll='+curId;
-  navigator.clipboard?.writeText(url).then(()=>showToast('Link kopiert! Jetzt teilen 🔗')).catch(()=>{
-    // Fallback for devices without clipboard API
-    const el=document.createElement('textarea');
-    el.value=url;document.body.appendChild(el);el.select();
-    document.execCommand('copy');document.body.removeChild(el);
-    showToast('Link kopiert! 🔗');
-  });
+  try{await fbUpd(curId,{status:'Beendet'});showToast('Abstimmung beendet');}
+  catch{showToast('Fehler');}
 }
 
 // ── RESULTS ───────────────────────────────────────────────────────────────────
 function renderRes(){
   const tot=curPoll.options.reduce((s,o)=>s+o.votes,0);
   const ar=document.getElementById('resArea'),cc=document.getElementById('resChart');
-  if(!tot){
-    ar.innerHTML='<div class="nv">Noch keine Stimmen abgegeben</div>';
-    cc.style.display='none';
-    if(chartI){chartI.destroy();chartI=null;}
-    return;
-  }
+  if(!tot){ar.innerHTML='<div class="nvotes">Noch keine Stimmen</div>';cc.style.display='none';if(chartI){chartI.destroy();chartI=null;}return;}
   ar.innerHTML=curPoll.options.map(o=>{
     const p=Math.round(o.votes/tot*100);
     return`<div style="margin-bottom:8px">
       <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px">
-        <span style="display:flex;align-items:center;gap:5px">
-          <span style="width:7px;height:7px;border-radius:50%;background:${o.color};display:inline-block"></span>${o.name}
-        </span><span style="font-weight:600">${p}%</span>
+        <span style="display:flex;align-items:center;gap:5px"><span style="width:7px;height:7px;border-radius:50%;background:${o.color};display:inline-block"></span>${o.name}</span>
+        <span style="font-weight:600">${p}%</span>
       </div>
       <div style="background:#f0f0f0;border-radius:50px;height:6px;overflow:hidden">
         <div style="width:${p}%;height:100%;background:${o.color};border-radius:50px;transition:width .6s ease"></div>
@@ -663,213 +710,127 @@ function renderRes(){
   }).join('');
   cc.style.display='block';
   if(chartI)chartI.destroy();
-  chartI=new Chart(cc,{type:'doughnut',
-    data:{labels:curPoll.options.map(o=>o.name),datasets:[{data:curPoll.options.map(o=>o.votes||.001),backgroundColor:curPoll.options.map(o=>o.color),borderWidth:0}]},
-    options:{plugins:{legend:{display:false}},cutout:'65%',animation:{duration:500}}});
+  chartI=new Chart(cc,{type:'doughnut',data:{labels:curPoll.options.map(o=>o.name),datasets:[{data:curPoll.options.map(o=>o.votes||.001),backgroundColor:curPoll.options.map(o=>o.color),borderWidth:0}]},options:{plugins:{legend:{display:false}},cutout:'65%',animation:{duration:500}}});
 }
 
 // ── WHEEL ─────────────────────────────────────────────────────────────────────
 function drawW(){
   const cv=document.getElementById('wCanvas'),ctx=cv.getContext('2d');
-  const cx=135,cy=135,r=128;
-  ctx.clearRect(0,0,270,270);
+  const cx=135,cy=135,r=128;ctx.clearRect(0,0,270,270);
   const n=curPoll.options.length,arc=(2*Math.PI)/n;
   for(let i=0;i<n;i++){
     const s=wAngle+i*arc,e=s+arc,o=curPoll.options[i];
-    ctx.beginPath();ctx.moveTo(cx,cy);ctx.arc(cx,cy,r,s,e);ctx.closePath();
-    ctx.fillStyle=o.color;ctx.fill();
-    ctx.save();ctx.globalAlpha=.12;
-    const g=ctx.createRadialGradient(cx,cy,6,cx,cy,r);
-    g.addColorStop(0,'white');g.addColorStop(1,'transparent');
-    ctx.fillStyle=g;ctx.beginPath();ctx.moveTo(cx,cy);ctx.arc(cx,cy,r,s,e);ctx.closePath();ctx.fill();ctx.restore();
-    ctx.save();ctx.translate(cx,cy);ctx.rotate(s+arc/2);ctx.textAlign='right';
-    ctx.fillStyle='#fff';ctx.font='bold 11px DM Sans,sans-serif';
-    ctx.shadowColor='rgba(0,0,0,.3)';ctx.shadowBlur=4;
+    ctx.beginPath();ctx.moveTo(cx,cy);ctx.arc(cx,cy,r,s,e);ctx.closePath();ctx.fillStyle=o.color;ctx.fill();
+    ctx.save();ctx.globalAlpha=.12;const g=ctx.createRadialGradient(cx,cy,6,cx,cy,r);g.addColorStop(0,'white');g.addColorStop(1,'transparent');ctx.fillStyle=g;ctx.beginPath();ctx.moveTo(cx,cy);ctx.arc(cx,cy,r,s,e);ctx.closePath();ctx.fill();ctx.restore();
+    ctx.save();ctx.translate(cx,cy);ctx.rotate(s+arc/2);ctx.textAlign='right';ctx.fillStyle='#fff';ctx.font='bold 11px DM Sans,sans-serif';ctx.shadowColor='rgba(0,0,0,.3)';ctx.shadowBlur=4;
     ctx.fillText(o.name.length>10?o.name.substr(0,10)+'…':o.name,r-7,4);ctx.restore();
   }
   ctx.beginPath();ctx.arc(cx,cy,10,0,2*Math.PI);ctx.fillStyle='white';ctx.fill();
   ctx.beginPath();ctx.arc(cx,cy,5,0,2*Math.PI);ctx.fillStyle='#ccc';ctx.fill();
   document.getElementById('wLabel').textContent=curPoll.options[getSeg()]?.name||'—';
 }
-function getSeg(){
-  const n=curPoll.options.length,arc=(2*Math.PI)/n;
-  return Math.floor((((-Math.PI/2-wAngle)%(2*Math.PI)+2*Math.PI)%(2*Math.PI))/arc)%n;
-}
-function spinW(){
-  if(wSpin)return;wSpin=true;wStop=false;wVel=.15+Math.random()*.1;
-  document.getElementById('spBtn').disabled=true;document.getElementById('stpBtn').disabled=false;
-  animW();
-}
+function getSeg(){const n=curPoll.options.length,arc=(2*Math.PI)/n;return Math.floor((((-Math.PI/2-wAngle)%(2*Math.PI)+2*Math.PI)%(2*Math.PI))/arc)%n;}
+function spinW(){if(wSpin)return;wSpin=true;wStop=false;wVel=.15+Math.random()*.1;document.getElementById('spBtn').disabled=true;document.getElementById('stpBtn').disabled=false;animW();}
 function stopW(){wStop=true;document.getElementById('stpBtn').disabled=true;}
 function animW(){
   if(!wSpin)return;
-  wVel=wStop?wVel*.965:Math.min(wVel+.004,.18);
-  wAngle+=wVel;drawW();
+  wVel=wStop?wVel*.965:Math.min(wVel+.004,.18);wAngle+=wVel;drawW();
   if(wStop&&wVel<.002){
-    wSpin=false;wStop=false;
-    document.getElementById('spBtn').disabled=false;document.getElementById('stpBtn').disabled=true;
-    const w=getSeg();castVote(w);
-    showToast('🎯 '+curPoll.options[w].name+' wurde gewählt!');
-    launchConfetti();return;
+    wSpin=false;wStop=false;document.getElementById('spBtn').disabled=false;document.getElementById('stpBtn').disabled=true;
+    const w=getSeg();castVote(w);showToast('🎯 '+curPoll.options[w].name+' wurde gewählt!');launchConfetti();return;
   }
   requestAnimationFrame(animW);
 }
 
 // ── CONFETTI ──────────────────────────────────────────────────────────────────
 function launchConfetti(){
-  const cv=document.getElementById('cc');
-  cv.width=innerWidth;cv.height=innerHeight;cv.style.display='block';
-  const ctx=cv.getContext('2d');
-  const cols=['#ecf38f','#a1baf5','#9698dc','#df663a','#40594f','#f5a88a'];
-  const p=Array.from({length:100},()=>({x:Math.random()*cv.width,y:-20,r:4+Math.random()*5,
-    col:cols[0|Math.random()*cols.length],rot:Math.random()*Math.PI*2,
-    vx:(Math.random()-.5)*4,vy:2+Math.random()*3,vr:(Math.random()-.5)*.15,rect:Math.random()>.5}));
-  let f=0;
-  (function dr(){
-    ctx.clearRect(0,0,cv.width,cv.height);let alive=false;
-    p.forEach(q=>{q.x+=q.vx;q.y+=q.vy;q.rot+=q.vr;q.vy+=.08;
-      if(q.y<cv.height+20)alive=true;
-      ctx.save();ctx.globalAlpha=Math.max(0,1-f/80);ctx.translate(q.x,q.y);ctx.rotate(q.rot);ctx.fillStyle=q.col;
-      if(q.rect)ctx.fillRect(-q.r,-q.r/2,q.r*2,q.r);else{ctx.beginPath();ctx.arc(0,0,q.r,0,Math.PI*2);ctx.fill();}
-      ctx.restore();});
-    f++;if(alive&&f<100)requestAnimationFrame(dr);
-    else{ctx.clearRect(0,0,cv.width,cv.height);cv.style.display='none';}
-  })();
+  const cv=document.getElementById('cc');cv.width=innerWidth;cv.height=innerHeight;cv.style.display='block';
+  const ctx=cv.getContext('2d');const cols=['#ecf38f','#a1baf5','#9698dc','#df663a','#40594f','#f5a88a'];
+  const p=Array.from({length:100},()=>({x:Math.random()*cv.width,y:-20,r:4+Math.random()*5,col:cols[0|Math.random()*cols.length],rot:Math.random()*Math.PI*2,vx:(Math.random()-.5)*4,vy:2+Math.random()*3,vr:(Math.random()-.5)*.15,rect:Math.random()>.5}));
+  let f=0;(function dr(){ctx.clearRect(0,0,cv.width,cv.height);let alive=false;p.forEach(q=>{q.x+=q.vx;q.y+=q.vy;q.rot+=q.vr;q.vy+=.08;if(q.y<cv.height+20)alive=true;ctx.save();ctx.globalAlpha=Math.max(0,1-f/80);ctx.translate(q.x,q.y);ctx.rotate(q.rot);ctx.fillStyle=q.col;if(q.rect)ctx.fillRect(-q.r,-q.r/2,q.r*2,q.r);else{ctx.beginPath();ctx.arc(0,0,q.r,0,Math.PI*2);ctx.fill();}ctx.restore();});f++;if(alive&&f<100)requestAnimationFrame(dr);else{ctx.clearRect(0,0,cv.width,cv.height);cv.style.display='none';}})();
 }
 
-// ── AI IDEAS IN VOTE ──────────────────────────────────────────────────────────
+// ── AI VOTE ───────────────────────────────────────────────────────────────────
 async function genAIVote(){
-  showToast('KI denkt nach…');
-  const seed=Math.floor(Math.random()*10000);
+  showToast('KI denkt nach…');const seed=Math.floor(Math.random()*9999);
   try{
-    const prompt=`Seed: ${seed}. Frage: "${curPoll.question}". Bestimme das Objekt der Frage und schlage 4 weitere konkrete, abwechslungsreiche Optionen vor (1-4 Wörter, Deutsch). Nur JSON-Array: ["Opt1","Opt2","Opt3","Opt4"]`;
-    const raw=await callClaude(prompt);
-    const m=raw.match(/\[[\s\S]*?\]/);
-    if(!m)throw new Error('no array');
+    const raw=await callClaude(`Seed:${seed}. Frage:"${curPoll.question}". Bestimme das Hauptobjekt und schlage 4 weitere konkrete Optionen vor (1-4 Wörter, Deutsch). Nur JSON-Array:["O1","O2","O3","O4"]`);
+    const m=raw.match(/\[[\s\S]*?\]/);if(!m)throw new Error();
     const ideas=JSON.parse(m[0]);
     if(Array.isArray(ideas)&&ideas.length){
-      const no=[...curPoll.options];
-      ideas.forEach(v=>{if(no.length<10)no.push({name:String(v).trim(),votes:0,color:C[no.length%C.length]});});
-      await fbUpdate(curId,{options:no});
-      showToast('Neue KI-Ideen hinzugefügt!');
+      const no=[...curPoll.options];ideas.forEach(v=>{if(no.length<10)no.push({name:String(v).trim(),votes:0,color:C[no.length%C.length]});});
+      await fbUpd(curId,{options:no});showToast('Neue KI-Ideen hinzugefügt!');
     }
   }catch{
-    const extras=fallback(curPoll.question).slice(0,3);
-    const no=[...curPoll.options];
+    const extras=fallback(curPoll.question).slice(0,3);const no=[...curPoll.options];
     extras.forEach(v=>{if(no.length<10&&!no.find(o=>o.name===v))no.push({name:v,votes:0,color:C[no.length%C.length]});});
-    await fbUpdate(curId,{options:no}).catch(()=>{});
-    showToast('Ideen hinzugefügt!');
+    await fbUpd(curId,{options:no}).catch(()=>{});showToast('Ideen hinzugefügt!');
   }
 }
 
-// ── MODAL: RECIPE & OUTFIT ────────────────────────────────────────────────────
+// ── MODAL ─────────────────────────────────────────────────────────────────────
 async function showModal(e,type,encodedName){
-  e.stopPropagation();
-  const name=decodeURIComponent(encodedName);
+  e.stopPropagation();const name=decodeURIComponent(encodedName);
   document.getElementById('recMo').classList.add('on');
   document.getElementById('recCon').innerHTML=`<div class="ail" style="justify-content:center;padding:38px 0"><div class="sp"></div> Wird geladen…</div>`;
-
   try{
     if(type==='recipe'){
-      const raw=await callClaude(`Erstelle ein kurzes, gesundes Rezept für "${name}".
-Antworte NUR mit diesem JSON (kein anderer Text):
-{"title":"${name}","time":"25 Min","servings":2,"ingredients":["200g Zutat"],"steps":["Schritt 1","Schritt 2"],"calories":400,"protein":"18g","carbs":"35g"}`);
-      const m=raw.match(/\{[\s\S]*\}/);
-      const r=JSON.parse(m?m[0]:raw);
-      document.getElementById('recCon').innerHTML=`
-        <button class="mc" onclick="closeModal()">✕</button>
-        <div class="mt">${r.title}</div><div class="ms">⏱ ${r.time} · 🍽 ${r.servings} Portionen</div>
-        <div class="rs"><h4>Zutaten</h4><ul>${(r.ingredients||[]).map(x=>`<li>${x}</li>`).join('')}</ul></div>
-        <div class="rs"><h4>Zubereitung</h4>${(r.steps||[]).map((s,i)=>`<p style="margin-bottom:6px"><strong>${i+1}.</strong> ${s}</p>`).join('')}</div>
-        <div class="rs"><h4>Nährwerte</h4><div class="ng">
-          <div class="ni"><div class="nv2">${r.calories||'—'}</div><div class="nl">Kalorien</div></div>
-          <div class="ni"><div class="nv2">${r.protein||'—'}</div><div class="nl">Protein</div></div>
-          <div class="ni"><div class="nv2">${r.carbs||'—'}</div><div class="nl">Kohlenhydrate</div></div>
-        </div></div>`;
-    } else {
-      // Outfit inspiration with Pinterest search links
-      const raw=await callClaude(`Beschreibe den Outfit-Look "${name}" für eine Abstimmungs-App kurz und inspirierend auf Deutsch.
-Antworte NUR mit diesem JSON:
-{"look":"${name}","beschreibung":"2-3 Sätze über den Look","teile":["Oberteil Idee","Hose/Rock Idee","Schuhe Idee","Accessoire Idee"],"farben":["Farbe1","Farbe2","Farbe3"],"anlass":"z.B. Kino, Party, Dinner"}`);
-      const m=raw.match(/\{[\s\S]*\}/);
-      const r=JSON.parse(m?m[0]:raw);
-      const searchQ=encodeURIComponent(name+' outfit inspiration');
-      const pinterestUrl=`https://www.pinterest.com/search/pins/?q=${searchQ}`;
-      const googleUrl=`https://www.google.com/search?q=${searchQ}&tbm=isch`;
-      document.getElementById('recCon').innerHTML=`
-        <button class="mc" onclick="closeModal()">✕</button>
-        <div class="mt">${r.look}</div>
-        <div class="ms">Anlass: ${r.anlass||'Vielseitig'}</div>
-        <div class="rs"><h4>Der Look</h4><p>${r.beschreibung||''}</p></div>
-        <div class="rs"><h4>Was du brauchst</h4><ul>${(r.teile||[]).map(x=>`<li>${x}</li>`).join('')}</ul></div>
-        <div class="rs"><h4>Farben</h4>
-          <div style="display:flex;gap:8px;flex-wrap:wrap">
-            ${(r.farben||[]).map(f=>`<span style="padding:5px 14px;border-radius:50px;background:var(--cream);font-size:12px">${f}</span>`).join('')}
-          </div>
-        </div>
-        <div class="rs"><h4>Inspiration finden</h4>
-          <div style="display:flex;gap:10px;flex-wrap:wrap">
-            <a href="${pinterestUrl}" target="_blank" style="padding:8px 18px;background:#e60023;color:white;border-radius:50px;text-decoration:none;font-size:13px;font-weight:500">📌 Pinterest</a>
-            <a href="${googleUrl}" target="_blank" style="padding:8px 18px;background:var(--forest);color:var(--lime);border-radius:50px;text-decoration:none;font-size:13px;font-weight:500">🔍 Google Bilder</a>
-          </div>
-        </div>`;
+      const raw=await callClaude(`Rezept für "${name}". NUR JSON: {"title":"${name}","time":"25 Min","servings":2,"ingredients":["200g X"],"steps":["Schritt 1"],"calories":400,"protein":"18g","carbs":"35g"}`);
+      const m=raw.match(/\{[\s\S]*\}/);const r=JSON.parse(m?m[0]:raw);
+      document.getElementById('recCon').innerHTML=`<button class="mc" onclick="closeModal()">✕</button><div class="mt">${r.title}</div><div class="ms">⏱ ${r.time} · 🍽 ${r.servings} Portionen</div><div class="rs"><h4>Zutaten</h4><ul>${(r.ingredients||[]).map(x=>`<li>${x}</li>`).join('')}</ul></div><div class="rs"><h4>Zubereitung</h4>${(r.steps||[]).map((s,i)=>`<p style="margin-bottom:6px"><strong>${i+1}.</strong> ${s}</p>`).join('')}</div><div class="rs"><h4>Nährwerte</h4><div class="ng"><div class="ni"><div class="nv2">${r.calories||'—'}</div><div class="nl">Kalorien</div></div><div class="ni"><div class="nv2">${r.protein||'—'}</div><div class="nl">Protein</div></div><div class="ni"><div class="nv2">${r.carbs||'—'}</div><div class="nl">Kohlenhydrate</div></div></div></div>`;
+    }else{
+      const raw=await callClaude(`Outfit-Look "${name}" kurz beschreiben. NUR JSON: {"look":"${name}","beschreibung":"2 Sätze","teile":["Teil1","Teil2","Teil3","Teil4"],"farben":["F1","F2","F3"],"anlass":"Anlass"}`);
+      const m=raw.match(/\{[\s\S]*\}/);const r=JSON.parse(m?m[0]:raw);
+      const q=encodeURIComponent(name+' outfit inspiration');
+      document.getElementById('recCon').innerHTML=`<button class="mc" onclick="closeModal()">✕</button><div class="mt">${r.look}</div><div class="ms">Anlass: ${r.anlass||'Vielseitig'}</div><div class="rs"><h4>Der Look</h4><p>${r.beschreibung||''}</p></div><div class="rs"><h4>Was du brauchst</h4><ul>${(r.teile||[]).map(x=>`<li>${x}</li>`).join('')}</ul></div><div class="rs"><h4>Farben</h4><div style="display:flex;gap:8px;flex-wrap:wrap">${(r.farben||[]).map(f=>`<span style="padding:5px 14px;border-radius:50px;background:var(--cream);font-size:12px">${f}</span>`).join('')}</div></div><div class="rs"><h4>Inspiration</h4><div style="display:flex;gap:10px;flex-wrap:wrap"><a href="https://www.pinterest.com/search/pins/?q=${q}" target="_blank" style="padding:8px 18px;background:#e60023;color:white;border-radius:50px;text-decoration:none;font-size:13px;font-weight:500">📌 Pinterest</a><a href="https://www.google.com/search?q=${q}&tbm=isch" target="_blank" style="padding:8px 18px;background:var(--forest);color:var(--lime);border-radius:50px;text-decoration:none;font-size:13px;font-weight:500">🔍 Google Bilder</a></div></div>`;
     }
-  }catch(err){
-    console.error(err);
-    document.getElementById('recCon').innerHTML=`<button class="mc" onclick="closeModal()">✕</button><p style="padding:20px;color:var(--muted)">Konnte nicht geladen werden.</p>`;
-  }
+  }catch(err){document.getElementById('recCon').innerHTML=`<button class="mc" onclick="closeModal()">✕</button><p style="padding:20px;color:var(--muted)">Konnte nicht geladen werden.</p>`;}
 }
 function closeModal(){document.getElementById('recMo').classList.remove('on');}
 
 // ── ARCHIVE ───────────────────────────────────────────────────────────────────
-function startArch(){
-  if(aUnsub){renderArch();return;}
-  if(!window._fbReady){
-    document.addEventListener('fbReady',()=>{aUnsub=fbListenAll(renderArch);},{once:true});
-    return;
-  }
-  aUnsub=fbListenAll(renderArch);
-}
+function startArch(){if(aUnsub){renderArch();return;}if(!window._fbReady){document.addEventListener('fbReady',()=>{aUnsub=fbAll(renderArch);},{once:true});return;}aUnsub=fbAll(renderArch);}
 function renderArch(){
   const q=(document.getElementById('srch')?.value||'').toLowerCase();
-  const cat=document.getElementById('fCat')?.value||'';
-  const st=document.getElementById('fSt')?.value||'';
+  const cat=document.getElementById('fCat')?.value||'';const st=document.getElementById('fSt')?.value||'';
   const f=polls.filter(p=>(!q||p.question.toLowerCase().includes(q))&&(!cat||p.category===cat)&&(!st||p.status===st));
   const g=document.getElementById('archGrid');
   if(!f.length){g.innerHTML='<div class="es">Keine Abstimmungen gefunden</div>';return;}
   g.innerHTML=f.map(p=>{
     const tot=p.options.reduce((s,o)=>s+o.votes,0);
+    const phaseLabel=p.status==='Sammeln'?'🔗 Sammeln':p.status==='Aktiv'?'🗳 Aktiv':'✓ Beendet';
+    const phaseCls=p.status==='Sammeln'?'phase-collect':p.status==='Aktiv'?'phase-vote':'phase-done';
     return`<div class="acd" onclick="openFromArch('${p._fid}')">
-      <div class="at2"><span class="acat">${p.category}</span>
-        <span class="bdg ${p.status==='Aktiv'?'bak':'bnd'}">${p.status}</span></div>
+      <div class="at2"><span class="acat">${p.category}</span><span class="phase-badge ${phaseCls}">${phaseLabel}</span></div>
       <div class="aq">${p.question}</div>
-      <div class="av">👥 ${tot} Stimmen</div>
-      <div class="ads">${p.options.map(o=>`<div class="add" style="background:${o.color}"></div>`).join('')}</div>
+      <div class="av">👥 ${tot} Stimmen · ${p.options.length} Antworten</div>
+      <div class="ads">${p.options.map(o=>`<div class="adot" style="background:${o.color}"></div>`).join('')}</div>
     </div>`;
   }).join('');
 }
 function openFromArch(fid){
   const p=polls.find(x=>x._fid===fid);
-  if(p)openVote(p);
+  if(!p)return;
+  if(p.status==='Sammeln')openCollect(p);
+  else openVote(p);
 }
 
 // ── TOAST ─────────────────────────────────────────────────────────────────────
-function showToast(msg){
-  const t=document.getElementById('toast');
-  t.textContent=msg;t.classList.add('on');
-  setTimeout(()=>t.classList.remove('on'),3000);
-}
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('on');setTimeout(()=>t.classList.remove('on'),3000);}
 
 // ── INIT ──────────────────────────────────────────────────────────────────────
 initCreate();
-
 function checkUrl(){
   const id=new URLSearchParams(location.search).get('poll');
   if(!id)return;
   const{doc:D,getDoc:G}=getFB();
-  G(D(getDB(),'polls',id))
-    .then(s=>{if(s.exists())openVote({...s.data(),_fid:s.id});})
-    .catch(err=>console.error('URL poll load error:',err));
+  G(D(getDB(),'polls',id)).then(s=>{
+    if(s.exists()){
+      const p={...s.data(),_fid:s.id};
+      if(p.status==='Sammeln')openCollect(p);
+      else openVote(p);
+    }
+  }).catch(err=>console.error('URL load error:',err));
 }
 if(window._fbReady)checkUrl();
 else document.addEventListener('fbReady',checkUrl,{once:true});

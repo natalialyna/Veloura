@@ -25,17 +25,16 @@
     document.dispatchEvent(new Event('fbReady'));
   </script>
   <style>
-    :root{--forest:#40594f;--lime:#ecf38f;--sky:#a1baf5;--lavender:#9698dc;--coral:#df663a;--cream:#f5f2eb;--offwhite:#faf9f6;--text:#1a1a1a;--muted:#888;--card:rgba(255,255,255,0.82);--r:20px;--sh:0 8px 40px rgba(0,0,0,0.08);}
+    :root{--forest:#40594f;--lime:#ecf38f;--sky:#a1baf5;--lavender:#9698dc;--coral:#df663a;--cream:#f5f2eb;--offwhite:#faf9f6;--text:#1a1a1a;--muted:#888;--card:rgba(255,255,255,0.85);--r:20px;--sh:0 8px 40px rgba(0,0,0,0.08);}
     *{box-sizing:border-box;margin:0;padding:0;}
     body{font-family:'DM Sans',sans-serif;background:var(--offwhite);color:var(--text);height:100vh;overflow:hidden;}
-    .blob{position:fixed;border-radius:50%;filter:blur(90px);opacity:.3;pointer-events:none;z-index:0;}
+    .blob{position:fixed;border-radius:50%;filter:blur(90px);opacity:.28;pointer-events:none;z-index:0;}
     .b1{width:520px;height:520px;background:var(--lime);top:-120px;left:-160px;}
     .b2{width:420px;height:420px;background:var(--sky);bottom:-100px;right:-120px;}
-    .b3{width:320px;height:320px;background:var(--lavender);top:35%;left:55%;}
+    .b3{width:300px;height:300px;background:var(--lavender);top:35%;left:55%;}
 
-    /* NAV */
-    nav{position:fixed;top:0;left:0;right:0;height:62px;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:0 32px;background:rgba(250,249,246,0.92);backdrop-filter:blur(24px);border-bottom:1px solid rgba(0,0,0,0.06);}
-    .logo{display:flex;align-items:center;gap:10px;cursor:pointer;text-decoration:none;}
+    nav{position:fixed;top:0;left:0;right:0;height:62px;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:0 32px;background:rgba(250,249,246,0.94);backdrop-filter:blur(24px);border-bottom:1px solid rgba(0,0,0,0.06);}
+    .logo{display:flex;align-items:center;gap:10px;cursor:pointer;}
     .logo-dot{width:36px;height:36px;border-radius:50%;background:var(--forest);color:var(--lime);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:17px;font-weight:700;box-shadow:0 0 0 3px rgba(161,186,245,.35);}
     .logo-name{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:var(--text);}
     .nav-links{display:flex;gap:6px;}
@@ -43,7 +42,6 @@
     .nb:hover{background:rgba(0,0,0,.05);}
     .nb.on{background:var(--forest);color:var(--lime);}
 
-    /* PAGES — fixed below nav, scrollable inside */
     .pg{display:none;position:fixed;top:62px;left:0;right:0;bottom:0;overflow-y:auto;z-index:1;}
     .pg.on{display:block;}
 
@@ -64,14 +62,14 @@
     .pi{max-width:680px;margin:0 auto;padding:40px 28px 80px;}
     .plabel{font-size:11px;font-weight:500;letter-spacing:2px;color:var(--coral);text-transform:uppercase;margin-bottom:8px;}
     .ptitle{font-family:'Playfair Display',serif;font-size:36px;margin-bottom:30px;}
-    .card{background:var(--card);backdrop-filter:blur(20px);border-radius:var(--r);padding:30px;box-shadow:var(--sh);border:1px solid rgba(255,255,255,.85);}
+    .card{background:var(--card);backdrop-filter:blur(20px);border-radius:var(--r);padding:30px;box-shadow:var(--sh);border:1px solid rgba(255,255,255,.9);}
     .fl{font-size:12px;font-weight:500;color:var(--muted);margin-bottom:7px;letter-spacing:.5px;}
     .fg{margin-bottom:20px;}
-    .inp{width:100%;padding:13px 15px;border-radius:12px;border:1.5px solid rgba(0,0,0,.08);background:rgba(255,255,255,.85);font-family:'DM Sans',sans-serif;font-size:14px;color:var(--text);outline:none;transition:border-color .2s;}
+    .inp{width:100%;padding:13px 15px;border-radius:12px;border:1.5px solid rgba(0,0,0,.08);background:rgba(255,255,255,.9);font-family:'DM Sans',sans-serif;font-size:14px;color:var(--text);outline:none;transition:border-color .2s;}
     .inp:focus{border-color:var(--forest);}
     .inp::placeholder{color:#bbb;}
     .sw{position:relative;}
-    .sel{width:100%;padding:13px 15px;border-radius:12px;border:1.5px solid rgba(0,0,0,.08);background:rgba(255,255,255,.85);font-family:'DM Sans',sans-serif;font-size:14px;color:var(--text);outline:none;appearance:none;cursor:pointer;}
+    .sel{width:100%;padding:13px 15px;border-radius:12px;border:1.5px solid rgba(0,0,0,.08);background:rgba(255,255,255,.9);font-family:'DM Sans',sans-serif;font-size:14px;color:var(--text);outline:none;appearance:none;cursor:pointer;}
     .sa{position:absolute;right:15px;top:50%;transform:translateY(-50%);pointer-events:none;color:var(--muted);}
     .oh{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
     .aib{background:none;border:none;cursor:pointer;color:var(--lavender);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;display:flex;align-items:center;gap:5px;transition:opacity .2s;}
@@ -79,7 +77,7 @@
     .aib:disabled{opacity:.4;cursor:not-allowed;}
     .oi{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
     .od{width:13px;height:13px;border-radius:50%;flex-shrink:0;}
-    .oinp{flex:1;padding:10px 13px;border-radius:10px;border:1.5px solid rgba(0,0,0,.08);background:rgba(255,255,255,.85);font-family:'DM Sans',sans-serif;font-size:13px;outline:none;transition:border-color .2s;}
+    .oinp{flex:1;padding:10px 13px;border-radius:10px;border:1.5px solid rgba(0,0,0,.08);background:rgba(255,255,255,.9);font-family:'DM Sans',sans-serif;font-size:13px;outline:none;transition:border-color .2s;}
     .oinp:focus{border-color:var(--forest);}
     .orm{background:none;border:none;cursor:pointer;color:#ccc;font-size:16px;transition:color .2s;}
     .orm:hover{color:var(--coral);}
@@ -89,7 +87,7 @@
     .stb:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 8px 28px rgba(64,89,79,.28);}
     .stb:disabled{opacity:.6;cursor:not-allowed;transform:none;}
     .ail{display:flex;align-items:center;gap:8px;color:var(--lavender);font-size:13px;padding:8px 0;}
-    .sp{width:15px;height:15px;border:2px solid rgba(150,152,220,.2);border-top-color:var(--lavender);border-radius:50%;animation:spin .8s linear infinite;}
+    .sp{width:15px;height:15px;border:2px solid rgba(150,152,220,.2);border-top-color:var(--lavender);border-radius:50%;animation:spin .8s linear infinite;flex-shrink:0;}
     @keyframes spin{to{transform:rotate(360deg)}}
 
     /* VOTE */
@@ -100,14 +98,14 @@
     .vt{font-family:'Playfair Display',serif;font-size:clamp(20px,4vw,40px);margin:10px 0 26px;}
     .bkb{background:none;border:none;cursor:pointer;color:var(--muted);font-family:'DM Sans',sans-serif;font-size:13px;display:flex;align-items:center;gap:5px;transition:color .2s;}
     .bkb:hover{color:var(--text);}
-    .lkb,.enb{padding:7px 18px;border-radius:50px;font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;}
+    .lkb,.enb{padding:8px 20px;border-radius:50px;font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;font-weight:500;}
     .lkb{border:1.5px solid rgba(0,0,0,.12);background:white;color:var(--text);transition:all .2s;}
     .lkb:hover{background:var(--cream);}
     .enb{border:1.5px solid var(--coral);background:white;color:var(--coral);transition:all .2s;}
     .enb:hover{background:var(--coral);color:white;}
     .vg{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
     @media(max-width:700px){.vg{grid-template-columns:1fr;}}
-    .wc{background:var(--card);backdrop-filter:blur(20px);border-radius:var(--r);padding:26px;box-shadow:var(--sh);border:1px solid rgba(255,255,255,.85);display:flex;flex-direction:column;align-items:center;}
+    .wc{background:var(--card);backdrop-filter:blur(20px);border-radius:var(--r);padding:26px;box-shadow:var(--sh);border:1px solid rgba(255,255,255,.9);display:flex;flex-direction:column;align-items:center;}
     .wrl{font-family:'Playfair Display',serif;font-size:17px;margin-bottom:18px;padding:8px 20px;background:white;border-radius:50px;box-shadow:0 2px 12px rgba(0,0,0,.07);min-width:140px;text-align:center;}
     .ww{position:relative;margin-bottom:20px;}
     .wp{position:absolute;top:-15px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:9px solid transparent;border-right:9px solid transparent;border-top:22px solid var(--lavender);filter:drop-shadow(0 2px 6px rgba(150,152,220,.45));}
@@ -119,7 +117,7 @@
     .ctb:hover:not(:disabled){background:var(--cream);}
     .ctb:disabled{opacity:.4;cursor:not-allowed;}
     .vp{display:flex;flex-direction:column;gap:13px;}
-    .vlc,.rc{background:var(--card);backdrop-filter:blur(20px);border-radius:var(--r);padding:22px;box-shadow:var(--sh);border:1px solid rgba(255,255,255,.85);}
+    .vlc,.rc{background:var(--card);backdrop-filter:blur(20px);border-radius:var(--r);padding:22px;box-shadow:var(--sh);border:1px solid rgba(255,255,255,.9);}
     .ptt{font-family:'Playfair Display',serif;font-size:19px;margin-bottom:14px;}
     .vo{display:flex;align-items:center;justify-content:space-between;padding:8px 9px;border-radius:8px;transition:all .2s;}
     .vo:hover{background:rgba(0,0,0,.02);}
@@ -127,16 +125,22 @@
     .ol{display:flex;align-items:center;gap:9px;flex:1;}
     .odd{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
     .on2{font-size:14px;}
-    .oc{font-size:13px;color:var(--muted);}
+    .oc{font-size:13px;color:var(--muted);min-width:20px;text-align:right;}
     .vib{padding:5px 13px;border-radius:50px;border:1.5px solid rgba(0,0,0,.12);background:white;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:11px;transition:all .2s;color:var(--text);white-space:nowrap;}
     .vib:hover{background:var(--forest);color:var(--lime);border-color:var(--forest);}
     .vib.vd{background:var(--forest);color:var(--lime);border-color:var(--forest);}
     .nv{color:var(--muted);font-size:13px;text-align:center;padding:18px 0;}
+    .recbtn{background:none;border:none;cursor:pointer;color:var(--coral);font-size:11px;margin-left:4px;text-decoration:underline;padding:0;font-family:'DM Sans',sans-serif;}
+
+    /* SHARE BANNER */
+    .share-bar{background:rgba(64,89,79,.08);border-radius:12px;padding:12px 16px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+    .share-url{font-size:12px;color:var(--muted);flex:1;word-break:break-all;}
+    .share-copy{padding:7px 16px;border-radius:50px;border:none;cursor:pointer;background:var(--forest);color:var(--lime);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;white-space:nowrap;}
 
     /* MODAL */
-    .mo{display:none;position:fixed;inset:0;z-index:300;background:rgba(0,0,0,.42);backdrop-filter:blur(8px);align-items:center;justify-content:center;padding:20px;}
+    .mo{display:none;position:fixed;inset:0;z-index:300;background:rgba(0,0,0,.45);backdrop-filter:blur(8px);align-items:center;justify-content:center;padding:20px;}
     .mo.on{display:flex;}
-    .md{background:white;border-radius:22px;padding:34px;max-width:500px;width:100%;max-height:82vh;overflow-y:auto;box-shadow:0 24px 80px rgba(0,0,0,.14);animation:mdin .3s ease;}
+    .md{background:white;border-radius:22px;padding:34px;max-width:500px;width:100%;max-height:84vh;overflow-y:auto;box-shadow:0 24px 80px rgba(0,0,0,.15);animation:mdin .3s ease;}
     @keyframes mdin{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
     .mc{float:right;background:none;border:none;cursor:pointer;font-size:20px;color:var(--muted);}
     .mt{font-family:'Playfair Display',serif;font-size:23px;margin-bottom:5px;}
@@ -151,16 +155,16 @@
     .nv2{font-size:17px;font-weight:600;color:var(--forest);}
     .nl{font-size:10px;color:var(--muted);margin-top:2px;}
 
-    /* ARCHIV */
-    .ai{max-width:1040px;margin:0 auto;padding:38px 28px 80px;}
+    /* ARCHIVE */
+    .ai2{max-width:1040px;margin:0 auto;padding:38px 28px 80px;}
     .ac{display:flex;gap:10px;margin-bottom:26px;flex-wrap:wrap;}
     .si{flex:1;min-width:170px;padding:10px 15px;border-radius:50px;border:1.5px solid rgba(0,0,0,.08);background:white;font-family:'DM Sans',sans-serif;font-size:13px;outline:none;}
     .si:focus{border-color:var(--forest);}
     .fs{padding:10px 15px;border-radius:50px;border:1.5px solid rgba(0,0,0,.08);background:white;font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;outline:none;}
     .ag{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:15px;}
-    .acd{background:var(--card);backdrop-filter:blur(20px);border-radius:16px;padding:20px;box-shadow:var(--sh);border:1px solid rgba(255,255,255,.85);cursor:pointer;transition:all .2s;}
+    .acd{background:var(--card);backdrop-filter:blur(20px);border-radius:16px;padding:20px;box-shadow:var(--sh);border:1px solid rgba(255,255,255,.9);cursor:pointer;transition:all .2s;}
     .acd:hover{transform:translateY(-3px);box-shadow:0 14px 45px rgba(0,0,0,.1);}
-    .at{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:9px;}
+    .at2{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:9px;}
     .acat{font-size:10px;padding:3px 9px;border-radius:50px;background:rgba(0,0,0,.05);color:var(--muted);}
     .aq{font-family:'Playfair Display',serif;font-size:15px;margin-bottom:9px;line-height:1.3;}
     .av{font-size:12px;color:var(--muted);margin-bottom:9px;}
@@ -168,7 +172,6 @@
     .add{width:9px;height:9px;border-radius:50%;}
     .es{grid-column:1/-1;text-align:center;padding:65px 0;color:var(--muted);font-size:15px;}
 
-    /* TOAST */
     .toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(110px);background:var(--forest);color:var(--lime);padding:11px 24px;border-radius:50px;font-size:13px;font-weight:500;z-index:400;transition:transform .3s ease;box-shadow:0 8px 28px rgba(64,89,79,.28);}
     .toast.on{transform:translateX(-50%) translateY(0);}
     #cc{position:fixed;inset:0;pointer-events:none;z-index:999;display:none;}
@@ -180,10 +183,10 @@
 <div class="blob b3"></div>
 
 <nav>
-  <a class="logo" onclick="go('home')">
+  <div class="logo" onclick="go('home')">
     <div class="logo-dot">V</div>
     <span class="logo-name">Veloura</span>
-  </a>
+  </div>
   <div class="nav-links">
     <button class="nb on" id="nb-home"   onclick="go('home')">🏠 Home</button>
     <button class="nb"    id="nb-create" onclick="go('create')">+ Erstellen</button>
@@ -218,9 +221,11 @@
         <div class="fl">KATEGORIE</div>
         <div class="sw">
           <select id="catSel" class="sel">
-            <option>Sonstiges</option><option>Outdoor</option><option>Indoor</option>
-            <option>Activity</option><option>Natur</option><option>Gesundheit</option>
+            <option>Sonstiges</option>
+            <option>Outdoor</option><option>Indoor</option><option>Activity</option>
+            <option>Natur</option><option>Gesundheit</option>
             <option>Food</option><option>Essen</option><option>Trinken</option>
+            <option>Mode & Outfit</option><option>Elegant</option><option>Simpel</option>
             <option>Design</option><option>Reisen</option><option>Ausflüge</option>
             <option>Kaufentscheidungen</option><option>Nice to have</option><option>Fun</option>
           </select>
@@ -233,10 +238,11 @@
           <button class="aib" id="aiBtn" onclick="genAI()">✦ KI-Ideen generieren</button>
         </div>
         <div id="optList"></div>
-        <div id="aiLoad" style="display:none" class="ail"><div class="sp"></div> KI sucht die besten Optionen…</div>
+        <div id="aiLoad" style="display:none" class="ail"><div class="sp"></div> KI sucht passende Optionen…</div>
         <button class="aob" onclick="addOpt()">+ Option hinzufügen</button>
       </div>
       <button class="stb" id="stBtn" onclick="startVote()">Abstimmung starten →</button>
+      <div id="errMsg" style="display:none;color:var(--coral);font-size:13px;margin-top:12px;text-align:center;"></div>
     </div>
   </div>
 </div>
@@ -244,12 +250,14 @@
 <!-- VOTE -->
 <div class="pg" id="pg-vote">
   <div class="vi">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;flex-wrap:wrap;gap:10px">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:10px">
       <button class="bkb" onclick="goBack()">← Zurück</button>
-      <div style="display:flex;gap:10px">
-        <button class="lkb" onclick="copyLink()">🔗 Link</button>
-        <button class="enb" onclick="endVote()">Beenden</button>
-      </div>
+      <button class="enb" onclick="endVote()">Abstimmung beenden</button>
+    </div>
+    <!-- SHARE BAR -->
+    <div class="share-bar" id="shareBar">
+      <span class="share-url" id="shareUrl"></span>
+      <button class="share-copy" onclick="copyLink()">🔗 Link kopieren & teilen</button>
     </div>
     <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px">
       <span class="bdg bak" id="vBadge">Aktiv</span>
@@ -286,7 +294,7 @@
 
 <!-- ARCHIV -->
 <div class="pg" id="pg-archiv">
-  <div class="ai">
+  <div class="ai2">
     <div class="plabel">ARCHIV</div>
     <h1 class="ptitle">Vergangene Abstimmungen</h1>
     <div class="ac">
@@ -294,9 +302,10 @@
       <select class="fs" id="fCat" onchange="renderArch()">
         <option value="">Alle Kategorien</option>
         <option>Outdoor</option><option>Indoor</option><option>Activity</option>
-        <option>Natur</option><option>Gesundheit</option><option>Food</option>
-        <option>Essen</option><option>Trinken</option><option>Design</option>
-        <option>Reisen</option><option>Ausflüge</option>
+        <option>Natur</option><option>Gesundheit</option>
+        <option>Food</option><option>Essen</option><option>Trinken</option>
+        <option>Mode & Outfit</option><option>Elegant</option><option>Simpel</option>
+        <option>Design</option><option>Reisen</option><option>Ausflüge</option>
         <option>Kaufentscheidungen</option><option>Nice to have</option><option>Fun</option><option>Sonstiges</option>
       </select>
       <select class="fs" id="fSt" onchange="renderArch()">
@@ -307,102 +316,114 @@
   </div>
 </div>
 
-<div class="mo" id="recMo"><div class="md"><div id="recCon"></div></div></div>
+<!-- RECIPE / OUTFIT MODAL -->
+<div class="mo" id="recMo">
+  <div class="md"><div id="recCon"></div></div>
+</div>
+
 <div class="toast" id="toast"></div>
 <canvas id="cc"></canvas>
 
 <script>
-// ── COLORS ──────────────────────────────────────────────────────────────────
 const C=['#40594f','#a1baf5','#9698dc','#ecf38f','#6db088','#c4d4f8','#b8b9e8','#f2f7a0','#df663a','#f5a88a'];
 
-// ── FALLBACKS — object-first, verb-last ──────────────────────────────────────
+// ── SMART FALLBACKS — object-first ────────────────────────────────────────────
 function fallback(q){
   const t=q.toLowerCase();
-  if(/auto|fahrzeug|wagen|pkw|e-auto|elektroauto|cabrio|suv|limousine/i.test(t))
-    return['VW Golf','BMW 3er','Toyota Yaris','Tesla Model 3','Skoda Octavia','Hyundai i30'];
-  if(/schuh|sneaker|boot|sandale|stiefel|turnschuh/i.test(t))
-    return['Nike Air Max','New Balance 574','Adidas Samba','Veja V-10','Salomon XT-6','On Cloud 5'];
-  if(/laptop|computer|macbook|notebook/i.test(t))
-    return['MacBook Air M3','Dell XPS 13','Lenovo ThinkPad X1','Surface Pro','ASUS ZenBook','HP Spectre'];
-  if(/handy|smartphone|iphone|android/i.test(t))
-    return['iPhone 16','Samsung Galaxy S25','Google Pixel 9','OnePlus 13','Xiaomi 14','Fairphone 5'];
-  if(/uhr|watch|armbanduhr/i.test(t))
-    return['Apple Watch Ultra','Garmin Fenix 8','Tissot PRX','Casio G-Shock','Nomos Club','Swatch Bioceramic'];
-  if(/tasche|rucksack|handtasche|bag/i.test(t))
-    return['Fjällräven Kånken','Tumi Alpha','Longchamp Pliage','Carhartt WIP','Rimowa Hybrid','Aesther Ekme'];
-  if(/sofa|couch|möbel|sessel|bett|stuhl/i.test(t))
-    return['IKEA Kivik','Hay Mags Soft','Muuto Rest','Menu Chaise','Hem Mono','USM Haller'];
-  if(/fahrrad|bike|e-bike|velo/i.test(t))
-    return['Trek FX 3','Canyon Commuter','Specialized Sirrus','Riese & Müller Nevo','Cube Hyde','Brompton Electric'];
-  if(/kamera|camera|foto/i.test(t))
-    return['Sony A7 IV','Fujifilm X100VI','Canon R50','Leica Q3','Nikon Z6 III','GoPro Hero 13'];
-  if(/essen|kochen|gericht|food|abend|mittag|frühstück|lunch|dinner/i.test(t))
-    return['Miso-Aubergine','Kichererbsensalat','Zucchini-Nudeln','Kokos-Curry','Süßkartoffel Bowl','Mediterrane Bowl'];
-  if(/trinken|getränk|cocktail|drink|kaffee|tee/i.test(t))
-    return['Matcha Latte','Aperol Spritz','Cold Brew','Kombucha','Mojito','Chai Latte'];
-  if(/reise|urlaub|ferien|ausflug|wohin/i.test(t))
-    return['Lissabon','Kyoto','Kopenhagen','Oaxaca','Ljubljana','Tbilisi'];
-  if(/film|kino|serie|schauen|netflix/i.test(t))
-    return['Action','Komödie','Drama','Dokumentation','Thriller','Romantik'];
-  if(/sport|fitness|workout/i.test(t))
-    return['Yoga','Pilates','Klettern','Tanzen','Schwimmen','Radfahren'];
-  if(/aktivität|freizeit|fun|spaß/i.test(t))
-    return['Escape Room','Karaoke','Bowling','Minigolf','Kochkurs','Töpfern'];
-  if(/gesundheit|wellness|entspannung/i.test(t))
-    return['Meditation','Waldspaziergang','Digital Detox','Atemübungen','Journaling','Sauna'];
-  // kaufen only as last resort — never triggered for "welches X kaufen"
-  if(/kaufen|bestellen|shoppen/i.test(t))
-    return['Jetzt kaufen','Noch warten','Second-hand','Leihen','Selbst machen','Verzichten'];
-  return['Idee 1','Idee 2','Idee 3','Idee 4','Idee 5','Idee 6'];
+  // Detect the NOUN/OBJECT first, before any verb
+  if(/schokolade|schoki|praline|tafel/i.test(t)) return['Lindt Excellence','Ritter Sport Marzipan','Milka Oreo','Ferrero Rocher','Tony Chocolonely','Green & Black'];
+  if(/auto|fahrzeug|wagen|pkw|e-auto|elektroauto|cabrio|suv/i.test(t)) return['VW Golf','BMW 3er','Toyota Yaris','Tesla Model 3','Skoda Octavia','Hyundai i30'];
+  if(/schuh|sneaker|boot|sandale|stiefel|turnschuh/i.test(t)) return['Nike Air Max','New Balance 574','Adidas Samba','Veja V-10','Salomon XT-6','On Cloud 5'];
+  if(/laptop|computer|macbook|notebook/i.test(t)) return['MacBook Air M3','Dell XPS 13','Lenovo ThinkPad','Surface Pro','ASUS ZenBook','HP Spectre'];
+  if(/handy|smartphone|iphone|android/i.test(t)) return['iPhone 16','Samsung S25','Google Pixel 9','OnePlus 13','Xiaomi 14','Fairphone 5'];
+  if(/uhr|watch|armbanduhr/i.test(t)) return['Apple Watch','Garmin Fenix','Tissot PRX','Casio G-Shock','Nomos Club','Swatch'];
+  if(/tasche|rucksack|handtasche|bag/i.test(t)) return['Fjällräven Kånken','Tumi Alpha','Longchamp Pliage','Carhartt WIP','Rimowa','Aesther Ekme'];
+  if(/fahrrad|bike|e-bike/i.test(t)) return['Trek FX 3','Canyon Commuter','Specialized Sirrus','Riese & Müller','Cube Hyde','Brompton'];
+  if(/outfit|anziehen|kleidung|look|kino|party|event/i.test(t)) return['Casual Jeans Look','Elegantes Kleid','Blazer & Chino','Streetwear','Smart Casual','Monochrom Look'];
+  if(/essen|kochen|gericht|food|abend|mittag|frühstück|lunch|dinner/i.test(t)){
+    // Randomize food to get variety each time
+    const food=[
+      ['Miso-Aubergine','Kichererbsensalat','Zucchini-Nudeln','Kokos-Curry','Süßkartoffel Bowl','Mediterrane Bowl'],
+      ['Pad Thai','Ramen','Griechischer Salat','Linsen-Dhal','Falafel Bowl','Avocado Toast'],
+      ['Tacos','Poké Bowl','Pasta Primavera','Kürbissuppe','Buddha Bowl','Shakshuka'],
+      ['Sushi','Wrap mit Hühnchen','Quinoa-Salat','Ofengemüse','Risotto','Flammkuchen']
+    ];
+    return food[Math.floor(Math.random()*food.length)];
+  }
+  if(/trinken|getränk|cocktail|drink|kaffee|tee/i.test(t)){
+    const drinks=[
+      ['Matcha Latte','Aperol Spritz','Cold Brew','Kombucha','Mojito','Chai Latte'],
+      ['Espresso Tonic','Hugo Spritz','Oat Milk Latte','Elderflower Tonic','Negroni','Iced Matcha']
+    ];
+    return drinks[Math.floor(Math.random()*drinks.length)];
+  }
+  if(/reise|urlaub|ferien|ausflug|wohin/i.test(t)){
+    const reise=[
+      ['Lissabon','Kyoto','Kopenhagen','Oaxaca','Ljubljana','Tbilisi'],
+      ['Barcelona','Kapstadt','Island','Bali','Porto','Marrakesch']
+    ];
+    return reise[Math.floor(Math.random()*reise.length)];
+  }
+  if(/film|kino|serie|schauen/i.test(t)) return['Action','Komödie','Drama','Dokumentation','Thriller','Romantik'];
+  if(/sport|fitness|workout/i.test(t)) return['Yoga','Pilates','Klettern','Tanzen','Schwimmen','Radfahren'];
+  if(/aktivität|freizeit|fun|spaß/i.test(t)) return['Escape Room','Karaoke','Bowling','Minigolf','Kochkurs','Töpfern'];
+  if(/gesundheit|wellness/i.test(t)) return['Meditation','Waldspaziergang','Digital Detox','Atemübungen','Journaling','Sauna'];
+  return['Option 1','Option 2','Option 3','Option 4','Option 5','Option 6'];
 }
 
-// ── STATE ────────────────────────────────────────────────────────────────────
+// ── STATE ─────────────────────────────────────────────────────────────────────
 let polls=[],curPoll=null,curId=null,uVote=null,chartI=null;
 let vUnsub=null,aUnsub=null;
 let wAngle=0,wVel=0,wSpin=false,wStop=false;
 
-// ── FIREBASE ─────────────────────────────────────────────────────────────────
-const db=()=>window._db;
-const fb=()=>window._fb;
-async function fbSave(p){const{collection:c,addDoc:a}=fb();return(await a(c(db(),'polls'),p)).id;}
-async function fbUpd(id,d){const{doc:D,updateDoc:u}=fb();await u(D(db(),'polls',id),d);}
-function fbAll(cb){
-  const{collection:c,query:q,orderBy:o,onSnapshot:s}=fb();
-  return s(q(c(db(),'polls'),o('created','desc')),snap=>{
+// ── FIREBASE ──────────────────────────────────────────────────────────────────
+const getDB=()=>window._db;
+const getFB=()=>window._fb;
+
+async function fbSave(poll){
+  const{collection:col,addDoc}=getFB();
+  const ref=await addDoc(col(getDB(),'polls'),poll);
+  return ref.id;
+}
+async function fbUpdate(id,data){
+  const{doc:D,updateDoc:upd}=getFB();
+  await upd(D(getDB(),'polls',id),data);
+}
+function fbListenAll(cb){
+  const{collection:col,query:q,orderBy:ob,onSnapshot:sn}=getFB();
+  return sn(q(col(getDB(),'polls'),ob('created','desc')),snap=>{
     polls=snap.docs.map(d=>({...d.data(),_fid:d.id}));cb();
   });
 }
-function fbOne(id,cb){
-  const{doc:D,onSnapshot:s}=fb();
-  return s(D(db(),'polls',id),snap=>{if(snap.exists())cb({...snap.data(),_fid:snap.id});});
+function fbListenOne(id,cb){
+  const{doc:D,onSnapshot:sn}=getFB();
+  return sn(D(getDB(),'polls',id),snap=>{
+    if(snap.exists())cb({...snap.data(),_fid:snap.id});
+  });
 }
 
-// ── NAVIGATION ───────────────────────────────────────────────────────────────
+// ── NAVIGATION ────────────────────────────────────────────────────────────────
 function go(id){
-  // hide all pages
-  document.querySelectorAll('.pg').forEach(p=>{p.classList.remove('on');});
-  // show target
+  document.querySelectorAll('.pg').forEach(p=>p.classList.remove('on'));
   const pg=document.getElementById('pg-'+id);
   if(pg){pg.classList.add('on');pg.scrollTop=0;}
-  // nav buttons
   document.querySelectorAll('.nb').forEach(b=>b.classList.remove('on'));
   const nb=document.getElementById('nb-'+id);
   if(nb)nb.classList.add('on');
-  // side effects
   if(id==='archiv')startArch();
   if(id==='create')initCreate();
 }
-
 function goBack(){
   if(vUnsub){vUnsub();vUnsub=null;}
   go('archiv');
 }
 
-// ── CREATE ───────────────────────────────────────────────────────────────────
+// ── CREATE ────────────────────────────────────────────────────────────────────
 let opts=[];
 function initCreate(){
   document.getElementById('qIn').value='';
   document.getElementById('catSel').value='Sonstiges';
+  document.getElementById('errMsg').style.display='none';
   opts=[{v:''},{v:''}];
   renderOpts();
 }
@@ -421,49 +442,61 @@ function renderOpts(){
 function addOpt(){if(opts.length<10){opts.push({v:''});renderOpts();}}
 function rmOpt(i){opts.splice(i,1);renderOpts();}
 
-// ── CLAUDE API (with web_search tool) ───────────────────────────────────────
-async function claude(prompt, useSearch=false){
-  const body={model:'claude-sonnet-4-20250514',max_tokens:500,messages:[{role:'user',content:prompt}]};
-  if(useSearch) body.tools=[{type:'web_search_20250305',name:'web_search'}];
-  const r=await fetch('https://api.anthropic.com/v1/messages',{
-    method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)
+// ── CLAUDE API ────────────────────────────────────────────────────────────────
+async function callClaude(prompt){
+  const res=await fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({
+      model:'claude-sonnet-4-20250514',
+      max_tokens:600,
+      messages:[{role:'user',content:prompt}]
+    })
   });
-  if(!r.ok)throw new Error('API '+r.status);
-  const data=await r.json();
-  // collect only text blocks (ignore tool_use blocks)
-  return data.content?.filter(c=>c.type==='text').map(c=>c.text).join('').replace(/```json|```/g,'').trim()||'';
+  if(!res.ok)throw new Error('Claude API Fehler '+res.status);
+  const data=await res.json();
+  const text=data.content?.filter(c=>c.type==='text').map(c=>c.text).join('')||'';
+  return text.replace(/```json|```/g,'').trim();
 }
 
+// ── AI IDEAS ──────────────────────────────────────────────────────────────────
 async function genAI(){
   const q=document.getElementById('qIn').value.trim();
-  if(!q){toast('Bitte zuerst eine Frage eingeben');return;}
+  if(!q){showToast('Bitte zuerst eine Frage eingeben');return;}
   const btn=document.getElementById('aiBtn');
   btn.disabled=true;
   document.getElementById('aiLoad').style.display='flex';
 
+  // Use a random seed to ensure variety each time
+  const seed=Math.floor(Math.random()*10000);
+
   try{
-    // Use web_search so Claude can find current/popular examples
-    const prompt=`Du hilfst bei einer Abstimmungs-App. Die Frage lautet: "${q}"
+    const prompt=`Du hilfst bei einer Abstimmungs-App. Seed für Variation: ${seed}
 
-WICHTIG: Bestimme das OBJEKT der Frage (worüber abgestimmt wird), NICHT das Verb.
-- "Welches AUTO soll ich kaufen?" → Objekt = Auto → nenne populäre Automodelle
-- "Welche SCHUHE kaufen?" → Objekt = Schuhe → nenne beliebte Schuhmodelle  
-- "Was ESSEN wir heute?" → Objekt = Gericht → nenne Gerichte
-- "Wohin REISEN?" → Objekt = Reiseziel → nenne Reiseziele
+Die Frage lautet: "${q}"
 
-Nutze dein Wissen über aktuelle, populäre Optionen. Gib 6 konkrete, kurze Antworten (1-4 Wörter) auf Deutsch.
+WICHTIGSTE REGEL: Finde das OBJEKT der Frage (das HAUPTNOMEN, worüber entschieden wird). Das Verb ist NICHT relevant.
+
+Beispiele:
+- "Welche SCHOKOLADE kaufen?" → Schokoladen-Marken: Lindt, Milka, Ritter Sport, Tony's...
+- "Welches AUTO kaufen?" → Auto-Modelle: VW Golf, BMW, Tesla, Toyota...
+- "Was ANZIEHEN heute Abend?" → Outfit-Ideen: Elegantes Kleid, Casual Jeans, Blazer...
+- "Was ESSEN wir?" → Gerichte: Pasta, Curry, Salat...
+- "Wohin REISEN?" → Reiseziele: Lissabon, Kyoto...
+
+Identifiziere jetzt das Hauptobjekt in: "${q}"
+Dann nenne 6 konkrete, abwechslungsreiche Beispiele dieses Objekts auf Deutsch (1-4 Wörter).
 Antworte NUR mit JSON-Array: ["Opt1","Opt2","Opt3","Opt4","Opt5","Opt6"]`;
 
-    const raw=await claude(prompt, true);
-    // extract JSON array from response
+    const raw=await callClaude(prompt);
     const match=raw.match(/\[[\s\S]*?\]/);
-    if(!match)throw new Error('no array');
+    if(!match)throw new Error('Kein Array gefunden');
     const ideas=JSON.parse(match[0]);
-    if(Array.isArray(ideas)&&ideas.length>=2&&ideas.every(x=>typeof x==='string')){
-      opts=ideas.slice(0,8).map(v=>({v:String(v)}));
-    } else throw new Error('bad');
+    if(Array.isArray(ideas)&&ideas.length>=2&&ideas.every(x=>typeof x==='string'&&x.length>0)){
+      opts=ideas.slice(0,8).map(v=>({v:String(v).trim()}));
+    }else throw new Error('Ungültiges Format');
   }catch(e){
-    console.warn('AI fallback:',e.message);
+    console.warn('KI Fallback aktiv:',e.message);
     opts=fallback(q).map(v=>({v}));
   }
   renderOpts();
@@ -471,52 +504,90 @@ Antworte NUR mit JSON-Array: ["Opt1","Opt2","Opt3","Opt4","Opt5","Opt6"]`;
   btn.disabled=false;
 }
 
+// ── START VOTE ────────────────────────────────────────────────────────────────
 async function startVote(){
   const q=document.getElementById('qIn').value.trim();
   const cat=document.getElementById('catSel').value;
   const clean=opts.map(o=>o.v.trim()).filter(Boolean);
-  if(!q){toast('Bitte eine Frage eingeben');return;}
-  if(clean.length<2){toast('Mindestens 2 Optionen nötig');return;}
+  const errEl=document.getElementById('errMsg');
+
+  errEl.style.display='none';
+  if(!q){showToast('Bitte eine Frage eingeben');return;}
+  if(clean.length<2){showToast('Mindestens 2 Optionen nötig');return;}
 
   const btn=document.getElementById('stBtn');
-  btn.disabled=true;btn.textContent='Wird gespeichert…';
+  btn.disabled=true;
+  btn.textContent='Wird gespeichert…';
 
-  if(!window._fbReady)await new Promise(r=>document.addEventListener('fbReady',r,{once:true}));
+  // Wait for Firebase with timeout
+  if(!window._fbReady){
+    try{
+      await Promise.race([
+        new Promise(r=>document.addEventListener('fbReady',r,{once:true})),
+        new Promise((_,reject)=>setTimeout(()=>reject(new Error('Firebase Timeout')),8000))
+      ]);
+    }catch(e){
+      errEl.textContent='Firebase konnte nicht geladen werden. Bitte Seite neu laden.';
+      errEl.style.display='block';
+      btn.disabled=false;btn.textContent='Abstimmung starten →';
+      return;
+    }
+  }
 
   const code='#'+Math.random().toString(36).substr(2,6).toUpperCase();
-  const poll={code,question:q,category:cat,
+  const poll={
+    code,question:q,category:cat,
     options:clean.map((v,i)=>({name:v,votes:0,color:C[i%C.length]})),
-    status:'Aktiv',created:new Date().toISOString()};
+    status:'Aktiv',created:new Date().toISOString()
+  };
+
   try{
     const fid=await fbSave(poll);
     poll._fid=fid;
-    btn.disabled=false;btn.textContent='Abstimmung starten →';
+    btn.disabled=false;
+    btn.textContent='Abstimmung starten →';
     openVote(poll);
   }catch(e){
-    toast('Fehler: '+e.message);
-    btn.disabled=false;btn.textContent='Abstimmung starten →';
-    console.error(e);
+    console.error('Firebase Save Error:',e);
+    errEl.textContent='Speichern fehlgeschlagen: '+e.message+'. Bitte Firebase-Regeln prüfen.';
+    errEl.style.display='block';
+    btn.disabled=false;
+    btn.textContent='Abstimmung starten →';
   }
 }
 
-// ── VOTE ─────────────────────────────────────────────────────────────────────
+// ── OPEN VOTE ─────────────────────────────────────────────────────────────────
 function openVote(poll){
   if(vUnsub){vUnsub();vUnsub=null;}
   curPoll=poll;curId=poll._fid;uVote=null;
+
   document.getElementById('vTitle').textContent=poll.question;
   document.getElementById('vCode').textContent=poll.code;
   setBadge(poll.status);
+
+  // Share bar
+  const url=location.origin+location.pathname+'?poll='+poll._fid;
+  document.getElementById('shareUrl').textContent=url;
+
   renderVOpts();drawW();renderRes();
   go('vote');
-  vUnsub=fbOne(curId,up=>{curPoll=up;setBadge(up.status);renderVOpts();drawW();renderRes();});
+
+  // Live listener
+  vUnsub=fbListenOne(curId,up=>{
+    curPoll=up;
+    setBadge(up.status);
+    renderVOpts();drawW();renderRes();
+  });
 }
 
 function setBadge(s){
   const b=document.getElementById('vBadge');
-  b.textContent=s;b.className='bdg '+(s==='Aktiv'?'bak':'bnd');
+  b.textContent=s;
+  b.className='bdg '+(s==='Aktiv'?'bak':'bnd');
 }
 
-function hasFood(p){return/essen|gericht|kochen|food|dinner|lunch|frühstück/i.test(p.category+' '+p.question);}
+function isFood(p){return/essen|gericht|kochen|food|dinner|lunch|frühstück/i.test(p.category+' '+p.question);}
+function isOutfit(p){return/outfit|anziehen|kleidung|look|mode|elegant|simpel/i.test(p.category+' '+p.question);}
 
 function renderVOpts(){
   const l=document.getElementById('vOptList');
@@ -524,40 +595,51 @@ function renderVOpts(){
   curPoll.options.forEach((o,i)=>{
     const d=document.createElement('div');
     d.className='vo'+(uVote===i?' vd':'');
-    const food=hasFood(curPoll);
+    const food=isFood(curPoll);
+    const outfit=isOutfit(curPoll);
+    let extra='';
+    if(food)extra=`<button class="recbtn" onclick="showModal(event,'recipe','${encodeURIComponent(o.name)}')">↗ Rezept</button>`;
+    else if(outfit)extra=`<button class="recbtn" onclick="showModal(event,'outfit','${encodeURIComponent(o.name)}')">↗ Inspiration</button>`;
     d.innerHTML=`
       <div class="ol">
         <div class="odd" style="background:${o.color}"></div>
-        <span class="on2">${o.name}</span>
-        ${food?`<button onclick="showRec(event,'${o.name.replace(/'/g,"\\'").replace(/"/g,'&quot;')}')" style="background:none;border:none;cursor:pointer;color:var(--coral);font-size:11px;margin-left:4px">↗ Rezept</button>`:''}
+        <span class="on2">${o.name}</span>${extra}
       </div>
       <div style="display:flex;align-items:center;gap:9px">
         <span class="oc">${o.votes}</span>
-        <button class="vib${uVote===i?' vd':''}" onclick="vote(${i})">${uVote===i?'✓':'Stimme'}</button>
+        <button class="vib${uVote===i?' vd':''}" onclick="castVote(${i})">${uVote===i?'✓':'Stimme'}</button>
       </div>`;
     l.appendChild(d);
   });
 }
 
-async function vote(i){
-  if(curPoll.status!=='Aktiv'){toast('Abstimmung beendet');return;}
+async function castVote(i){
+  if(curPoll.status!=='Aktiv'){showToast('Abstimmung bereits beendet');return;}
   const newO=curPoll.options.map((o,x)=>({...o,votes:x===i?o.votes+1:(uVote===x?Math.max(0,o.votes-1):o.votes)}));
   uVote=i;
   curPoll={...curPoll,options:newO};
   renderVOpts();renderRes();
-  try{await fbUpd(curId,{options:newO});}catch(e){toast('Speicherfehler');console.error(e);}
+  try{await fbUpdate(curId,{options:newO});}
+  catch(e){showToast('Speicherfehler');console.error(e);}
 }
 
 async function endVote(){
-  try{await fbUpd(curId,{status:'Beendet'});toast('Abstimmung beendet');}
-  catch{toast('Fehler');}
-}
-function copyLink(){
-  navigator.clipboard?.writeText(location.href.split('?')[0]+'?poll='+curId).catch(()=>{});
-  toast('Link kopiert! 🔗');
+  try{await fbUpdate(curId,{status:'Beendet'});showToast('Abstimmung beendet');}
+  catch{showToast('Fehler beim Beenden');}
 }
 
-// ── RESULTS ──────────────────────────────────────────────────────────────────
+function copyLink(){
+  const url=location.origin+location.pathname+'?poll='+curId;
+  navigator.clipboard?.writeText(url).then(()=>showToast('Link kopiert! Jetzt teilen 🔗')).catch(()=>{
+    // Fallback for devices without clipboard API
+    const el=document.createElement('textarea');
+    el.value=url;document.body.appendChild(el);el.select();
+    document.execCommand('copy');document.body.removeChild(el);
+    showToast('Link kopiert! 🔗');
+  });
+}
+
+// ── RESULTS ───────────────────────────────────────────────────────────────────
 function renderRes(){
   const tot=curPoll.options.reduce((s,o)=>s+o.votes,0);
   const ar=document.getElementById('resArea'),cc=document.getElementById('resChart');
@@ -573,10 +655,10 @@ function renderRes(){
       <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px">
         <span style="display:flex;align-items:center;gap:5px">
           <span style="width:7px;height:7px;border-radius:50%;background:${o.color};display:inline-block"></span>${o.name}
-        </span><span style="font-weight:500">${p}%</span>
+        </span><span style="font-weight:600">${p}%</span>
       </div>
-      <div style="background:#f0f0f0;border-radius:50px;height:5px;overflow:hidden">
-        <div style="width:${p}%;height:100%;background:${o.color};border-radius:50px;transition:width .5s ease"></div>
+      <div style="background:#f0f0f0;border-radius:50px;height:6px;overflow:hidden">
+        <div style="width:${p}%;height:100%;background:${o.color};border-radius:50px;transition:width .6s ease"></div>
       </div></div>`;
   }).join('');
   cc.style.display='block';
@@ -586,7 +668,7 @@ function renderRes(){
     options:{plugins:{legend:{display:false}},cutout:'65%',animation:{duration:500}}});
 }
 
-// ── WHEEL ────────────────────────────────────────────────────────────────────
+// ── WHEEL ─────────────────────────────────────────────────────────────────────
 function drawW(){
   const cv=document.getElementById('wCanvas'),ctx=cv.getContext('2d');
   const cx=135,cy=135,r=128;
@@ -626,13 +708,15 @@ function animW(){
   if(wStop&&wVel<.002){
     wSpin=false;wStop=false;
     document.getElementById('spBtn').disabled=false;document.getElementById('stpBtn').disabled=true;
-    const w=getSeg();vote(w);toast('🎯 '+curPoll.options[w].name+' wurde gewählt!');confetti();return;
+    const w=getSeg();castVote(w);
+    showToast('🎯 '+curPoll.options[w].name+' wurde gewählt!');
+    launchConfetti();return;
   }
   requestAnimationFrame(animW);
 }
 
-// ── CONFETTI ─────────────────────────────────────────────────────────────────
-function confetti(){
+// ── CONFETTI ──────────────────────────────────────────────────────────────────
+function launchConfetti(){
   const cv=document.getElementById('cc');
   cv.width=innerWidth;cv.height=innerHeight;cv.style.display='block';
   const ctx=cv.getContext('2d');
@@ -655,55 +739,96 @@ function confetti(){
 
 // ── AI IDEAS IN VOTE ──────────────────────────────────────────────────────────
 async function genAIVote(){
-  toast('KI denkt nach…');
+  showToast('KI denkt nach…');
+  const seed=Math.floor(Math.random()*10000);
   try{
-    const prompt=`Frage: "${curPoll.question}". Bestimme das Objekt der Frage und schlage 4 weitere konkrete Optionen vor (1-4 Wörter, Deutsch). Nur JSON-Array: ["Opt1","Opt2","Opt3","Opt4"]`;
-    const raw=await claude(prompt,true);
+    const prompt=`Seed: ${seed}. Frage: "${curPoll.question}". Bestimme das Objekt der Frage und schlage 4 weitere konkrete, abwechslungsreiche Optionen vor (1-4 Wörter, Deutsch). Nur JSON-Array: ["Opt1","Opt2","Opt3","Opt4"]`;
+    const raw=await callClaude(prompt);
     const m=raw.match(/\[[\s\S]*?\]/);
     if(!m)throw new Error('no array');
     const ideas=JSON.parse(m[0]);
     if(Array.isArray(ideas)&&ideas.length){
       const no=[...curPoll.options];
-      ideas.forEach(v=>{if(no.length<10)no.push({name:String(v),votes:0,color:C[no.length%C.length]});});
-      await fbUpd(curId,{options:no});toast('KI-Ideen hinzugefügt!');
+      ideas.forEach(v=>{if(no.length<10)no.push({name:String(v).trim(),votes:0,color:C[no.length%C.length]});});
+      await fbUpdate(curId,{options:no});
+      showToast('Neue KI-Ideen hinzugefügt!');
     }
   }catch{
-    const fb2=fallback(curPoll.question).slice(0,3);
+    const extras=fallback(curPoll.question).slice(0,3);
     const no=[...curPoll.options];
-    fb2.forEach(v=>{if(no.length<10&&!no.find(o=>o.name===v))no.push({name:v,votes:0,color:C[no.length%C.length]});});
-    await fbUpd(curId,{options:no}).catch(()=>{});toast('Ideen hinzugefügt!');
+    extras.forEach(v=>{if(no.length<10&&!no.find(o=>o.name===v))no.push({name:v,votes:0,color:C[no.length%C.length]});});
+    await fbUpdate(curId,{options:no}).catch(()=>{});
+    showToast('Ideen hinzugefügt!');
   }
 }
 
-// ── RECIPE ───────────────────────────────────────────────────────────────────
-async function showRec(e,dish){
+// ── MODAL: RECIPE & OUTFIT ────────────────────────────────────────────────────
+async function showModal(e,type,encodedName){
   e.stopPropagation();
+  const name=decodeURIComponent(encodedName);
   document.getElementById('recMo').classList.add('on');
-  document.getElementById('recCon').innerHTML=`<div class="ail" style="justify-content:center;padding:38px 0"><div class="sp"></div> Rezept wird geladen…</div>`;
-  try{
-    const raw=await claude(`Rezept für "${dish}". NUR JSON:
-{"title":"${dish}","time":"25 Min","servings":2,"ingredients":["200g X"],"steps":["Schritt 1"],"calories":400,"protein":"18g","carbs":"35g"}`);
-    const m=raw.match(/\{[\s\S]*\}/);
-    const r=JSON.parse(m?m[0]:raw);
-    document.getElementById('recCon').innerHTML=`
-      <button class="mc" onclick="closeRec()">✕</button>
-      <div class="mt">${r.title}</div><div class="ms">⏱ ${r.time} · 🍽 ${r.servings} Portionen</div>
-      <div class="rs"><h4>Zutaten</h4><ul>${(r.ingredients||[]).map(x=>`<li>${x}</li>`).join('')}</ul></div>
-      <div class="rs"><h4>Zubereitung</h4>${(r.steps||[]).map((s,i)=>`<p style="margin-bottom:6px"><strong>${i+1}.</strong> ${s}</p>`).join('')}</div>
-      <div class="rs"><h4>Nährwerte</h4><div class="ng">
-        <div class="ni"><div class="nv2">${r.calories||'—'}</div><div class="nl">Kalorien</div></div>
-        <div class="ni"><div class="nv2">${r.protein||'—'}</div><div class="nl">Protein</div></div>
-        <div class="ni"><div class="nv2">${r.carbs||'—'}</div><div class="nl">Kohlenhydrate</div></div>
-      </div></div>`;
-  }catch{document.getElementById('recCon').innerHTML=`<button class="mc" onclick="closeRec()">✕</button><p style="padding:20px;color:var(--muted)">Rezept nicht verfügbar.</p>`;}
-}
-function closeRec(){document.getElementById('recMo').classList.remove('on');}
+  document.getElementById('recCon').innerHTML=`<div class="ail" style="justify-content:center;padding:38px 0"><div class="sp"></div> Wird geladen…</div>`;
 
-// ── ARCHIVE ──────────────────────────────────────────────────────────────────
+  try{
+    if(type==='recipe'){
+      const raw=await callClaude(`Erstelle ein kurzes, gesundes Rezept für "${name}".
+Antworte NUR mit diesem JSON (kein anderer Text):
+{"title":"${name}","time":"25 Min","servings":2,"ingredients":["200g Zutat"],"steps":["Schritt 1","Schritt 2"],"calories":400,"protein":"18g","carbs":"35g"}`);
+      const m=raw.match(/\{[\s\S]*\}/);
+      const r=JSON.parse(m?m[0]:raw);
+      document.getElementById('recCon').innerHTML=`
+        <button class="mc" onclick="closeModal()">✕</button>
+        <div class="mt">${r.title}</div><div class="ms">⏱ ${r.time} · 🍽 ${r.servings} Portionen</div>
+        <div class="rs"><h4>Zutaten</h4><ul>${(r.ingredients||[]).map(x=>`<li>${x}</li>`).join('')}</ul></div>
+        <div class="rs"><h4>Zubereitung</h4>${(r.steps||[]).map((s,i)=>`<p style="margin-bottom:6px"><strong>${i+1}.</strong> ${s}</p>`).join('')}</div>
+        <div class="rs"><h4>Nährwerte</h4><div class="ng">
+          <div class="ni"><div class="nv2">${r.calories||'—'}</div><div class="nl">Kalorien</div></div>
+          <div class="ni"><div class="nv2">${r.protein||'—'}</div><div class="nl">Protein</div></div>
+          <div class="ni"><div class="nv2">${r.carbs||'—'}</div><div class="nl">Kohlenhydrate</div></div>
+        </div></div>`;
+    } else {
+      // Outfit inspiration with Pinterest search links
+      const raw=await callClaude(`Beschreibe den Outfit-Look "${name}" für eine Abstimmungs-App kurz und inspirierend auf Deutsch.
+Antworte NUR mit diesem JSON:
+{"look":"${name}","beschreibung":"2-3 Sätze über den Look","teile":["Oberteil Idee","Hose/Rock Idee","Schuhe Idee","Accessoire Idee"],"farben":["Farbe1","Farbe2","Farbe3"],"anlass":"z.B. Kino, Party, Dinner"}`);
+      const m=raw.match(/\{[\s\S]*\}/);
+      const r=JSON.parse(m?m[0]:raw);
+      const searchQ=encodeURIComponent(name+' outfit inspiration');
+      const pinterestUrl=`https://www.pinterest.com/search/pins/?q=${searchQ}`;
+      const googleUrl=`https://www.google.com/search?q=${searchQ}&tbm=isch`;
+      document.getElementById('recCon').innerHTML=`
+        <button class="mc" onclick="closeModal()">✕</button>
+        <div class="mt">${r.look}</div>
+        <div class="ms">Anlass: ${r.anlass||'Vielseitig'}</div>
+        <div class="rs"><h4>Der Look</h4><p>${r.beschreibung||''}</p></div>
+        <div class="rs"><h4>Was du brauchst</h4><ul>${(r.teile||[]).map(x=>`<li>${x}</li>`).join('')}</ul></div>
+        <div class="rs"><h4>Farben</h4>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            ${(r.farben||[]).map(f=>`<span style="padding:5px 14px;border-radius:50px;background:var(--cream);font-size:12px">${f}</span>`).join('')}
+          </div>
+        </div>
+        <div class="rs"><h4>Inspiration finden</h4>
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <a href="${pinterestUrl}" target="_blank" style="padding:8px 18px;background:#e60023;color:white;border-radius:50px;text-decoration:none;font-size:13px;font-weight:500">📌 Pinterest</a>
+            <a href="${googleUrl}" target="_blank" style="padding:8px 18px;background:var(--forest);color:var(--lime);border-radius:50px;text-decoration:none;font-size:13px;font-weight:500">🔍 Google Bilder</a>
+          </div>
+        </div>`;
+    }
+  }catch(err){
+    console.error(err);
+    document.getElementById('recCon').innerHTML=`<button class="mc" onclick="closeModal()">✕</button><p style="padding:20px;color:var(--muted)">Konnte nicht geladen werden.</p>`;
+  }
+}
+function closeModal(){document.getElementById('recMo').classList.remove('on');}
+
+// ── ARCHIVE ───────────────────────────────────────────────────────────────────
 function startArch(){
   if(aUnsub){renderArch();return;}
-  if(!window._fbReady){document.addEventListener('fbReady',()=>{aUnsub=fbAll(renderArch);},{once:true});return;}
-  aUnsub=fbAll(renderArch);
+  if(!window._fbReady){
+    document.addEventListener('fbReady',()=>{aUnsub=fbListenAll(renderArch);},{once:true});
+    return;
+  }
+  aUnsub=fbListenAll(renderArch);
 }
 function renderArch(){
   const q=(document.getElementById('srch')?.value||'').toLowerCase();
@@ -714,8 +839,8 @@ function renderArch(){
   if(!f.length){g.innerHTML='<div class="es">Keine Abstimmungen gefunden</div>';return;}
   g.innerHTML=f.map(p=>{
     const tot=p.options.reduce((s,o)=>s+o.votes,0);
-    return`<div class="acd" data-fid="${p._fid}" onclick="openFromArch('${p._fid}')">
-      <div class="at"><span class="acat">${p.category}</span>
+    return`<div class="acd" onclick="openFromArch('${p._fid}')">
+      <div class="at2"><span class="acat">${p.category}</span>
         <span class="bdg ${p.status==='Aktiv'?'bak':'bnd'}">${p.status}</span></div>
       <div class="aq">${p.question}</div>
       <div class="av">👥 ${tot} Stimmen</div>
@@ -728,20 +853,23 @@ function openFromArch(fid){
   if(p)openVote(p);
 }
 
-// ── TOAST ────────────────────────────────────────────────────────────────────
-function toast(msg){
+// ── TOAST ─────────────────────────────────────────────────────────────────────
+function showToast(msg){
   const t=document.getElementById('toast');
   t.textContent=msg;t.classList.add('on');
-  setTimeout(()=>t.classList.remove('on'),2800);
+  setTimeout(()=>t.classList.remove('on'),3000);
 }
 
-// ── INIT ─────────────────────────────────────────────────────────────────────
+// ── INIT ──────────────────────────────────────────────────────────────────────
 initCreate();
+
 function checkUrl(){
   const id=new URLSearchParams(location.search).get('poll');
   if(!id)return;
-  const{doc:D,getDoc:G}=fb();
-  G(D(db(),'polls',id)).then(s=>{if(s.exists())openVote({...s.data(),_fid:s.id});}).catch(()=>{});
+  const{doc:D,getDoc:G}=getFB();
+  G(D(getDB(),'polls',id))
+    .then(s=>{if(s.exists())openVote({...s.data(),_fid:s.id});})
+    .catch(err=>console.error('URL poll load error:',err));
 }
 if(window._fbReady)checkUrl();
 else document.addEventListener('fbReady',checkUrl,{once:true});

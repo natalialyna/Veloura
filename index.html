@@ -58,7 +58,7 @@
     .bs{padding:15px 34px;border-radius:50px;border:1.5px solid rgba(0,0,0,.12);cursor:pointer;background:white;color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;transition:all .2s;}
     .bs:hover{background:var(--cream);}
 
-    /* SHARED CARD STYLES */
+    /* CREATE */
     .pi{max-width:680px;margin:0 auto;padding:40px 28px 80px;}
     .plabel{font-size:11px;font-weight:500;letter-spacing:2px;color:var(--coral);text-transform:uppercase;margin-bottom:8px;}
     .ptitle{font-family:'Playfair Display',serif;font-size:36px;margin-bottom:30px;}
@@ -68,9 +68,6 @@
     .inp{width:100%;padding:13px 15px;border-radius:12px;border:1.5px solid rgba(0,0,0,.08);background:rgba(255,255,255,.9);font-family:'DM Sans',sans-serif;font-size:14px;color:var(--text);outline:none;transition:border-color .2s;}
     .inp:focus{border-color:var(--forest);}
     .inp::placeholder{color:#bbb;}
-    .sw{position:relative;}
-    .sel{width:100%;padding:13px 15px;border-radius:12px;border:1.5px solid rgba(0,0,0,.08);background:rgba(255,255,255,.9);font-family:'DM Sans',sans-serif;font-size:14px;color:var(--text);outline:none;appearance:none;cursor:pointer;}
-    .sa{position:absolute;right:15px;top:50%;transform:translateY(-50%);pointer-events:none;color:var(--muted);}
     .oh{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
     .aib{background:none;border:none;cursor:pointer;color:var(--lavender);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;display:flex;align-items:center;gap:5px;transition:opacity .2s;}
     .aib:hover{opacity:.7;}
@@ -84,39 +81,32 @@
     .aob{background:none;border:none;cursor:pointer;color:var(--muted);font-family:'DM Sans',sans-serif;font-size:13px;display:flex;align-items:center;gap:5px;padding:6px 0;transition:color .2s;}
     .aob:hover{color:var(--forest);}
     .stb{width:100%;padding:14px;border-radius:12px;border:none;cursor:pointer;background:var(--forest);color:var(--lime);font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;margin-top:22px;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .2s;box-shadow:0 4px 20px rgba(64,89,79,.18);}
-    .stb:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 8px 28px rgba(64,89,79,.28);}
+    .stb:hover:not(:disabled){transform:translateY(-1px);}
     .stb:disabled{opacity:.6;cursor:not-allowed;transform:none;}
     .ail{display:flex;align-items:center;gap:8px;color:var(--lavender);font-size:13px;padding:8px 0;}
     .sp{width:15px;height:15px;border:2px solid rgba(150,152,220,.2);border-top-color:var(--lavender);border-radius:50%;animation:spin .8s linear infinite;flex-shrink:0;}
     @keyframes spin{to{transform:rotate(360deg)}}
 
-    /* ── COLLECT PAGE ──────────────────────────────────────────────────────── */
+    /* COLLECT */
     .collect-wrap{max-width:620px;margin:0 auto;padding:40px 28px 80px;}
     .collect-question{font-family:'Playfair Display',serif;font-size:28px;margin-bottom:8px;line-height:1.2;}
-    .collect-sub{font-size:14px;color:var(--muted);margin-bottom:32px;}
-
-    /* Big share box */
-    .share-box{background:var(--forest);border-radius:var(--r);padding:28px;margin-bottom:24px;text-align:center;}
-    .share-box-title{font-family:'Playfair Display',serif;font-size:20px;color:var(--lime);margin-bottom:6px;}
-    .share-box-sub{font-size:13px;color:rgba(236,243,143,.7);margin-bottom:18px;}
-    .share-url-display{background:rgba(255,255,255,.12);border-radius:10px;padding:10px 16px;font-size:12px;color:white;word-break:break-all;margin-bottom:14px;text-align:left;}
-    .share-copy-btn{padding:12px 28px;border-radius:50px;border:none;cursor:pointer;background:var(--lime);color:var(--forest);font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;transition:all .2s;}
-    .share-copy-btn:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(0,0,0,.2);}
+    .collect-sub{font-size:14px;color:var(--muted);margin-bottom:28px;}
+    .share-box{background:var(--forest);border-radius:var(--r);padding:26px;margin-bottom:22px;text-align:center;}
+    .share-box-title{font-family:'Playfair Display',serif;font-size:19px;color:var(--lime);margin-bottom:5px;}
+    .share-box-sub{font-size:13px;color:rgba(236,243,143,.7);margin-bottom:16px;}
+    .share-url-display{background:rgba(255,255,255,.12);border-radius:10px;padding:10px 14px;font-size:12px;color:white;word-break:break-all;margin-bottom:14px;text-align:left;}
+    .share-copy-btn{padding:11px 26px;border-radius:50px;border:none;cursor:pointer;background:var(--lime);color:var(--forest);font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;transition:all .2s;}
+    .share-copy-btn:hover{transform:translateY(-1px);}
     .share-icons{display:flex;gap:10px;justify-content:center;margin-top:12px;flex-wrap:wrap;}
     .share-icon-btn{padding:8px 16px;border-radius:50px;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;display:flex;align-items:center;gap:6px;transition:all .2s;}
     .share-wa{background:#25D366;color:white;}
-    .share-mail{background:#f0f0f0;color:var(--text);}
-
-    /* Live options list in collect phase */
+    .share-mail{background:rgba(255,255,255,.2);color:white;}
     .collect-card{background:var(--card);backdrop-filter:blur(20px);border-radius:var(--r);padding:24px;box-shadow:var(--sh);border:1px solid rgba(255,255,255,.9);margin-bottom:16px;}
     .collect-card-title{font-family:'Playfair Display',serif;font-size:18px;margin-bottom:4px;}
     .collect-card-sub{font-size:12px;color:var(--muted);margin-bottom:16px;}
     .opt-chip{display:flex;align-items:center;gap:10px;padding:10px 14px;background:rgba(255,255,255,.8);border-radius:12px;margin-bottom:8px;border:1.5px solid rgba(0,0,0,.05);}
     .opt-chip-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
     .opt-chip-name{font-size:14px;flex:1;}
-    .opt-chip-new{font-size:10px;color:var(--coral);font-weight:600;background:rgba(223,102,58,.1);padding:2px 8px;border-radius:50px;}
-
-    /* Add option row in collect */
     .add-opt-row{display:flex;gap:10px;margin-top:12px;}
     .add-opt-inp{flex:1;padding:11px 14px;border-radius:12px;border:1.5px solid rgba(0,0,0,.08);background:white;font-family:'DM Sans',sans-serif;font-size:13px;outline:none;transition:border-color .2s;}
     .add-opt-inp:focus{border-color:var(--forest);}
@@ -124,21 +114,27 @@
     .add-opt-btn:hover:not(:disabled){transform:translateY(-1px);}
     .add-opt-btn:disabled{opacity:.5;cursor:not-allowed;}
     .max-note{font-size:11px;color:var(--muted);text-align:center;margin-top:8px;}
-
-    /* Start vote button */
     .start-vote-btn{width:100%;padding:16px;border-radius:14px;border:none;cursor:pointer;background:var(--coral);color:white;font-family:'DM Sans',sans-serif;font-size:16px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .2s;box-shadow:0 4px 20px rgba(223,102,58,.3);margin-top:8px;}
-    .start-vote-btn:hover:not(:disabled){transform:translateY(-1px);box-shadow:0 8px 28px rgba(223,102,58,.4);}
+    .start-vote-btn:hover:not(:disabled){transform:translateY(-1px);}
     .start-vote-btn:disabled{opacity:.6;cursor:not-allowed;transform:none;}
-    .waiting-note{font-size:13px;color:var(--muted);text-align:center;margin-top:12px;}
 
-    /* VOTE PAGE */
+    /* VOTE */
     .vi{max-width:1040px;margin:0 auto;padding:32px 28px 80px;}
     .bdg{padding:4px 11px;border-radius:50px;font-size:12px;font-weight:500;}
     .bak{background:var(--lime);color:var(--forest);}
     .bnd{background:#f0f0f0;color:var(--muted);}
-    .vt{font-family:'Playfair Display',serif;font-size:clamp(20px,4vw,40px);margin:10px 0 26px;}
+    .vt{font-family:'Playfair Display',serif;font-size:clamp(20px,4vw,40px);margin:10px 0 22px;}
     .bkb{background:none;border:none;cursor:pointer;color:var(--muted);font-family:'DM Sans',sans-serif;font-size:13px;display:flex;align-items:center;gap:5px;transition:color .2s;}
     .bkb:hover{color:var(--text);}
+
+    /* Share bar on vote page */
+    .vote-share-bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:rgba(64,89,79,.07);border-radius:14px;padding:12px 16px;margin-bottom:18px;}
+    .vote-share-url{font-size:12px;color:var(--muted);flex:1;word-break:break-all;}
+    .vote-share-copy{padding:7px 16px;border-radius:50px;border:none;cursor:pointer;background:var(--forest);color:var(--lime);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;white-space:nowrap;transition:all .2s;}
+    .vote-share-copy:hover{transform:translateY(-1px);}
+    .vote-share-wa{padding:7px 14px;border-radius:50px;border:none;cursor:pointer;background:#25D366;color:white;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;white-space:nowrap;transition:all .2s;}
+    .vote-share-mail{padding:7px 14px;border-radius:50px;border:1.5px solid rgba(0,0,0,.1);cursor:pointer;background:white;color:var(--text);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;white-space:nowrap;transition:all .2s;}
+
     .enb{padding:8px 20px;border-radius:50px;font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;font-weight:500;border:1.5px solid var(--coral);background:white;color:var(--coral);transition:all .2s;}
     .enb:hover{background:var(--coral);color:white;}
     .vg{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
@@ -168,25 +164,14 @@
     .vib:hover{background:var(--forest);color:var(--lime);border-color:var(--forest);}
     .vib.vd{background:var(--forest);color:var(--lime);border-color:var(--forest);}
     .nvotes{color:var(--muted);font-size:13px;text-align:center;padding:18px 0;}
-    .recbtn{background:none;border:none;cursor:pointer;color:var(--coral);font-size:11px;margin-left:4px;text-decoration:underline;padding:0;font-family:'DM Sans',sans-serif;}
 
-    /* MODAL */
-    .mo{display:none;position:fixed;inset:0;z-index:300;background:rgba(0,0,0,.45);backdrop-filter:blur(8px);align-items:center;justify-content:center;padding:20px;}
-    .mo.on{display:flex;}
-    .md{background:white;border-radius:22px;padding:34px;max-width:500px;width:100%;max-height:84vh;overflow-y:auto;box-shadow:0 24px 80px rgba(0,0,0,.15);animation:mdin .3s ease;}
-    @keyframes mdin{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
-    .mc{float:right;background:none;border:none;cursor:pointer;font-size:20px;color:var(--muted);}
-    .mt{font-family:'Playfair Display',serif;font-size:23px;margin-bottom:5px;}
-    .ms{color:var(--muted);font-size:12px;margin-bottom:20px;}
-    .rs{margin-bottom:16px;}
-    .rs h4{font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--coral);margin-bottom:7px;}
-    .rs ul{list-style:none;}
-    .rs li{font-size:13px;padding:4px 0;border-bottom:1px solid #f2f2f2;color:#444;}
-    .rs p{font-size:13px;line-height:1.7;color:#444;}
-    .ng{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;}
-    .ni{background:var(--cream);border-radius:10px;padding:9px;text-align:center;}
-    .nv2{font-size:17px;font-weight:600;color:var(--forest);}
-    .nl{font-size:10px;color:var(--muted);margin-top:2px;}
+    /* Add option row on vote page */
+    .vote-add-row{display:flex;gap:8px;margin-top:14px;padding-top:14px;border-top:1px solid rgba(0,0,0,.06);}
+    .vote-add-inp{flex:1;padding:9px 13px;border-radius:10px;border:1.5px solid rgba(0,0,0,.08);background:white;font-family:'DM Sans',sans-serif;font-size:13px;outline:none;transition:border-color .2s;}
+    .vote-add-inp:focus{border-color:var(--forest);}
+    .vote-add-btn{padding:9px 16px;border-radius:10px;border:none;cursor:pointer;background:var(--forest);color:var(--lime);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;white-space:nowrap;transition:all .2s;}
+    .vote-add-btn:hover:not(:disabled){transform:translateY(-1px);}
+    .vote-add-btn:disabled{opacity:.5;cursor:not-allowed;}
 
     /* ARCHIVE */
     .ai2{max-width:1040px;margin:0 auto;padding:38px 28px 80px;}
@@ -198,15 +183,12 @@
     .acd{background:var(--card);backdrop-filter:blur(20px);border-radius:16px;padding:20px;box-shadow:var(--sh);border:1px solid rgba(255,255,255,.9);cursor:pointer;transition:all .2s;}
     .acd:hover{transform:translateY(-3px);box-shadow:0 14px 45px rgba(0,0,0,.1);}
     .at2{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:9px;}
-    .acat{font-size:10px;padding:3px 9px;border-radius:50px;background:rgba(0,0,0,.05);color:var(--muted);}
     .aq{font-family:'Playfair Display',serif;font-size:15px;margin-bottom:9px;line-height:1.3;}
     .av{font-size:12px;color:var(--muted);margin-bottom:9px;}
     .ads{display:flex;gap:4px;}
     .adot{width:9px;height:9px;border-radius:50%;}
     .es{grid-column:1/-1;text-align:center;padding:65px 0;color:var(--muted);font-size:15px;}
-
-    /* phase badge */
-    .phase-badge{display:inline-flex;align-items:center;gap:5px;padding:4px 12px;border-radius:50px;font-size:11px;font-weight:600;}
+    .phase-badge{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:50px;font-size:11px;font-weight:600;}
     .phase-collect{background:rgba(161,186,245,.2);color:#5a7ed4;}
     .phase-vote{background:rgba(236,243,143,.5);color:var(--forest);}
     .phase-done{background:#f0f0f0;color:var(--muted);}
@@ -257,23 +239,8 @@
         <input type="text" id="qIn" class="inp" placeholder="z.B. Welches Auto soll ich kaufen?">
       </div>
       <div class="fg">
-        <div class="fl">KATEGORIE</div>
-        <div class="sw">
-          <select id="catSel" class="sel">
-            <option>Sonstiges</option>
-            <option>Outdoor</option><option>Indoor</option><option>Activity</option>
-            <option>Natur</option><option>Gesundheit</option>
-            <option>Food</option><option>Essen</option><option>Trinken</option>
-            <option>Mode & Outfit</option><option>Elegant</option><option>Simpel</option>
-            <option>Design</option><option>Reisen</option><option>Ausflüge</option>
-            <option>Kaufentscheidungen</option><option>Nice to have</option><option>Fun</option>
-          </select>
-          <span class="sa">∨</span>
-        </div>
-      </div>
-      <div class="fg">
         <div class="oh">
-          <div class="fl" style="margin:0">OPTIONEN <span style="color:var(--muted);font-weight:400">(optional — andere können auch noch hinzufügen)</span></div>
+          <div class="fl" style="margin:0">ANTWORTMÖGLICHKEITEN <span style="color:var(--muted);font-weight:400;font-size:11px">(andere können später auch hinzufügen)</span></div>
           <button class="aib" id="aiBtn" onclick="genAI()">✦ KI-Ideen</button>
         </div>
         <div id="optList"></div>
@@ -286,28 +253,24 @@
   </div>
 </div>
 
-<!-- COLLECT PHASE — share link + add options together -->
+<!-- COLLECT PHASE -->
 <div class="pg" id="pg-collect">
   <div class="collect-wrap">
     <div class="plabel">SAMMELN</div>
     <div class="collect-question" id="collectQ"></div>
-    <div class="collect-sub">Teile den Link — alle können Antworten hinzufügen</div>
-
-    <!-- Share box -->
+    <div class="collect-sub">Teile den Link — alle können Antworten hinzufügen, bevor die Abstimmung startet</div>
     <div class="share-box">
       <div class="share-box-title">🔗 Link teilen</div>
-      <div class="share-box-sub">Schick diesen Link an alle, die mitmachen sollen</div>
+      <div class="share-box-sub">Jeder mit diesem Link kann direkt mitmachen — kein Account nötig</div>
       <div class="share-url-display" id="collectUrl"></div>
       <button class="share-copy-btn" onclick="copyCollectLink()">Link kopieren</button>
       <div class="share-icons">
-        <button class="share-icon-btn share-wa" onclick="shareWhatsApp()">💬 WhatsApp</button>
-        <button class="share-icon-btn share-mail" onclick="shareMail()">✉️ E-Mail</button>
+        <button class="share-icon-btn share-wa" onclick="shareWA('collect')">💬 WhatsApp</button>
+        <button class="share-icon-btn share-mail" onclick="shareMail('collect')">✉️ E-Mail</button>
       </div>
     </div>
-
-    <!-- Live options -->
     <div class="collect-card">
-      <div class="collect-card-title">Antworten sammeln</div>
+      <div class="collect-card-title">Antworten</div>
       <div class="collect-card-sub" id="optCountNote">0 / 10 Antworten</div>
       <div id="collectOptList"></div>
       <div class="add-opt-row" id="addOptRow">
@@ -316,12 +279,8 @@
       </div>
       <div class="max-note" id="maxNote" style="display:none">Maximum von 10 Antworten erreicht</div>
     </div>
-
-    <!-- Start voting -->
-    <button class="start-vote-btn" id="startVoteBtn" onclick="startVotingPhase()">
-      🗳 Abstimmung starten
-    </button>
-    <div class="waiting-note" id="waitingNote">Warte bis alle ihre Antworten hinzugefügt haben, dann starte die Abstimmung.</div>
+    <button class="start-vote-btn" onclick="startVotingPhase()">🗳 Abstimmung jetzt starten</button>
+    <p style="font-size:12px;color:var(--muted);text-align:center;margin-top:10px">Warte bis alle ihre Antworten hinzugefügt haben, dann starte die Abstimmung.</p>
   </div>
 </div>
 
@@ -330,11 +289,19 @@
   <div class="vi">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:10px">
       <button class="bkb" onclick="goBack()">← Zurück</button>
-      <button class="enb" onclick="endVote()">Abstimmung beenden</button>
+      <button class="enb" id="endBtn" onclick="endVote()">Abstimmung beenden</button>
     </div>
+
+    <!-- SHARE BAR — always visible -->
+    <div class="vote-share-bar">
+      <span class="vote-share-url" id="voteShareUrl"></span>
+      <button class="vote-share-copy" onclick="copyVoteLink()">🔗 Kopieren</button>
+      <button class="vote-share-wa" onclick="shareWA('vote')">💬 WhatsApp</button>
+      <button class="vote-share-mail" onclick="shareMail('vote')">✉️ Mail</button>
+    </div>
+
     <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap">
       <span class="bdg bak" id="vBadge">Aktiv</span>
-      <span id="vPhaseBadge" class="phase-badge phase-vote">🗳 Abstimmung läuft</span>
       <span style="color:var(--muted);font-size:12px" id="vCode"></span>
     </div>
     <h2 class="vt" id="vTitle"></h2>
@@ -355,6 +322,12 @@
         <div class="vlc">
           <div class="ptt">Abstimmen</div>
           <div id="vOptList"></div>
+          <!-- Add option row — hidden when ended -->
+          <div class="vote-add-row" id="voteAddRow">
+            <input type="text" class="vote-add-inp" id="voteAddInp" placeholder="Antwort hinzufügen…" onkeydown="if(event.key==='Enter')addVoteOpt()">
+            <button class="vote-add-btn" onclick="addVoteOpt()">+ Hinzufügen</button>
+          </div>
+          <div class="max-note" id="voteMaxNote" style="display:none">Maximum von 10 Antworten erreicht</div>
         </div>
         <div class="rc">
           <div class="ptt">Ergebnisse</div>
@@ -373,15 +346,6 @@
     <h1 class="ptitle">Vergangene Abstimmungen</h1>
     <div class="ac">
       <input type="text" class="si" placeholder="Suchen…" id="srch" oninput="renderArch()">
-      <select class="fs" id="fCat" onchange="renderArch()">
-        <option value="">Alle Kategorien</option>
-        <option>Outdoor</option><option>Indoor</option><option>Activity</option>
-        <option>Natur</option><option>Gesundheit</option>
-        <option>Food</option><option>Essen</option><option>Trinken</option>
-        <option>Mode & Outfit</option><option>Elegant</option><option>Simpel</option>
-        <option>Design</option><option>Reisen</option><option>Ausflüge</option>
-        <option>Kaufentscheidungen</option><option>Nice to have</option><option>Fun</option><option>Sonstiges</option>
-      </select>
       <select class="fs" id="fSt" onchange="renderArch()">
         <option value="">Alle Status</option>
         <option>Sammeln</option><option>Aktiv</option><option>Beendet</option>
@@ -391,19 +355,17 @@
   </div>
 </div>
 
-<!-- MODAL -->
-<div class="mo" id="recMo"><div class="md"><div id="recCon"></div></div></div>
 <div class="toast" id="toast"></div>
 <canvas id="cc"></canvas>
 
 <script>
 const C=['#40594f','#a1baf5','#9698dc','#ecf38f','#6db088','#c4d4f8','#b8b9e8','#f2f7a0','#df663a','#f5a88a'];
 
-// ── FALLBACKS ────────────────────────────────────────────────────────────────
+// ── FALLBACKS — object-first ─────────────────────────────────────────────────
 function fallback(q){
   const t=q.toLowerCase();
   if(/schokolade|schoki|praline|tafel/i.test(t)) return['Lindt Excellence','Ritter Sport Marzipan','Milka Oreo','Ferrero Rocher','Tony Chocolonely','Green & Black'];
-  if(/auto|fahrzeug|wagen|pkw|e-auto|suv/i.test(t)) return['VW Golf','BMW 3er','Toyota Yaris','Tesla Model 3','Skoda Octavia','Hyundai i30'];
+  if(/auto|fahrzeug|wagen|pkw|e-auto|suv|cabrio/i.test(t)) return['VW Golf','BMW 3er','Toyota Yaris','Tesla Model 3','Skoda Octavia','Hyundai i30'];
   if(/schuh|sneaker|boot|sandale|stiefel/i.test(t)) return['Nike Air Max','New Balance 574','Adidas Samba','Veja V-10','Salomon XT-6','On Cloud 5'];
   if(/laptop|computer|macbook|notebook/i.test(t)) return['MacBook Air M3','Dell XPS 13','Lenovo ThinkPad','Surface Pro','ASUS ZenBook','HP Spectre'];
   if(/handy|smartphone|iphone|android/i.test(t)) return['iPhone 16','Samsung S25','Google Pixel 9','OnePlus 13','Xiaomi 14','Fairphone 5'];
@@ -416,7 +378,7 @@ function fallback(q){
     return food[Math.floor(Math.random()*food.length)];
   }
   if(/trinken|getränk|cocktail|drink|kaffee|tee/i.test(t)){
-    const d=[['Matcha Latte','Aperol Spritz','Cold Brew','Kombucha','Mojito','Chai Latte'],['Espresso Tonic','Hugo Spritz','Oat Milk Latte','Elderflower Tonic','Negroni','Iced Matcha']];
+    const d=[['Matcha Latte','Aperol Spritz','Cold Brew','Kombucha','Mojito','Chai Latte'],['Espresso Tonic','Hugo Spritz','Oat Milk Latte','Negroni','Iced Matcha','Elderflower Tonic']];
     return d[Math.floor(Math.random()*d.length)];
   }
   if(/reise|urlaub|ferien|ausflug|wohin/i.test(t)){
@@ -465,7 +427,6 @@ function goBack(){
 let opts=[];
 function initCreate(){
   document.getElementById('qIn').value='';
-  document.getElementById('catSel').value='Sonstiges';
   document.getElementById('errMsg').style.display='none';
   opts=[{v:''},{v:''}];renderOpts();
 }
@@ -502,49 +463,42 @@ async function genAI(){
   const seed=Math.floor(Math.random()*9999);
   try{
     const prompt=`Seed:${seed}. Frage: "${q}"
-REGEL: Finde das HAUPTOBJEKT (das Nomen, worüber entschieden wird). Ignoriere Verben wie "kaufen","essen","machen".
+WICHTIG: Finde das HAUPTNOMEN (das Objekt, worüber entschieden wird). Das Verb ist irrelevant.
 Beispiele:
-- "Welche SCHOKOLADE kaufen?" → Schokoladen: ["Lindt","Milka Oreo","Ritter Sport","Tony Chocolonely","Ferrero","Green & Black"]
+- "Welche SCHOKOLADE kaufen?" → Schokos: ["Lindt Excellence","Milka Oreo","Ritter Sport","Tony's Chocolonely","Ferrero Rocher","Green & Black"]
 - "Welches AUTO kaufen?" → Autos: ["VW Golf","BMW 3er","Tesla Model 3","Toyota Yaris","Skoda Octavia","Audi A3"]
-- "Was ANZIEHEN ins Kino?" → Outfits: ["Casual Jeans","Elegantes Kleid","Oversized Hoodie","Smart Casual","Streetwear","Monochrom"]
-- "Was ESSEN?" → Gerichte: ["Pasta","Curry","Sushi","Salat","Bowl","Tacos"]
-Gib 6 konkrete Beispiele (1-4 Wörter, Deutsch). NUR JSON-Array: ["Opt1","Opt2","Opt3","Opt4","Opt5","Opt6"]`;
+- "Was heute ANZIEHEN?" → Outfits: ["Casual Jeans","Elegantes Kleid","Oversized Hoodie","Smart Casual","Streetwear","Monochrom"]
+- "Was ESSEN heute Abend?" → Gerichte: ["Miso-Aubergine","Pad Thai","Griechischer Salat","Kokos-Curry","Falafel Bowl","Shakshuka"]
+Jetzt: "${q}" → 6 konkrete, kurze Optionen (1-4 Wörter, Deutsch).
+NUR JSON-Array: ["Opt1","Opt2","Opt3","Opt4","Opt5","Opt6"]`;
     const raw=await callClaude(prompt);
     const m=raw.match(/\[[\s\S]*?\]/);
     if(!m)throw new Error('no array');
     const ideas=JSON.parse(m[0]);
     if(Array.isArray(ideas)&&ideas.length>=2&&ideas.every(x=>typeof x==='string'&&x.length>0)){
       opts=ideas.slice(0,8).map(v=>({v:String(v).trim()}));
-    }else throw new Error('bad');
+    }else throw new Error('bad format');
   }catch(e){console.warn('Fallback:',e.message);opts=fallback(q).map(v=>({v}));}
   renderOpts();
   document.getElementById('aiLoad').style.display='none';
   btn.disabled=false;
 }
 
-// ── START COLLECT PHASE ───────────────────────────────────────────────────────
+// ── START COLLECT ─────────────────────────────────────────────────────────────
 async function startCollect(){
   const q=document.getElementById('qIn').value.trim();
-  const cat=document.getElementById('catSel').value;
   const clean=opts.map(o=>o.v.trim()).filter(Boolean);
   const errEl=document.getElementById('errMsg');
   errEl.style.display='none';
   if(!q){showToast('Bitte eine Frage eingeben');return;}
-
   const btn=document.getElementById('stBtn');
   btn.disabled=true;btn.textContent='Wird erstellt…';
-
   if(!window._fbReady){
     try{await Promise.race([new Promise(r=>document.addEventListener('fbReady',r,{once:true})),new Promise((_,rej)=>setTimeout(()=>rej(new Error('Timeout')),8000))]);}
     catch(e){errEl.textContent='Firebase nicht erreichbar. Bitte Seite neu laden.';errEl.style.display='block';btn.disabled=false;btn.textContent='Weiter & Link teilen →';return;}
   }
-
   const code='#'+Math.random().toString(36).substr(2,6).toUpperCase();
-  const poll={
-    code,question:q,category:cat,
-    options:clean.map((v,i)=>({name:v,votes:0,color:C[i%C.length]})),
-    status:'Sammeln',phase:'collect',created:new Date().toISOString()
-  };
+  const poll={code,question:q,category:'Sonstiges',options:clean.map((v,i)=>({name:v,votes:0,color:C[i%C.length]})),status:'Sammeln',phase:'collect',created:new Date().toISOString()};
   try{
     const fid=await fbSave(poll);
     poll._fid=fid;
@@ -552,7 +506,8 @@ async function startCollect(){
     openCollect(poll);
   }catch(e){
     console.error(e);
-    errEl.textContent='Fehler: '+e.message;errEl.style.display='block';
+    errEl.textContent='Fehler: '+e.message+'. Bitte Firebase-Regeln prüfen.';
+    errEl.style.display='block';
     btn.disabled=false;btn.textContent='Weiter & Link teilen →';
   }
 }
@@ -566,79 +521,36 @@ function openCollect(poll){
   document.getElementById('collectUrl').textContent=url;
   renderCollectOpts();
   go('collect');
-  // Live updates
   collectUnsub=fbOne(curId,up=>{
-    curPoll=up;
-    renderCollectOpts();
-    // If owner started voting, redirect everyone
+    curPoll=up;renderCollectOpts();
     if(up.phase==='vote')openVote(up);
   });
 }
-
 function renderCollectOpts(){
   const list=document.getElementById('collectOptList');
-  const opts2=curPoll.options||[];
-  const count=opts2.length;
-  document.getElementById('optCountNote').textContent=count+' / 10 Antworten';
-  list.innerHTML=opts2.map((o,i)=>`
-    <div class="opt-chip">
-      <div class="opt-chip-dot" style="background:${o.color}"></div>
-      <span class="opt-chip-name">${o.name}</span>
-    </div>`).join('');
-  const full=count>=10;
-  const row=document.getElementById('addOptRow');
-  const maxNote=document.getElementById('maxNote');
-  row.style.display=full?'none':'flex';
-  maxNote.style.display=full?'block':'none';
-  document.getElementById('addOptBtn').disabled=full;
+  const o=curPoll.options||[];
+  document.getElementById('optCountNote').textContent=o.length+' / 10 Antworten';
+  list.innerHTML=o.map((x,i)=>`<div class="opt-chip"><div class="opt-chip-dot" style="background:${x.color}"></div><span class="opt-chip-name">${x.name}</span></div>`).join('');
+  const full=o.length>=10;
+  document.getElementById('addOptRow').style.display=full?'none':'flex';
+  document.getElementById('maxNote').style.display=full?'block':'none';
 }
-
 async function addCollectOpt(){
   const inp=document.getElementById('newOptInp');
   const val=inp.value.trim();
   if(!val){showToast('Bitte einen Text eingeben');return;}
-  if((curPoll.options||[]).length>=10){showToast('Maximum von 10 Antworten erreicht');return;}
-  const newOpts=[...curPoll.options,{name:val,votes:0,color:C[curPoll.options.length%C.length]}];
+  if((curPoll.options||[]).length>=10){showToast('Maximum erreicht');return;}
+  const newO=[...curPoll.options,{name:val,votes:0,color:C[curPoll.options.length%C.length]}];
   inp.value='';
   document.getElementById('addOptBtn').disabled=true;
-  try{
-    await fbUpd(curId,{options:newOpts});
-    document.getElementById('addOptBtn').disabled=false;
-  }catch(e){
-    showToast('Fehler beim Hinzufügen');
-    document.getElementById('addOptBtn').disabled=false;
-  }
+  try{await fbUpd(curId,{options:newO});}
+  catch(e){showToast('Fehler');}
+  document.getElementById('addOptBtn').disabled=false;
 }
-
 async function startVotingPhase(){
   if((curPoll.options||[]).length<2){showToast('Mindestens 2 Antworten nötig');return;}
-  const btn=document.getElementById('startVoteBtn');
-  btn.disabled=true;btn.textContent='Wird gestartet…';
-  try{
-    await fbUpd(curId,{status:'Aktiv',phase:'vote'});
-    // openVote wird durch den Listener ausgelöst
-  }catch(e){
-    showToast('Fehler: '+e.message);
-    btn.disabled=false;btn.textContent='🗳 Abstimmung starten';
-  }
-}
-
-function copyCollectLink(){
-  const url=location.origin+location.pathname+'?poll='+curId;
-  navigator.clipboard?.writeText(url).then(()=>showToast('Link kopiert! Jetzt teilen 🔗')).catch(()=>{
-    const el=document.createElement('textarea');el.value=url;document.body.appendChild(el);el.select();document.execCommand('copy');document.body.removeChild(el);showToast('Link kopiert! 🔗');
-  });
-}
-function shareWhatsApp(){
-  const url=location.origin+location.pathname+'?poll='+curId;
-  const msg=encodeURIComponent('Mach mit bei unserer Abstimmung! '+curPoll.question+'\n'+url);
-  window.open('https://wa.me/?text='+msg,'_blank');
-}
-function shareMail(){
-  const url=location.origin+location.pathname+'?poll='+curId;
-  const subject=encodeURIComponent('Mach mit bei unserer Abstimmung!');
-  const body=encodeURIComponent('Hallo!\n\nMach mit bei unserer Abstimmung:\n'+curPoll.question+'\n\n'+url);
-  window.open('mailto:?subject='+subject+'&body='+body);
+  try{await fbUpd(curId,{status:'Aktiv',phase:'vote'});}
+  catch(e){showToast('Fehler: '+e.message);}
 }
 
 // ── VOTE ──────────────────────────────────────────────────────────────────────
@@ -648,30 +560,45 @@ function openVote(poll){
   curPoll=poll;curId=poll._fid;uVote=null;
   document.getElementById('vTitle').textContent=poll.question;
   document.getElementById('vCode').textContent=poll.code;
+  const url=location.origin+location.pathname+'?poll='+poll._fid;
+  document.getElementById('voteShareUrl').textContent=url;
   setBadge(poll.status);
+  updateVoteUI(poll.status);
   renderVOpts();drawW();renderRes();
   go('vote');
-  vUnsub=fbOne(curId,up=>{curPoll=up;setBadge(up.status);renderVOpts();drawW();renderRes();});
+  vUnsub=fbOne(curId,up=>{
+    curPoll=up;setBadge(up.status);
+    updateVoteUI(up.status);
+    renderVOpts();drawW();renderRes();
+  });
 }
-
 function setBadge(s){
   const b=document.getElementById('vBadge');
   b.textContent=s;b.className='bdg '+(s==='Aktiv'?'bak':'bnd');
 }
-
-function isFood(p){return/essen|gericht|kochen|food|dinner|lunch|frühstück/i.test(p.category+' '+p.question);}
-function isOutfit(p){return/outfit|anziehen|kleidung|look|mode|elegant|simpel/i.test(p.category+' '+p.question);}
+function updateVoteUI(status){
+  const ended=status==='Beendet';
+  // Hide/show add-option row
+  const addRow=document.getElementById('voteAddRow');
+  const maxNote=document.getElementById('voteMaxNote');
+  if(ended){
+    addRow.style.display='none';
+    maxNote.style.display='none';
+  }else{
+    const full=(curPoll.options||[]).length>=10;
+    addRow.style.display=full?'none':'flex';
+    maxNote.style.display=full?'block':'none';
+  }
+  // End button
+  document.getElementById('endBtn').style.display=ended?'none':'block';
+}
 
 function renderVOpts(){
   const l=document.getElementById('vOptList');l.innerHTML='';
   curPoll.options.forEach((o,i)=>{
     const d=document.createElement('div');d.className='vo'+(uVote===i?' vd':'');
-    const food=isFood(curPoll),outfit=isOutfit(curPoll);
-    let extra='';
-    if(food)extra=`<button class="recbtn" onclick="showModal(event,'recipe','${encodeURIComponent(o.name)}')">↗ Rezept</button>`;
-    else if(outfit)extra=`<button class="recbtn" onclick="showModal(event,'outfit','${encodeURIComponent(o.name)}')">↗ Inspiration</button>`;
     d.innerHTML=`
-      <div class="ol"><div class="odd" style="background:${o.color}"></div><span class="on2">${o.name}</span>${extra}</div>
+      <div class="ol"><div class="odd" style="background:${o.color}"></div><span class="on2">${o.name}</span></div>
       <div style="display:flex;align-items:center;gap:9px">
         <span class="oc">${o.votes}</span>
         <button class="vib${uVote===i?' vd':''}" onclick="castVote(${i})">${uVote===i?'✓':'Stimme'}</button>
@@ -680,23 +607,63 @@ function renderVOpts(){
   });
 }
 
+async function addVoteOpt(){
+  if(curPoll.status==='Beendet'){showToast('Abstimmung bereits beendet');return;}
+  const inp=document.getElementById('voteAddInp');
+  const val=inp.value.trim();
+  if(!val){showToast('Bitte einen Text eingeben');return;}
+  if((curPoll.options||[]).length>=10){showToast('Maximum von 10 erreicht');return;}
+  const newO=[...curPoll.options,{name:val,votes:0,color:C[curPoll.options.length%C.length]}];
+  inp.value='';
+  try{await fbUpd(curId,{options:newO});showToast('Option hinzugefügt!');}
+  catch(e){showToast('Fehler beim Hinzufügen');}
+}
+
 async function castVote(i){
   if(curPoll.status!=='Aktiv'){showToast('Abstimmung bereits beendet');return;}
   const newO=curPoll.options.map((o,x)=>({...o,votes:x===i?o.votes+1:(uVote===x?Math.max(0,o.votes-1):o.votes)}));
   uVote=i;curPoll={...curPoll,options:newO};
   renderVOpts();renderRes();
-  try{await fbUpd(curId,{options:newO});}catch(e){showToast('Speicherfehler');console.error(e);}
+  try{await fbUpd(curId,{options:newO});}catch(e){showToast('Speicherfehler');}
 }
 async function endVote(){
   try{await fbUpd(curId,{status:'Beendet'});showToast('Abstimmung beendet');}
   catch{showToast('Fehler');}
 }
 
+// ── SHARE HELPERS ─────────────────────────────────────────────────────────────
+function getUrl(){return location.origin+location.pathname+'?poll='+curId;}
+
+function copyCollectLink(){
+  copyToClipboard(getUrl());
+}
+function copyVoteLink(){
+  copyToClipboard(getUrl());
+}
+function copyToClipboard(url){
+  navigator.clipboard?.writeText(url).then(()=>showToast('Link kopiert! 🔗')).catch(()=>{
+    const el=document.createElement('textarea');el.value=url;document.body.appendChild(el);el.select();document.execCommand('copy');document.body.removeChild(el);showToast('Link kopiert! 🔗');
+  });
+}
+function shareWA(ctx){
+  const url=getUrl();
+  const q=curPoll?.question||'';
+  const msg=encodeURIComponent('Mach mit bei unserer Abstimmung!\n'+q+'\n👉 '+url);
+  window.open('https://wa.me/?text='+msg,'_blank');
+}
+function shareMail(ctx){
+  const url=getUrl();
+  const q=curPoll?.question||'';
+  const sub=encodeURIComponent('Mach bei unserer Abstimmung mit!');
+  const body=encodeURIComponent('Hallo!\n\nMach mit bei unserer Abstimmung:\n'+q+'\n\n'+url+'\n\nKein Account nötig — einfach klicken und mitmachen!');
+  window.open('mailto:?subject='+sub+'&body='+body);
+}
+
 // ── RESULTS ───────────────────────────────────────────────────────────────────
 function renderRes(){
   const tot=curPoll.options.reduce((s,o)=>s+o.votes,0);
   const ar=document.getElementById('resArea'),cc=document.getElementById('resChart');
-  if(!tot){ar.innerHTML='<div class="nvotes">Noch keine Stimmen</div>';cc.style.display='none';if(chartI){chartI.destroy();chartI=null;}return;}
+  if(!tot){ar.innerHTML='<div class="nvotes">Noch keine Stimmen abgegeben</div>';cc.style.display='none';if(chartI){chartI.destroy();chartI=null;}return;}
   ar.innerHTML=curPoll.options.map(o=>{
     const p=Math.round(o.votes/tot*100);
     return`<div style="margin-bottom:8px">
@@ -733,8 +700,7 @@ function getSeg(){const n=curPoll.options.length,arc=(2*Math.PI)/n;return Math.f
 function spinW(){if(wSpin)return;wSpin=true;wStop=false;wVel=.15+Math.random()*.1;document.getElementById('spBtn').disabled=true;document.getElementById('stpBtn').disabled=false;animW();}
 function stopW(){wStop=true;document.getElementById('stpBtn').disabled=true;}
 function animW(){
-  if(!wSpin)return;
-  wVel=wStop?wVel*.965:Math.min(wVel+.004,.18);wAngle+=wVel;drawW();
+  if(!wSpin)return;wVel=wStop?wVel*.965:Math.min(wVel+.004,.18);wAngle+=wVel;drawW();
   if(wStop&&wVel<.002){
     wSpin=false;wStop=false;document.getElementById('spBtn').disabled=false;document.getElementById('stpBtn').disabled=true;
     const w=getSeg();castVote(w);showToast('🎯 '+curPoll.options[w].name+' wurde gewählt!');launchConfetti();return;
@@ -752,6 +718,8 @@ function launchConfetti(){
 
 // ── AI VOTE ───────────────────────────────────────────────────────────────────
 async function genAIVote(){
+  if(curPoll.status==='Beendet'){showToast('Abstimmung beendet — keine neuen Ideen');return;}
+  if((curPoll.options||[]).length>=10){showToast('Maximum von 10 bereits erreicht');return;}
   showToast('KI denkt nach…');const seed=Math.floor(Math.random()*9999);
   try{
     const raw=await callClaude(`Seed:${seed}. Frage:"${curPoll.question}". Bestimme das Hauptobjekt und schlage 4 weitere konkrete Optionen vor (1-4 Wörter, Deutsch). Nur JSON-Array:["O1","O2","O3","O4"]`);
@@ -759,7 +727,7 @@ async function genAIVote(){
     const ideas=JSON.parse(m[0]);
     if(Array.isArray(ideas)&&ideas.length){
       const no=[...curPoll.options];ideas.forEach(v=>{if(no.length<10)no.push({name:String(v).trim(),votes:0,color:C[no.length%C.length]});});
-      await fbUpd(curId,{options:no});showToast('Neue KI-Ideen hinzugefügt!');
+      await fbUpd(curId,{options:no});showToast('KI-Ideen hinzugefügt!');
     }
   }catch{
     const extras=fallback(curPoll.question).slice(0,3);const no=[...curPoll.options];
@@ -768,52 +736,27 @@ async function genAIVote(){
   }
 }
 
-// ── MODAL ─────────────────────────────────────────────────────────────────────
-async function showModal(e,type,encodedName){
-  e.stopPropagation();const name=decodeURIComponent(encodedName);
-  document.getElementById('recMo').classList.add('on');
-  document.getElementById('recCon').innerHTML=`<div class="ail" style="justify-content:center;padding:38px 0"><div class="sp"></div> Wird geladen…</div>`;
-  try{
-    if(type==='recipe'){
-      const raw=await callClaude(`Rezept für "${name}". NUR JSON: {"title":"${name}","time":"25 Min","servings":2,"ingredients":["200g X"],"steps":["Schritt 1"],"calories":400,"protein":"18g","carbs":"35g"}`);
-      const m=raw.match(/\{[\s\S]*\}/);const r=JSON.parse(m?m[0]:raw);
-      document.getElementById('recCon').innerHTML=`<button class="mc" onclick="closeModal()">✕</button><div class="mt">${r.title}</div><div class="ms">⏱ ${r.time} · 🍽 ${r.servings} Portionen</div><div class="rs"><h4>Zutaten</h4><ul>${(r.ingredients||[]).map(x=>`<li>${x}</li>`).join('')}</ul></div><div class="rs"><h4>Zubereitung</h4>${(r.steps||[]).map((s,i)=>`<p style="margin-bottom:6px"><strong>${i+1}.</strong> ${s}</p>`).join('')}</div><div class="rs"><h4>Nährwerte</h4><div class="ng"><div class="ni"><div class="nv2">${r.calories||'—'}</div><div class="nl">Kalorien</div></div><div class="ni"><div class="nv2">${r.protein||'—'}</div><div class="nl">Protein</div></div><div class="ni"><div class="nv2">${r.carbs||'—'}</div><div class="nl">Kohlenhydrate</div></div></div></div>`;
-    }else{
-      const raw=await callClaude(`Outfit-Look "${name}" kurz beschreiben. NUR JSON: {"look":"${name}","beschreibung":"2 Sätze","teile":["Teil1","Teil2","Teil3","Teil4"],"farben":["F1","F2","F3"],"anlass":"Anlass"}`);
-      const m=raw.match(/\{[\s\S]*\}/);const r=JSON.parse(m?m[0]:raw);
-      const q=encodeURIComponent(name+' outfit inspiration');
-      document.getElementById('recCon').innerHTML=`<button class="mc" onclick="closeModal()">✕</button><div class="mt">${r.look}</div><div class="ms">Anlass: ${r.anlass||'Vielseitig'}</div><div class="rs"><h4>Der Look</h4><p>${r.beschreibung||''}</p></div><div class="rs"><h4>Was du brauchst</h4><ul>${(r.teile||[]).map(x=>`<li>${x}</li>`).join('')}</ul></div><div class="rs"><h4>Farben</h4><div style="display:flex;gap:8px;flex-wrap:wrap">${(r.farben||[]).map(f=>`<span style="padding:5px 14px;border-radius:50px;background:var(--cream);font-size:12px">${f}</span>`).join('')}</div></div><div class="rs"><h4>Inspiration</h4><div style="display:flex;gap:10px;flex-wrap:wrap"><a href="https://www.pinterest.com/search/pins/?q=${q}" target="_blank" style="padding:8px 18px;background:#e60023;color:white;border-radius:50px;text-decoration:none;font-size:13px;font-weight:500">📌 Pinterest</a><a href="https://www.google.com/search?q=${q}&tbm=isch" target="_blank" style="padding:8px 18px;background:var(--forest);color:var(--lime);border-radius:50px;text-decoration:none;font-size:13px;font-weight:500">🔍 Google Bilder</a></div></div>`;
-    }
-  }catch(err){document.getElementById('recCon').innerHTML=`<button class="mc" onclick="closeModal()">✕</button><p style="padding:20px;color:var(--muted)">Konnte nicht geladen werden.</p>`;}
-}
-function closeModal(){document.getElementById('recMo').classList.remove('on');}
-
 // ── ARCHIVE ───────────────────────────────────────────────────────────────────
 function startArch(){if(aUnsub){renderArch();return;}if(!window._fbReady){document.addEventListener('fbReady',()=>{aUnsub=fbAll(renderArch);},{once:true});return;}aUnsub=fbAll(renderArch);}
 function renderArch(){
   const q=(document.getElementById('srch')?.value||'').toLowerCase();
-  const cat=document.getElementById('fCat')?.value||'';const st=document.getElementById('fSt')?.value||'';
-  const f=polls.filter(p=>(!q||p.question.toLowerCase().includes(q))&&(!cat||p.category===cat)&&(!st||p.status===st));
+  const st=document.getElementById('fSt')?.value||'';
+  const f=polls.filter(p=>(!q||p.question.toLowerCase().includes(q))&&(!st||p.status===st));
   const g=document.getElementById('archGrid');
   if(!f.length){g.innerHTML='<div class="es">Keine Abstimmungen gefunden</div>';return;}
   g.innerHTML=f.map(p=>{
     const tot=p.options.reduce((s,o)=>s+o.votes,0);
-    const phaseLabel=p.status==='Sammeln'?'🔗 Sammeln':p.status==='Aktiv'?'🗳 Aktiv':'✓ Beendet';
-    const phaseCls=p.status==='Sammeln'?'phase-collect':p.status==='Aktiv'?'phase-vote':'phase-done';
+    const pl=p.status==='Sammeln'?'🔗 Sammeln':p.status==='Aktiv'?'🗳 Aktiv':'✓ Beendet';
+    const pc=p.status==='Sammeln'?'phase-collect':p.status==='Aktiv'?'phase-vote':'phase-done';
     return`<div class="acd" onclick="openFromArch('${p._fid}')">
-      <div class="at2"><span class="acat">${p.category}</span><span class="phase-badge ${phaseCls}">${phaseLabel}</span></div>
+      <div class="at2"><span class="phase-badge ${pc}">${pl}</span></div>
       <div class="aq">${p.question}</div>
       <div class="av">👥 ${tot} Stimmen · ${p.options.length} Antworten</div>
       <div class="ads">${p.options.map(o=>`<div class="adot" style="background:${o.color}"></div>`).join('')}</div>
     </div>`;
   }).join('');
 }
-function openFromArch(fid){
-  const p=polls.find(x=>x._fid===fid);
-  if(!p)return;
-  if(p.status==='Sammeln')openCollect(p);
-  else openVote(p);
-}
+function openFromArch(fid){const p=polls.find(x=>x._fid===fid);if(!p)return;if(p.status==='Sammeln')openCollect(p);else openVote(p);}
 
 // ── TOAST ─────────────────────────────────────────────────────────────────────
 function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('on');setTimeout(()=>t.classList.remove('on'),3000);}
@@ -825,12 +768,8 @@ function checkUrl(){
   if(!id)return;
   const{doc:D,getDoc:G}=getFB();
   G(D(getDB(),'polls',id)).then(s=>{
-    if(s.exists()){
-      const p={...s.data(),_fid:s.id};
-      if(p.status==='Sammeln')openCollect(p);
-      else openVote(p);
-    }
-  }).catch(err=>console.error('URL load error:',err));
+    if(s.exists()){const p={...s.data(),_fid:s.id};if(p.status==='Sammeln')openCollect(p);else openVote(p);}
+  }).catch(err=>console.error('URL load:',err));
 }
 if(window._fbReady)checkUrl();
 else document.addEventListener('fbReady',checkUrl,{once:true});

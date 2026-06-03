@@ -258,17 +258,7 @@
       <button class="vsbtn vsbtn-mail" onclick="shareMail()">✉️ Mail</button>
     </div>
 
-    <!-- Collect panel — toggleable, hidden by default -->
-    <div class="collect-panel" id="collectPanel">
-      <div class="collect-panel-title">Antworten sammeln</div>
-      <div class="collect-panel-sub" id="collectPanelSub"></div>
-      <div class="opt-chips" id="collectChips"></div>
-      <div class="add-opt-row" id="collectAddRow">
-        <input type="text" class="add-opt-inp" id="collectInp" placeholder="Deine Antwort eingeben…" onkeydown="if(event.key==='Enter')addOption()">
-        <button class="add-opt-btn" id="collectAddBtn" onclick="addOption()">+ Hinzufügen</button>
-      </div>
-      <div class="collect-note" id="collectNote"></div>
-    </div>
+    <!-- Add option is now inline below the vote list -->
 
     <!-- Status row -->
     <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap">
@@ -490,13 +480,12 @@ function openVote(poll){
   document.getElementById('vTitle').textContent=poll.question;
   document.getElementById('vCode').textContent=poll.code;
   document.getElementById('voteShareUrl').textContent=getUrl();
-  document.getElementById('collectPanel').classList.remove('open');
   setBadge(poll.status);updateTopUI(poll.status);
-  renderVOpts();drawW();renderRes();updateCollectPanel();
+  renderVOpts();drawW();renderRes();
   go('vote');
   vUnsub=fbOne(curId,up=>{
     curPoll=up;setBadge(up.status);updateTopUI(up.status);
-    renderVOpts();drawW();renderRes();updateCollectPanel();
+    renderVOpts();drawW();renderRes();
   });
 }
 function setBadge(s){
@@ -505,83 +494,29 @@ function setBadge(s){
 }
 function updateTopUI(status){
   const ended=status==='Beendet';
-  // Collect toggle: hide when ended
-  document.getElementById('collectToggleBtn').classList.toggle('hidden-btn',ended);
   // End button: hide when already ended
-  document.getElementById('endBtn').style.display=ended?'none':'block';
-  // Close collect panel if ended
-  if(ended){
-    collectOpen=false;
-    document.getElementById('collectPanel').classList.remove('open');
-  }
+  const endBtn=document.getElementById('endBtn');
+  if(endBtn) endBtn.style.display=ended?'none':'block';
 }
 
-// ── COLLECT PANEL TOGGLE ─────────────────────────────────────────────────────
-function toggleCollect(){
-  if(curPoll.status==='Beendet'){showToast('Abstimmung beendet');return;}
-  collectOpen=!collectOpen;
-  const panel=document.getElementById('collectPanel');
-  panel.classList.toggle('open',collectOpen);
-  if(collectOpen){updateCollectPanel();document.getElementById('collectInp').focus();}
-}
-
-function updateCollectPanel(){
-  const total=(curPoll.options||[]).length;
-  const totalFull=total>=MAX_TOTAL;
-  const personFull=myAddedCount>=MAX_PER_PERSON;
-  const ended=curPoll.status==='Beendet';
-
-  // Chips showing current options
-  const chips=document.getElementById('collectChips');
-  chips.innerHTML=(curPoll.options||[]).map(o=>`
-    <div class="opt-chip">
-      <div class="opt-chip-dot" style="background:${o.color}"></div>
-      <span>${o.name}</span>
-    </div>`).join('');
-
-  // Sub info
-  document.getElementById('collectPanelSub').textContent=
-    total+' / '+MAX_TOTAL+' Antworten gesamt  ·  Du hast '+myAddedCount+' / '+MAX_PER_PERSON+' hinzugefügt';
-
-  const addRow=document.getElementById('collectAddRow');
-  const note=document.getElementById('collectNote');
-  const addBtn=document.getElementById('collectAddBtn');
-
-  if(ended){
-    addRow.style.display='none';
-    note.textContent='Abstimmung beendet — keine neuen Antworten mehr möglich.';
-  }else if(totalFull){
-    addRow.style.display='none';
-    note.textContent='Maximum von '+MAX_TOTAL+' Antworten erreicht.';
-  }else if(personFull){
-    addRow.style.display='none';
-    note.textContent='Du hast dein Limit von '+MAX_PER_PERSON+' Antworten erreicht.';
-  }else{
-    addRow.style.display='flex';
-    note.textContent='Noch '+(MAX_PER_PERSON-myAddedCount)+' Antwort(en) für dich möglich · Max. '+MAX_TOTAL+' insgesamt';
-    addBtn.disabled=false;
-  }
-}
 
 async function addOption(){
   if(curPoll.status==='Beendet'){showToast('Abstimmung beendet');return;}
   if((curPoll.options||[]).length>=MAX_TOTAL){showToast('Maximum von '+MAX_TOTAL+' erreicht');return;}
   if(myAddedCount>=MAX_PER_PERSON){showToast('Du hast dein Limit von '+MAX_PER_PERSON+' erreicht');return;}
   const inp=document.getElementById('collectInp');
+  if(!inp){showToast('Eingabefeld nicht gefunden');return;}
   const val=inp.value.trim();
   if(!val){showToast('Bitte einen Text eingeben');return;}
   if(curPoll.options.find(o=>o.name.toLowerCase()===val.toLowerCase())){showToast('Diese Option gibt es schon');return;}
   const newO=[...curPoll.options,{name:val,votes:0,color:C[curPoll.options.length%C.length]}];
   inp.value='';
-  document.getElementById('collectAddBtn').disabled=true;
   try{
     await fbUpd(curId,{options:newO});
     myAddedIndices.push(newO.length-1);
     myAddedCount++;
     showToast('Antwort hinzugefügt!');
   }catch(e){showToast('Fehler: '+e.message);}
-  document.getElementById('collectAddBtn').disabled=false;
-  updateCollectPanel();
 }
 
 // ── VOTE ──────────────────────────────────────────────────────────────────────
@@ -762,7 +697,6 @@ async function genAIVote(){
     const extras=fallback(curPoll.question).slice(0,2);const no=[...curPoll.options];let added=0;
     extras.forEach(v=>{if(no.length<MAX_TOTAL&&myAddedCount+added<MAX_PER_PERSON&&!no.find(o=>o.name===v)){no.push({name:v,votes:0,color:C[no.length%C.length]});added++;}});
     if(added>0){await fbUpd(curId,{options:no}).catch(()=>{});myAddedCount+=added;showToast('Ideen hinzugefügt!');}
-    updateCollectPanel();
   }
 }
 

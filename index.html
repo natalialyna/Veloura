@@ -245,10 +245,7 @@
     <div class="vote-topbar">
       <button class="bkb" onclick="goBack()">← Zurück</button>
       <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
-        <!-- Collect toggle pill -->
-        <button class="collect-toggle-btn" id="collectToggleBtn" onclick="toggleCollect()">
-          ✦ Antworten hinzufügen
-        </button>
+        <!-- Collect toggle pill — hidden, functionality is inline in vote list -->
         <button class="enb" id="endBtn" onclick="endVote()">Beenden</button>
       </div>
     </div>
@@ -489,7 +486,7 @@ async function startVote(){
 // ── OPEN VOTE ─────────────────────────────────────────────────────────────────
 function openVote(poll){
   if(vUnsub){vUnsub();vUnsub=null;}
-  curPoll=poll;curId=poll._fid;uVote=null;myAddedCount=0;collectOpen=false;
+  curPoll=poll;curId=poll._fid;uVote=null;myAddedCount=0;collectOpen=false;myAddedIndices=[];
   document.getElementById('vTitle').textContent=poll.question;
   document.getElementById('vCode').textContent=poll.code;
   document.getElementById('voteShareUrl').textContent=getUrl();
@@ -579,6 +576,7 @@ async function addOption(){
   document.getElementById('collectAddBtn').disabled=true;
   try{
     await fbUpd(curId,{options:newO});
+    myAddedIndices.push(newO.length-1);
     myAddedCount++;
     showToast('Antwort hinzugefügt!');
   }catch(e){showToast('Fehler: '+e.message);}
@@ -587,18 +585,68 @@ async function addOption(){
 }
 
 // ── VOTE ──────────────────────────────────────────────────────────────────────
+// Track indices added this session so user can delete their own
+let myAddedIndices = [];
+
 function renderVOpts(){
   const l=document.getElementById('vOptList');l.innerHTML='';
+  const ended=curPoll.status==='Beendet';
   curPoll.options.forEach((o,i)=>{
     const d=document.createElement('div');d.className='vo'+(uVote===i?' vd':'');
+    const canDelete=!ended&&myAddedIndices.includes(i);
     d.innerHTML=`
       <div class="ol"><div class="odd" style="background:${o.color}"></div><span class="on2">${o.name}</span></div>
-      <div style="display:flex;align-items:center;gap:9px">
+      <div style="display:flex;align-items:center;gap:6px">
         <span class="oc">${o.votes}</span>
         <button class="vib${uVote===i?' vd':''}" onclick="castVote(${i})">${uVote===i?'✓':'Stimme'}</button>
+        ${canDelete?`<button onclick="deleteOpt(${i})" title="Löschen" style="background:none;border:none;cursor:pointer;color:#ccc;font-size:15px;padding:2px 5px;line-height:1;transition:color .15s" onmouseover="this.style.color='#df663a'" onmouseout="this.style.color='#ccc'">✕</button>`:''}
       </div>`;
     l.appendChild(d);
   });
+
+  // Remove old inline add rows
+  ['inlineAddRow','inlineAddNote'].forEach(id=>{const el=document.getElementById(id);if(el)el.remove();});
+
+  // Add option input — right below the list, inside the same card
+  const totalFull=(curPoll.options||[]).length>=MAX_TOTAL;
+  const personFull=myAddedCount>=MAX_PER_PERSON;
+
+  if(!ended){
+    if(!totalFull&&!personFull){
+      const row=document.createElement('div');
+      row.id='inlineAddRow';
+      row.style.cssText='display:flex;gap:8px;margin-top:14px;padding-top:14px;border-top:1px solid rgba(0,0,0,.06);';
+      row.innerHTML='<input type="text" id="collectInp" placeholder="Eigene Antwort hinzufügen… (noch '+(MAX_PER_PERSON-myAddedCount)+' möglich)" onkeydown="if(event.key===\'Enter\')addOption()" style="flex:1;padding:9px 13px;border-radius:10px;border:1.5px solid rgba(0,0,0,.08);background:white;font-family:DM Sans,sans-serif;font-size:13px;outline:none;transition:border-color .2s">'
+        +'<button onclick="addOption()" style="padding:9px 16px;border-radius:10px;border:none;cursor:pointer;background:var(--forest);color:var(--lime);font-family:DM Sans,sans-serif;font-size:12px;font-weight:500;white-space:nowrap">+ Hinzufügen</button>';
+      l.parentElement.appendChild(row);
+      const note=document.createElement('div');
+      note.id='inlineAddNote';
+      note.style.cssText='font-size:11px;color:var(--muted);margin-top:6px;text-align:center;';
+      note.textContent=(curPoll.options||[]).length+' / '+MAX_TOTAL+' Antworten';
+      l.parentElement.appendChild(note);
+    }else{
+      const note=document.createElement('div');
+      note.id='inlineAddNote';
+      note.style.cssText='font-size:11px;color:var(--muted);margin-top:10px;padding-top:10px;border-top:1px solid rgba(0,0,0,.06);text-align:center;';
+      note.textContent=totalFull?'Maximum von '+MAX_TOTAL+' Antworten erreicht':'Du hast dein Limit von '+MAX_PER_PERSON+' Antworten erreicht';
+      l.parentElement.appendChild(note);
+    }
+  }
+}
+
+async function deleteOpt(i){
+  if(!myAddedIndices.includes(i)){showToast('Nur eigene Antworten können gelöscht werden');return;}
+  if(curPoll.status==='Beendet'){showToast('Abstimmung beendet');return;}
+  if(curPoll.options.length<=2){showToast('Mindestens 2 Antworten nötig');return;}
+  const newO=curPoll.options.filter((_,x)=>x!==i);
+  // Remap indices: all indices > i shift down by 1
+  myAddedIndices=myAddedIndices.filter(x=>x!==i).map(x=>x>i?x-1:x);
+  myAddedCount=Math.max(0,myAddedCount-1);
+  // Adjust uVote
+  if(uVote===i)uVote=null;
+  else if(uVote!==null&&uVote>i)uVote--;
+  try{await fbUpd(curId,{options:newO});showToast('Antwort gelöscht');}
+  catch(e){showToast('Fehler: '+e.message);}
 }
 
 async function castVote(i){

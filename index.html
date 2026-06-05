@@ -250,6 +250,14 @@
         <div class="vlc">
           <div class="ptt">Abstimmen</div>
           <div id="vOptList"></div>
+          <!-- Static add row — shown/hidden by updateAddRow() -->
+          <div class="add-row" id="addRow" style="display:none">
+            <input type="text" id="addInp" class="add-inp"
+              placeholder="Antwort hinzufügen…"
+              onkeydown="if(event.key==='Enter')addOpt2()">
+            <button class="add-btn" onclick="addOpt2()">+ Hinzufügen</button>
+          </div>
+          <div class="add-note" id="addNote" style="display:none"></div>
         </div>
         <div class="rc">
           <div class="ptt">Ergebnisse</div>
@@ -296,6 +304,7 @@ function fallback(q){
     const f=[['Miso-Aubergine','Kichererbsensalat','Zucchini-Nudeln','Kokos-Curry','Süßkartoffel Bowl','Mediterrane Bowl'],['Pad Thai','Ramen','Griechischer Salat','Linsen-Dhal','Falafel Bowl','Shakshuka']];
     return f[Math.floor(Math.random()*f.length)];
   }
+  if(/pflanzenmilch|hafermilch|mandelmilch|oatmilk|plantmilk|milchalternative/i.test(t)) return['Oatly Barista','Alpro Soja','Hafermilch Barista','Mandelmilch','Kokosmilch','Reismilch'];
   if(/trinken|cocktail|drink|kaffee|tee/i.test(t)) return['Matcha Latte','Aperol Spritz','Cold Brew','Kombucha','Mojito','Chai Latte'];
   if(/reise|urlaub|ferien|ausflug|wohin/i.test(t)) return['Lissabon','Kyoto','Kopenhagen','Barcelona','Island','Marrakesch'];
   if(/film|kino|serie/i.test(t)) return['Action','Komödie','Drama','Dokumentation','Thriller','Romantik'];
@@ -370,20 +379,16 @@ async function genAI(){
   document.getElementById('aiLoad').style.display='flex';
   const seed=Math.floor(Math.random()*9999);
   try{
-    const sys='Du generierst Abstimmungsoptionen. Antworte IMMER nur mit einem validen JSON-Array. Niemals "Option 1" oder generische Platzhalter. Immer echte, spezifische Beispiele.';
-    const msg=`Frage: "${q}" (Seed: ${seed})
-
-Identifiziere das Hauptsubstantiv (das Objekt der Entscheidung) und nenne 6 echte, konkrete Beispiele.
-
-Denkweise:
-- "Welches AUTO kaufen?" → Hauptsubstantiv=Auto → echte Automodelle
-- "Welche SCHOKOLADE?" → Hauptsubstantiv=Schokolade → echte Marken
-- "Was ESSEN?" → Hauptsubstantiv=Gericht → echte Gerichte
-- "Was ANZIEHEN?" → Hauptsubstantiv=Outfit → echte Outfit-Beschreibungen
-- "Wohin REISEN?" → Hauptsubstantiv=Reiseziel → echte Städte/Orte
-
-Frage: "${q}"
-Antworte NUR mit: ["Beispiel1","Beispiel2","Beispiel3","Beispiel4","Beispiel5","Beispiel6"]`;
+    const sys='Du bist ein Assistent für Abstimmungsoptionen. Antworte IMMER NUR mit einem JSON-Array. Keine Erklärungen. Niemals generische Platzhalter wie Option 1.';
+    const examples = [
+      'Pflanzenmilch → ["Oatly Barista","Alpro Soja","Hafermilch Barista","Mandelmilch","Kokosmilch","Reismilch"]',
+      'Auto → ["VW Golf","BMW 3er","Tesla Model 3","Toyota Corolla","Skoda Octavia","Audi A3"]',
+      'Schokolade → ["Lindt 70%","Milka Oreo","Ritter Sport","Tony Chocolonely","Ferrero Rocher","Valrhona"]',
+      'Gericht → ["Pasta Carbonara","Miso-Aubergine","Griechischer Salat","Ramen","Kokos-Curry","Falafel Bowl"]',
+      'Outfit → ["Casual Jeans","Elegantes Kleid","Oversized Blazer","Smart Casual","Streetwear","Monochrom"]',
+      'Reiseziel → ["Lissabon","Kyoto","Kopenhagen","Barcelona","Island","Marrakesch"]'
+    ].join("\n");
+    const msg=`Frage: "${q}" (Variation: ${seed})\n\nBeispiele:\n${examples}\n\nNenne 6 konkrete Antworten für die Frage. Antworte NUR mit JSON-Array: ["A1","A2","A3","A4","A5","A6"]`;
     const raw=await callClaude([{role:'user',content:msg}],sys);
     const m=raw.match(/\[[\s\S]*?\]/);
     if(!m)throw new Error('no array');
@@ -423,14 +428,20 @@ async function startVote(){
     }
   }
   const code='#'+Math.random().toString(36).substr(2,6).toUpperCase();
+  // Generate owner token stored in sessionStorage — only this browser can delete
+  const ownerToken=Math.random().toString(36).substr(2,16);
+  sessionStorage.setItem('owner_'+curId||'pending', ownerToken);
+  const ownerToken = Math.random().toString(36).substr(2,16);
   const poll={
-    code, question:q, category:'Sonstiges',
+    code, question:q, category:'Sonstiges', ownerToken, ownerToken,
     options:clean.map((v,i)=>({name:v,votes:0,color:C[i%C.length]})),
     status:'Aktiv', created:new Date().toISOString()
   };
   try{
     const fid=await fbSave(poll);
     poll._fid=fid;
+    // Store owner token keyed by actual poll ID
+    sessionStorage.setItem('owner_'+fid, ownerToken);
     btn.disabled=false;btn.textContent='Weiter & Link teilen →';
     openVote(poll);
   }catch(e){
@@ -467,7 +478,7 @@ function setBadge(s){
   b.textContent=s;b.className='bdg '+(s==='Aktiv'?'bak':'bnd');
 }
 
-// RENDER VOTE OPTIONS + inline add row
+// RENDER VOTE OPTIONS — only the list, add-row is static HTML
 function renderVOpts(){
   const l=document.getElementById('vOptList');
   l.innerHTML='';
@@ -488,33 +499,35 @@ function renderVOpts(){
       </div>`;
     l.appendChild(d);
   });
+  // Update the static add row
+  updateAddRow();
+}
 
-  // Inline add row — directly below the list
+function updateAddRow(){
+  const ended=curPoll.status==='Beendet';
   const totalFull=curPoll.options.length>=MAX_TOTAL;
   const perFull=myAddedCount>=MAX_PER;
-
-  if(!ended){
-    if(!totalFull&&!perFull){
-      const row=document.createElement('div');
-      row.className='add-row';
-      row.id='addRow';
-      row.innerHTML=`
-        <input type="text" id="addInp" class="add-inp"
-          placeholder="Antwort hinzufügen… (noch ${MAX_PER-myAddedCount} möglich)"
-          onkeydown="if(event.key==='Enter')addOpt2()">
-        <button class="add-btn" onclick="addOpt2()">+ Hinzufügen</button>`;
-      l.parentElement.appendChild(row);
-      const note=document.createElement('div');
-      note.className='add-note';
-      note.textContent=curPoll.options.length+' / '+MAX_TOTAL+' Antworten gesamt';
-      l.parentElement.appendChild(note);
-    }else{
-      const note=document.createElement('div');
-      note.className='add-note';
-      note.style.cssText='margin-top:10px;padding-top:10px;border-top:1px solid rgba(0,0,0,.06);';
-      note.textContent=totalFull?'Maximum von '+MAX_TOTAL+' Antworten erreicht':'Du hast dein Limit von '+MAX_PER+' Antworten erreicht';
-      l.parentElement.appendChild(note);
-    }
+  const addRow=document.getElementById('addRow');
+  const addInp=document.getElementById('addInp');
+  const addNote=document.getElementById('addNote');
+  if(!addRow||!addNote)return;
+  if(ended){
+    addRow.style.display='none';
+    addNote.textContent='Abstimmung beendet.';
+    addNote.style.display='block';
+  }else if(totalFull){
+    addRow.style.display='none';
+    addNote.textContent='Maximum von '+MAX_TOTAL+' Antworten erreicht.';
+    addNote.style.display='block';
+  }else if(perFull){
+    addRow.style.display='none';
+    addNote.textContent='Du hast dein Limit von '+MAX_PER+' Antworten erreicht.';
+    addNote.style.display='block';
+  }else{
+    addRow.style.display='flex';
+    addNote.textContent=curPoll.options.length+' / '+MAX_TOTAL+' Antworten gesamt';
+    addNote.style.display='block';
+    if(addInp)addInp.placeholder='Antwort hinzufügen… (noch '+(MAX_PER-myAddedCount)+' möglich)';
   }
 }
 
@@ -607,6 +620,10 @@ function drawW(){
     ctx.save();ctx.translate(cx,cy);ctx.rotate(s+arc/2);ctx.textAlign='right';ctx.fillStyle='#fff';ctx.font='bold 11px DM Sans,sans-serif';ctx.shadowColor='rgba(0,0,0,.3)';ctx.shadowBlur=4;
     ctx.fillText(o.name.length>10?o.name.substr(0,10)+'…':o.name,r-7,4);ctx.restore();
   }
+  // Lime yellow border ring
+  ctx.beginPath();ctx.arc(cx,cy,r+5,0,2*Math.PI);
+  ctx.strokeStyle='#ecf38f';ctx.lineWidth=5;ctx.stroke();
+  // Center dot
   ctx.beginPath();ctx.arc(cx,cy,10,0,2*Math.PI);ctx.fillStyle='white';ctx.fill();
   ctx.beginPath();ctx.arc(cx,cy,5,0,2*Math.PI);ctx.fillStyle='#ccc';ctx.fill();
   document.getElementById('wLabel').textContent=curPoll.options[getSeg()]?.name||'—';
@@ -659,20 +676,55 @@ function startArch(){if(aUnsub){renderArch();return;}if(!window._fbReady){docume
 function renderArch(){
   const q=(document.getElementById('srch')?.value||'').toLowerCase();
   const st=document.getElementById('fSt')?.value||'';
-  const f=polls.filter(p=>(!q||p.question.toLowerCase().includes(q))&&(!st||p.status===st));
+  const f=polls.filter(p=>!p.deleted&&(!q||p.question.toLowerCase().includes(q))&&(!st||p.status===st));
   const g=document.getElementById('archGrid');
   if(!f.length){g.innerHTML='<div class="es">Keine Abstimmungen gefunden</div>';return;}
   g.innerHTML=f.map(p=>{
     const tot=p.options.reduce((s,o)=>s+o.votes,0);
+    const owner=isOwner(p);
     return`<div class="acd" onclick="openFromArch('${p._fid}')">
-      <div class="pbadge ${p.status==='Aktiv'?'pa':'pd'}">${p.status==='Aktiv'?'🗳 Aktiv':'✓ Beendet'}</div>
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+        <div class="pbadge \${p.status==='Aktiv'?'pa':'pd'}">\${p.status==='Aktiv'?'🗳 Aktiv':'✓ Beendet'}</div>
+        \${isOwner(p)?`<button onclick="deletePoll('\${p._fid}',event)" title="Löschen" style="background:none;border:1px solid #f0cac0;cursor:pointer;color:#df663a;font-size:11px;padding:3px 9px;border-radius:20px;transition:all .2s" onmouseover="this.style.background='#df663a';this.style.color='white'" onmouseout="this.style.background='none';this.style.color='#df663a'">Löschen</button>`:''}
+      </div>
+        ${owner?`<button onclick="deletePoll('${p._fid}',event)" title="Löschen" style="background:none;border:none;cursor:pointer;color:#ccc;font-size:14px;padding:2px 6px;border-radius:6px;transition:all .2s" onmouseover="this.style.color='#df663a';this.style.background='rgba(223,102,58,.1)'" onmouseout="this.style.color='#ccc';this.style.background='none'">🗑</button>`:''}
+      </div>
       <div class="aq">${p.question}</div>
       <div class="av">👥 ${tot} Stimmen · ${p.options.length} Antworten</div>
       <div class="ads">${p.options.map(o=>`<div class="adot" style="background:${o.color}"></div>`).join('')}</div>
     </div>`;
   }).join('');
 }
+function isOwner(poll){
+  return sessionStorage.getItem('owner_'+poll._fid)===poll.ownerToken;
+}
+function isOwner(poll){
+  return poll.ownerToken && sessionStorage.getItem('owner_'+poll._fid)===poll.ownerToken;
+}
+async function deletePoll(fid,e){
+  e.stopPropagation();
+  const p=polls.find(x=>x._fid===fid);
+  if(!p)return;
+  if(!isOwner(p)){showToast('Nur der Ersteller kann löschen');return;}
+  if(!confirm('Abstimmung löschen: "'+p.question+'"?'))return;
+  try{await fbUpd(fid,{deleted:true});showToast('Gelöscht!');}
+  catch(err){showToast('Fehler: '+err.message);}
+}
 function openFromArch(fid){const p=polls.find(x=>x._fid===fid);if(p)openVote(p);}
+async function deletePoll(fid,e){
+  e.stopPropagation();
+  const p=polls.find(x=>x._fid===fid);
+  if(!p){showToast('Nicht gefunden');return;}
+  if(!isOwner(p)){showToast('Nur der Ersteller kann löschen');return;}
+  if(!confirm('Abstimmung "'+p.question+'" wirklich löschen?'))return;
+  try{
+    const{doc:D,updateDoc:u}=getFB();
+    // We mark as deleted rather than actually deleting (Firestore free tier)
+    await u(D(getDB(),'polls',fid),{deleted:true,status:'Beendet'});
+    showToast('Abstimmung gelöscht');
+  }catch(e){showToast('Fehler: '+e.message);}
+}
 
 function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('on');setTimeout(()=>t.classList.remove('on'),3000);}
 

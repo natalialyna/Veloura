@@ -193,6 +193,11 @@
     .phase-vote{background:rgba(236,243,143,.5);color:var(--forest);}
     .phase-done{background:#f0f0f0;color:var(--muted);}
 
+    .add-row{display:flex;gap:8px;margin-top:14px;padding-top:14px;border-top:1px solid rgba(0,0,0,.06);}
+    .add-inp{flex:1;padding:9px 13px;border-radius:10px;border:1.5px solid rgba(0,0,0,.08);background:white;font-family:'DM Sans',sans-serif;font-size:13px;outline:none;transition:border-color .2s;}
+    .add-inp:focus{border-color:var(--forest);}
+    .add-btn{padding:9px 16px;border-radius:10px;border:none;cursor:pointer;background:var(--forest);color:var(--lime);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;white-space:nowrap;}
+    .add-note{font-size:11px;color:var(--muted);margin-top:6px;text-align:center;}
     .toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(110px);background:var(--forest);color:var(--lime);padding:11px 24px;border-radius:50px;font-size:13px;font-weight:500;z-index:400;transition:transform .3s ease;box-shadow:0 8px 28px rgba(64,89,79,.28);}
     .toast.on{transform:translateX(-50%) translateY(0);}
     #cc{position:fixed;inset:0;pointer-events:none;z-index:999;display:none;}
@@ -364,6 +369,8 @@ const C=['#40594f','#a1baf5','#9698dc','#ecf38f','#6db088','#c4d4f8','#b8b9e8','
 // ── FALLBACKS — object-first ─────────────────────────────────────────────────
 function fallback(q){
   const t=q.toLowerCase();
+  if(/pflanzenmilch|hafermilch|mandelmilch|oatmilk|sojamilch|kokosmilch|reismilch/i.test(t))
+    return['Oatly Barista','Alpro Soja','Hafermilch Barista','Mandelmilch','Kokosmilch','Reismilch'];
   if(/schokolade|schoki|praline|tafel/i.test(t)) return['Lindt Excellence','Ritter Sport Marzipan','Milka Oreo','Ferrero Rocher','Tony Chocolonely','Green & Black'];
   if(/auto|fahrzeug|wagen|pkw|e-auto|suv|cabrio/i.test(t)) return['VW Golf','BMW 3er','Toyota Yaris','Tesla Model 3','Skoda Octavia','Hyundai i30'];
   if(/schuh|sneaker|boot|sandale|stiefel/i.test(t)) return['Nike Air Max','New Balance 574','Adidas Samba','Veja V-10','Salomon XT-6','On Cloud 5'];
@@ -395,6 +402,8 @@ function fallback(q){
 
 // ── STATE ────────────────────────────────────────────────────────────────────
 let polls=[],curPoll=null,curId=null,uVote=null,chartI=null;
+let myAddedCount=0,myAddedIndices=[];
+const MAX_TOTAL=15,MAX_PER=4;
 let vUnsub=null,aUnsub=null,collectUnsub=null;
 let wAngle=0,wVel=0,wSpin=false,wStop=false;
 
@@ -462,29 +471,44 @@ async function genAI(){
   document.getElementById('aiLoad').style.display='flex';
   const seed=Math.floor(Math.random()*9999);
   try{
-    const prompt=`Seed:${seed}. Frage: "${q}"
-WICHTIG: Finde das HAUPTNOMEN (das Objekt, worüber entschieden wird). Das Verb ist irrelevant.
+    const res=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:400,
+        system:'Du generierst Abstimmungsoptionen. Antworte IMMER nur mit einem validen JSON-Array und nichts anderem. Keine Erklärungen. Niemals generische Platzhalter wie Option 1.',
+        messages:[{role:'user',content:'Frage: "'+q+'" (Seed: '+seed+')
+
+Finde das Hauptsubstantiv der Frage und nenne 6 echte, konkrete Beispiele davon.
+
 Beispiele:
-- "Welche SCHOKOLADE kaufen?" → Schokos: ["Lindt Excellence","Milka Oreo","Ritter Sport","Tony's Chocolonely","Ferrero Rocher","Green & Black"]
-- "Welches AUTO kaufen?" → Autos: ["VW Golf","BMW 3er","Tesla Model 3","Toyota Yaris","Skoda Octavia","Audi A3"]
-- "Was heute ANZIEHEN?" → Outfits: ["Casual Jeans","Elegantes Kleid","Oversized Hoodie","Smart Casual","Streetwear","Monochrom"]
-- "Was ESSEN heute Abend?" → Gerichte: ["Miso-Aubergine","Pad Thai","Griechischer Salat","Kokos-Curry","Falafel Bowl","Shakshuka"]
-Jetzt: "${q}" → 6 konkrete, kurze Optionen (1-4 Wörter, Deutsch).
-NUR JSON-Array: ["Opt1","Opt2","Opt3","Opt4","Opt5","Opt6"]`;
-    const raw=await callClaude(prompt);
+"Welche Pflanzenmilch?" → ["Oatly Barista","Alpro Soja","Hafermilch Barista","Mandelmilch","Kokosmilch","Reismilch"]
+"Welches Auto kaufen?" → ["VW Golf","BMW 3er","Tesla Model 3","Toyota Corolla","Skoda Octavia","Audi A3"]
+"Welche Schokolade?" → ["Lindt 70%","Milka Oreo","Ritter Sport","Tony Chocolonely","Ferrero Rocher","Valrhona"]
+"Was essen?" → ["Pasta Carbonara","Miso-Aubergine","Griechischer Salat","Ramen","Kokos-Curry","Falafel Bowl"]
+"Was anziehen?" → ["Casual Jeans","Elegantes Kleid","Oversized Blazer","Smart Casual","Streetwear","Monochrom"]
+"Wohin reisen?" → ["Lissabon","Kyoto","Kopenhagen","Barcelona","Island","Marrakesch"]
+
+Antworte NUR mit JSON-Array: ["Opt1","Opt2","Opt3","Opt4","Opt5","Opt6"]'}]
+      })
+    });
+    if(!res.ok)throw new Error('API '+res.status);
+    const data=await res.json();
+    const raw=data.content?.filter(c=>c.type==='text').map(c=>c.text).join('').replace(/```json|```/g,'').trim()||'';
     const m=raw.match(/\[[\s\S]*?\]/);
-    if(!m)throw new Error('no array');
+    if(!m)throw new Error('no array, got: '+raw.substring(0,80));
     const ideas=JSON.parse(m[0]);
-    if(Array.isArray(ideas)&&ideas.length>=2&&ideas.every(x=>typeof x==='string'&&x.length>0)){
+    if(Array.isArray(ideas)&&ideas.length>=2&&ideas.every(x=>typeof x==='string'&&x.length>1&&!/^(option|beispiel)\s*\d/i.test(x))){
       opts=ideas.slice(0,8).map(v=>({v:String(v).trim()}));
-    }else throw new Error('bad format');
-  }catch(e){console.warn('Fallback:',e.message);opts=fallback(q).map(v=>({v}));}
+    }else throw new Error('bad: '+JSON.stringify(ideas));
+  }catch(e){console.warn('KI Fallback:',e.message);opts=fallback(q).map(v=>({v}));}
   renderOpts();
   document.getElementById('aiLoad').style.display='none';
   btn.disabled=false;
 }
 
-// ── START COLLECT ─────────────────────────────────────────────────────────────
+ ─────────────────────────────────────────────────────────────
 async function startCollect(){
   const q=document.getElementById('qIn').value.trim();
   const clean=opts.map(o=>o.v.trim()).filter(Boolean);
@@ -498,10 +522,12 @@ async function startCollect(){
     catch(e){errEl.textContent='Firebase nicht erreichbar. Bitte Seite neu laden.';errEl.style.display='block';btn.disabled=false;btn.textContent='Weiter & Link teilen →';return;}
   }
   const code='#'+Math.random().toString(36).substr(2,6).toUpperCase();
-  const poll={code,question:q,category:'Sonstiges',options:clean.map((v,i)=>({name:v,votes:0,color:C[i%C.length]})),status:'Sammeln',phase:'collect',created:new Date().toISOString()};
+  const ownerToken=Math.random().toString(36).substr(2,16);
+  const poll={code,question:q,category:'Sonstiges',ownerToken,options:clean.map((v,i)=>({name:v,votes:0,color:C[i%C.length]})),status:'Sammeln',phase:'collect',created:new Date().toISOString()};
   try{
     const fid=await fbSave(poll);
     poll._fid=fid;
+    sessionStorage.setItem('owner_'+fid,ownerToken);
     btn.disabled=false;btn.textContent='Weiter & Link teilen →';
     openCollect(poll);
   }catch(e){
@@ -557,7 +583,7 @@ async function startVotingPhase(){
 function openVote(poll){
   if(vUnsub){vUnsub();vUnsub=null;}
   if(collectUnsub){collectUnsub();collectUnsub=null;}
-  curPoll=poll;curId=poll._fid;uVote=null;
+  curPoll=poll;curId=poll._fid;uVote=null;myAddedCount=0;myAddedIndices=[];
   document.getElementById('vTitle').textContent=poll.question;
   document.getElementById('vCode').textContent=poll.code;
   const url=location.origin+location.pathname+'?poll='+poll._fid;
@@ -595,16 +621,20 @@ function updateVoteUI(status){
 
 function renderVOpts(){
   const l=document.getElementById('vOptList');l.innerHTML='';
+  const ended=curPoll.status==='Beendet';
   curPoll.options.forEach((o,i)=>{
     const d=document.createElement('div');d.className='vo'+(uVote===i?' vd':'');
+    const canDel=!ended&&myAddedIndices.includes(i);
     d.innerHTML=`
       <div class="ol"><div class="odd" style="background:${o.color}"></div><span class="on2">${o.name}</span></div>
-      <div style="display:flex;align-items:center;gap:9px">
+      <div style="display:flex;align-items:center;gap:6px">
         <span class="oc">${o.votes}</span>
         <button class="vib${uVote===i?' vd':''}" onclick="castVote(${i})">${uVote===i?'✓':'Stimme'}</button>
+        ${canDel?`<button onclick="deleteOpt(${i})" title="Löschen" style="background:none;border:none;cursor:pointer;color:#ccc;font-size:15px;padding:2px 5px;line-height:1;transition:color .15s" onmouseover="this.style.color='#df663a'" onmouseout="this.style.color='#ccc'">✕</button>`:''}
       </div>`;
     l.appendChild(d);
   });
+  updateAddRow();
 }
 
 async function addVoteOpt(){
@@ -659,6 +689,45 @@ function shareMail(ctx){
   window.open('mailto:?subject='+sub+'&body='+body);
 }
 
+// ── ADD / DELETE IN VOTE ─────────────────────────────────────────────────────
+function updateAddRow(){
+  const ended=curPoll.status==='Beendet';
+  const full=curPoll.options.length>=MAX_TOTAL;
+  const pfull=myAddedCount>=MAX_PER;
+  const row=document.getElementById('addRow');
+  const note=document.getElementById('addNote');
+  const inp=document.getElementById('addInp');
+  if(!row||!note)return;
+  if(ended){row.style.display='none';note.textContent='Abstimmung beendet.';note.style.display='block';}
+  else if(full){row.style.display='none';note.textContent='Maximum von '+MAX_TOTAL+' Antworten erreicht.';note.style.display='block';}
+  else if(pfull){row.style.display='none';note.textContent='Du hast dein Limit von '+MAX_PER+' Antworten erreicht.';note.style.display='block';}
+  else{row.style.display='flex';if(inp)inp.placeholder='Antwort hinzufügen… (noch '+(MAX_PER-myAddedCount)+' möglich)';note.textContent=curPoll.options.length+' / '+MAX_TOTAL+' Antworten';note.style.display='block';}
+}
+async function addOpt2(){
+  if(curPoll.status==='Beendet'){showToast('Abstimmung beendet');return;}
+  if(curPoll.options.length>=MAX_TOTAL){showToast('Maximum von '+MAX_TOTAL+' erreicht');return;}
+  if(myAddedCount>=MAX_PER){showToast('Dein Limit von '+MAX_PER+' erreicht');return;}
+  const inp=document.getElementById('addInp');if(!inp)return;
+  const val=inp.value.trim();
+  if(!val){showToast('Bitte Text eingeben');return;}
+  if(curPoll.options.find(o=>o.name.toLowerCase()===val.toLowerCase())){showToast('Diese Option gibt es schon');return;}
+  const newO=[...curPoll.options,{name:val,votes:0,color:C[curPoll.options.length%C.length]}];
+  inp.value='';
+  try{await fbUpd(curId,{options:newO});myAddedIndices.push(newO.length-1);myAddedCount++;showToast('Antwort hinzugefügt!');}
+  catch(e){showToast('Fehler: '+e.message);}
+}
+async function deleteOpt(i){
+  if(curPoll.status==='Beendet'){showToast('Abstimmung beendet');return;}
+  if(!myAddedIndices.includes(i)){showToast('Nur eigene Antworten können gelöscht werden');return;}
+  if(curPoll.options.length<=2){showToast('Mindestens 2 Antworten nötig');return;}
+  const newO=curPoll.options.filter((_,x)=>x!==i);
+  myAddedIndices=myAddedIndices.filter(x=>x!==i).map(x=>x>i?x-1:x);
+  myAddedCount=Math.max(0,myAddedCount-1);
+  if(uVote===i)uVote=null;else if(uVote!==null&&uVote>i)uVote--;
+  try{await fbUpd(curId,{options:newO});showToast('Gelöscht!');}
+  catch(e){showToast('Fehler: '+e.message);}
+}
+
 // ── RESULTS ───────────────────────────────────────────────────────────────────
 function renderRes(){
   const tot=curPoll.options.reduce((s,o)=>s+o.votes,0);
@@ -692,6 +761,9 @@ function drawW(){
     ctx.save();ctx.translate(cx,cy);ctx.rotate(s+arc/2);ctx.textAlign='right';ctx.fillStyle='#fff';ctx.font='bold 11px DM Sans,sans-serif';ctx.shadowColor='rgba(0,0,0,.3)';ctx.shadowBlur=4;
     ctx.fillText(o.name.length>10?o.name.substr(0,10)+'…':o.name,r-7,4);ctx.restore();
   }
+  // Lime yellow border ring
+  ctx.beginPath();ctx.arc(cx,cy,r+6,0,2*Math.PI);
+  ctx.strokeStyle='#ecf38f';ctx.lineWidth=7;ctx.stroke();
   ctx.beginPath();ctx.arc(cx,cy,10,0,2*Math.PI);ctx.fillStyle='white';ctx.fill();
   ctx.beginPath();ctx.arc(cx,cy,5,0,2*Math.PI);ctx.fillStyle='#ccc';ctx.fill();
   document.getElementById('wLabel').textContent=curPoll.options[getSeg()]?.name||'—';
@@ -741,20 +813,33 @@ function startArch(){if(aUnsub){renderArch();return;}if(!window._fbReady){docume
 function renderArch(){
   const q=(document.getElementById('srch')?.value||'').toLowerCase();
   const st=document.getElementById('fSt')?.value||'';
-  const f=polls.filter(p=>(!q||p.question.toLowerCase().includes(q))&&(!st||p.status===st));
+  const f=polls.filter(p=>!p.deleted&&(!q||p.question.toLowerCase().includes(q))&&(!st||p.status===st));
   const g=document.getElementById('archGrid');
   if(!f.length){g.innerHTML='<div class="es">Keine Abstimmungen gefunden</div>';return;}
   g.innerHTML=f.map(p=>{
     const tot=p.options.reduce((s,o)=>s+o.votes,0);
     const pl=p.status==='Sammeln'?'🔗 Sammeln':p.status==='Aktiv'?'🗳 Aktiv':'✓ Beendet';
     const pc=p.status==='Sammeln'?'phase-collect':p.status==='Aktiv'?'phase-vote':'phase-done';
+    const delBtn=isOwner(p)?`<button onclick="deletePoll('${p._fid}',event)" style="background:none;border:1px solid #f0cac0;cursor:pointer;color:var(--coral);font-size:11px;padding:3px 10px;border-radius:20px">Löschen</button>`:'';
     return`<div class="acd" onclick="openFromArch('${p._fid}')">
-      <div class="at2"><span class="phase-badge ${pc}">${pl}</span></div>
+      <div class="at2" style="display:flex;justify-content:space-between;align-items:center"><span class="phase-badge ${pc}">${pl}</span>${delBtn}</div>
       <div class="aq">${p.question}</div>
       <div class="av">👥 ${tot} Stimmen · ${p.options.length} Antworten</div>
       <div class="ads">${p.options.map(o=>`<div class="adot" style="background:${o.color}"></div>`).join('')}</div>
     </div>`;
   }).join('');
+}
+function isOwner(p){
+  return p.ownerToken&&sessionStorage.getItem('owner_'+p._fid)===p.ownerToken;
+}
+async function deletePoll(fid,e){
+  e.stopPropagation();
+  const p=polls.find(x=>x._fid===fid);
+  if(!p)return;
+  if(!isOwner(p)){showToast('Nur der Ersteller kann löschen');return;}
+  if(!confirm('Abstimmung "'+p.question+'" wirklich löschen?'))return;
+  try{await fbUpd(fid,{deleted:true,status:'Beendet'});showToast('Gelöscht!');}
+  catch(err){showToast('Fehler: '+err.message);}
 }
 function openFromArch(fid){const p=polls.find(x=>x._fid===fid);if(!p)return;if(p.status==='Sammeln')openCollect(p);else openVote(p);}
 

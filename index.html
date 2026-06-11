@@ -54,7 +54,7 @@
     .hs{font-size:17px;color:var(--muted);max-width:370px;margin:0 auto 44px;line-height:1.6;}
     .br{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
     .bp{padding:15px 34px;border-radius:50px;border:none;cursor:pointer;background:var(--forest);color:var(--lime);font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;transition:all .2s;box-shadow:0 4px 20px rgba(64,89,79,.22);}
-    .bp:hover{transform:translateY(-2px);}
+    .bp:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(64,89,79,.32);}
     .bs{padding:15px 34px;border-radius:50px;border:1.5px solid rgba(0,0,0,.12);cursor:pointer;background:white;color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;transition:all .2s;}
     .bs:hover{background:var(--cream);}
 
@@ -87,49 +87,56 @@
     .sp{width:15px;height:15px;border:2px solid rgba(150,152,220,.2);border-top-color:var(--lavender);border-radius:50%;animation:spin .8s linear infinite;flex-shrink:0;}
     @keyframes spin{to{transform:rotate(360deg)}}
 
-    /* VOTE PAGE */
-    .vi{max-width:1040px;margin:0 auto;padding:28px 28px 80px;}
-
-    /* Top bar on vote page */
-    .vote-topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:10px;}
-    .bkb{background:none;border:none;cursor:pointer;color:var(--muted);font-family:'DM Sans',sans-serif;font-size:13px;display:flex;align-items:center;gap:5px;transition:color .2s;}
-    .bkb:hover{color:var(--text);}
-    .enb{padding:8px 20px;border-radius:50px;font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;font-weight:500;border:1.5px solid var(--coral);background:white;color:var(--coral);transition:all .2s;}
-    .enb:hover{background:var(--coral);color:white;}
-
-    /* Collect toggle button — subtle pill at top */
-    .collect-toggle-btn{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:50px;border:1.5px solid rgba(161,186,245,.5);background:rgba(161,186,245,.12);cursor:pointer;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;color:#5a7ed4;transition:all .2s;}
-    .collect-toggle-btn:hover{background:rgba(161,186,245,.25);}
-    .collect-toggle-btn.hidden-btn{display:none;}
-
-    /* Share bar */
-    .vote-share-bar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;background:rgba(64,89,79,.07);border-radius:14px;padding:11px 16px;margin-bottom:16px;}
-    .vote-share-url{font-size:11px;color:var(--muted);flex:1;word-break:break-all;min-width:0;}
-    .vsbtn{padding:7px 14px;border-radius:50px;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;white-space:nowrap;transition:all .2s;}
-    .vsbtn-copy{background:var(--forest);color:var(--lime);}
-    .vsbtn-wa{background:#25D366;color:white;}
-    .vsbtn-mail{background:white;color:var(--text);border:1.5px solid rgba(0,0,0,.1);}
-
-    /* Inline collect panel — slides open under topbar */
-    .collect-panel{background:rgba(161,186,245,.08);border:1.5px solid rgba(161,186,245,.3);border-radius:16px;padding:20px;margin-bottom:16px;display:none;}
-    .collect-panel.open{display:block;}
-    .collect-panel-title{font-family:'Playfair Display',serif;font-size:16px;margin-bottom:4px;}
-    .collect-panel-sub{font-size:12px;color:var(--muted);margin-bottom:14px;}
-    .opt-chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;}
-    .opt-chip{display:flex;align-items:center;gap:6px;padding:6px 12px;background:white;border-radius:50px;font-size:13px;border:1.5px solid rgba(0,0,0,.06);}
-    .opt-chip-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
-    .add-opt-row{display:flex;gap:8px;}
-    .add-opt-inp{flex:1;padding:10px 13px;border-radius:10px;border:1.5px solid rgba(0,0,0,.08);background:white;font-family:'DM Sans',sans-serif;font-size:13px;outline:none;transition:border-color .2s;}
+    /* COLLECT */
+    .collect-wrap{max-width:620px;margin:0 auto;padding:40px 28px 80px;}
+    .collect-question{font-family:'Playfair Display',serif;font-size:28px;margin-bottom:8px;line-height:1.2;}
+    .collect-sub{font-size:14px;color:var(--muted);margin-bottom:28px;}
+    .share-box{background:var(--forest);border-radius:var(--r);padding:26px;margin-bottom:22px;text-align:center;}
+    .share-box-title{font-family:'Playfair Display',serif;font-size:19px;color:var(--lime);margin-bottom:5px;}
+    .share-box-sub{font-size:13px;color:rgba(236,243,143,.7);margin-bottom:16px;}
+    .share-url-display{background:rgba(255,255,255,.12);border-radius:10px;padding:10px 14px;font-size:12px;color:white;word-break:break-all;margin-bottom:14px;text-align:left;}
+    .share-copy-btn{padding:11px 26px;border-radius:50px;border:none;cursor:pointer;background:var(--lime);color:var(--forest);font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;transition:all .2s;}
+    .share-copy-btn:hover{transform:translateY(-1px);}
+    .share-icons{display:flex;gap:10px;justify-content:center;margin-top:12px;flex-wrap:wrap;}
+    .share-icon-btn{padding:8px 16px;border-radius:50px;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;display:flex;align-items:center;gap:6px;transition:all .2s;}
+    .share-wa{background:#25D366;color:white;}
+    .share-mail{background:rgba(255,255,255,.2);color:white;}
+    .collect-card{background:var(--card);backdrop-filter:blur(20px);border-radius:var(--r);padding:24px;box-shadow:var(--sh);border:1px solid rgba(255,255,255,.9);margin-bottom:16px;}
+    .collect-card-title{font-family:'Playfair Display',serif;font-size:18px;margin-bottom:4px;}
+    .collect-card-sub{font-size:12px;color:var(--muted);margin-bottom:16px;}
+    .opt-chip{display:flex;align-items:center;gap:10px;padding:10px 14px;background:rgba(255,255,255,.8);border-radius:12px;margin-bottom:8px;border:1.5px solid rgba(0,0,0,.05);}
+    .opt-chip-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+    .opt-chip-name{font-size:14px;flex:1;}
+    .add-opt-row{display:flex;gap:10px;margin-top:12px;}
+    .add-opt-inp{flex:1;padding:11px 14px;border-radius:12px;border:1.5px solid rgba(0,0,0,.08);background:white;font-family:'DM Sans',sans-serif;font-size:13px;outline:none;transition:border-color .2s;}
     .add-opt-inp:focus{border-color:var(--forest);}
-    .add-opt-btn{padding:10px 18px;border-radius:10px;border:none;cursor:pointer;background:var(--forest);color:var(--lime);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;white-space:nowrap;transition:all .2s;}
+    .add-opt-btn{padding:11px 20px;border-radius:12px;border:none;cursor:pointer;background:var(--forest);color:var(--lime);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;white-space:nowrap;transition:all .2s;}
     .add-opt-btn:hover:not(:disabled){transform:translateY(-1px);}
     .add-opt-btn:disabled{opacity:.5;cursor:not-allowed;}
-    .collect-note{font-size:11px;color:var(--muted);margin-top:8px;text-align:center;}
+    .max-note{font-size:11px;color:var(--muted);text-align:center;margin-top:8px;}
+    .start-vote-btn{width:100%;padding:16px;border-radius:14px;border:none;cursor:pointer;background:var(--coral);color:white;font-family:'DM Sans',sans-serif;font-size:16px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .2s;box-shadow:0 4px 20px rgba(223,102,58,.3);margin-top:8px;}
+    .start-vote-btn:hover:not(:disabled){transform:translateY(-1px);}
+    .start-vote-btn:disabled{opacity:.6;cursor:not-allowed;transform:none;}
 
+    /* VOTE */
+    .vi{max-width:1040px;margin:0 auto;padding:32px 28px 80px;}
     .bdg{padding:4px 11px;border-radius:50px;font-size:12px;font-weight:500;}
     .bak{background:var(--lime);color:var(--forest);}
     .bnd{background:#f0f0f0;color:var(--muted);}
-    .vt{font-family:'Playfair Display',serif;font-size:clamp(20px,4vw,38px);margin:10px 0 20px;}
+    .vt{font-family:'Playfair Display',serif;font-size:clamp(20px,4vw,40px);margin:10px 0 22px;}
+    .bkb{background:none;border:none;cursor:pointer;color:var(--muted);font-family:'DM Sans',sans-serif;font-size:13px;display:flex;align-items:center;gap:5px;transition:color .2s;}
+    .bkb:hover{color:var(--text);}
+
+    /* Share bar on vote page */
+    .vote-share-bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:rgba(64,89,79,.07);border-radius:14px;padding:12px 16px;margin-bottom:18px;}
+    .vote-share-url{font-size:12px;color:var(--muted);flex:1;word-break:break-all;}
+    .vote-share-copy{padding:7px 16px;border-radius:50px;border:none;cursor:pointer;background:var(--forest);color:var(--lime);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;white-space:nowrap;transition:all .2s;}
+    .vote-share-copy:hover{transform:translateY(-1px);}
+    .vote-share-wa{padding:7px 14px;border-radius:50px;border:none;cursor:pointer;background:#25D366;color:white;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;white-space:nowrap;transition:all .2s;}
+    .vote-share-mail{padding:7px 14px;border-radius:50px;border:1.5px solid rgba(0,0,0,.1);cursor:pointer;background:white;color:var(--text);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;white-space:nowrap;transition:all .2s;}
+
+    .enb{padding:8px 20px;border-radius:50px;font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;font-weight:500;border:1.5px solid var(--coral);background:white;color:var(--coral);transition:all .2s;}
+    .enb:hover{background:var(--coral);color:white;}
     .vg{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
     @media(max-width:700px){.vg{grid-template-columns:1fr;}}
     .wc{background:var(--card);backdrop-filter:blur(20px);border-radius:var(--r);padding:26px;box-shadow:var(--sh);border:1px solid rgba(255,255,255,.9);display:flex;flex-direction:column;align-items:center;}
@@ -158,6 +165,14 @@
     .vib.vd{background:var(--forest);color:var(--lime);border-color:var(--forest);}
     .nvotes{color:var(--muted);font-size:13px;text-align:center;padding:18px 0;}
 
+    /* Add option row on vote page */
+    .vote-add-row{display:flex;gap:8px;margin-top:14px;padding-top:14px;border-top:1px solid rgba(0,0,0,.06);}
+    .vote-add-inp{flex:1;padding:9px 13px;border-radius:10px;border:1.5px solid rgba(0,0,0,.08);background:white;font-family:'DM Sans',sans-serif;font-size:13px;outline:none;transition:border-color .2s;}
+    .vote-add-inp:focus{border-color:var(--forest);}
+    .vote-add-btn{padding:9px 16px;border-radius:10px;border:none;cursor:pointer;background:var(--forest);color:var(--lime);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;white-space:nowrap;transition:all .2s;}
+    .vote-add-btn:hover:not(:disabled){transform:translateY(-1px);}
+    .vote-add-btn:disabled{opacity:.5;cursor:not-allowed;}
+
     /* ARCHIVE */
     .ai2{max-width:1040px;margin:0 auto;padding:38px 28px 80px;}
     .ac{display:flex;gap:10px;margin-bottom:26px;flex-wrap:wrap;}
@@ -174,7 +189,8 @@
     .adot{width:9px;height:9px;border-radius:50%;}
     .es{grid-column:1/-1;text-align:center;padding:65px 0;color:var(--muted);font-size:15px;}
     .phase-badge{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;border-radius:50px;font-size:11px;font-weight:600;}
-    .phase-aktiv{background:rgba(236,243,143,.5);color:var(--forest);}
+    .phase-collect{background:rgba(161,186,245,.2);color:#5a7ed4;}
+    .phase-vote{background:rgba(236,243,143,.5);color:var(--forest);}
     .phase-done{background:#f0f0f0;color:var(--muted);}
 
     .toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(110px);background:var(--forest);color:var(--lime);padding:11px 24px;border-radius:50px;font-size:13px;font-weight:500;z-index:400;transition:transform .3s ease;box-shadow:0 8px 28px rgba(64,89,79,.28);}
@@ -224,50 +240,71 @@
       </div>
       <div class="fg">
         <div class="oh">
-          <div class="fl" style="margin:0">ANTWORTMÖGLICHKEITEN <span style="color:var(--muted);font-weight:400;font-size:11px">(andere können später noch hinzufügen)</span></div>
+          <div class="fl" style="margin:0">ANTWORTMÖGLICHKEITEN <span style="color:var(--muted);font-weight:400;font-size:11px">(andere können später auch hinzufügen)</span></div>
           <button class="aib" id="aiBtn" onclick="genAI()">✦ KI-Ideen</button>
         </div>
         <div id="optList"></div>
         <div id="aiLoad" style="display:none" class="ail"><div class="sp"></div> KI sucht passende Optionen…</div>
         <button class="aob" onclick="addOpt()">+ Option hinzufügen</button>
       </div>
-      <button class="stb" id="stBtn" onclick="startVote()">Weiter & Link teilen →</button>
+      <button class="stb" id="stBtn" onclick="startCollect()">Weiter & Link teilen →</button>
       <div id="errMsg" style="display:none;color:var(--coral);font-size:13px;margin-top:12px;text-align:center;"></div>
     </div>
   </div>
 </div>
 
-<!-- VOTE PAGE — single page for everything -->
-<div class="pg" id="pg-vote">
-  <div class="vi">
-
-    <!-- Top bar -->
-    <div class="vote-topbar">
-      <button class="bkb" onclick="goBack()">← Zurück</button>
-      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
-        <!-- Collect toggle pill — hidden, functionality is inline in vote list -->
-        <button class="enb" id="endBtn" onclick="endVote()">Beenden</button>
+<!-- COLLECT PHASE -->
+<div class="pg" id="pg-collect">
+  <div class="collect-wrap">
+    <div class="plabel">SAMMELN</div>
+    <div class="collect-question" id="collectQ"></div>
+    <div class="collect-sub">Teile den Link — alle können Antworten hinzufügen, bevor die Abstimmung startet</div>
+    <div class="share-box">
+      <div class="share-box-title">🔗 Link teilen</div>
+      <div class="share-box-sub">Jeder mit diesem Link kann direkt mitmachen — kein Account nötig</div>
+      <div class="share-url-display" id="collectUrl"></div>
+      <button class="share-copy-btn" onclick="copyCollectLink()">Link kopieren</button>
+      <div class="share-icons">
+        <button class="share-icon-btn share-wa" onclick="shareWA('collect')">💬 WhatsApp</button>
+        <button class="share-icon-btn share-mail" onclick="shareMail('collect')">✉️ E-Mail</button>
       </div>
     </div>
+    <div class="collect-card">
+      <div class="collect-card-title">Antworten</div>
+      <div class="collect-card-sub" id="optCountNote">0 / 10 Antworten</div>
+      <div id="collectOptList"></div>
+      <div class="add-opt-row" id="addOptRow">
+        <input type="text" class="add-opt-inp" id="newOptInp" placeholder="Deine Antwort eingeben…" onkeydown="if(event.key==='Enter')addCollectOpt()">
+        <button class="add-opt-btn" id="addOptBtn" onclick="addCollectOpt()">+ Hinzufügen</button>
+      </div>
+      <div class="max-note" id="maxNote" style="display:none">Maximum von 10 Antworten erreicht</div>
+    </div>
+    <button class="start-vote-btn" onclick="startVotingPhase()">🗳 Abstimmung jetzt starten</button>
+    <p style="font-size:12px;color:var(--muted);text-align:center;margin-top:10px">Warte bis alle ihre Antworten hinzugefügt haben, dann starte die Abstimmung.</p>
+  </div>
+</div>
 
-    <!-- Share bar — always visible -->
-    <div class="vote-share-bar">
-      <span class="vote-share-url" id="voteShareUrl"></span>
-      <button class="vsbtn vsbtn-copy" onclick="copyLink()">🔗 Kopieren</button>
-      <button class="vsbtn vsbtn-wa"   onclick="shareWA()">💬 WhatsApp</button>
-      <button class="vsbtn vsbtn-mail" onclick="shareMail()">✉️ Mail</button>
+<!-- VOTE PAGE -->
+<div class="pg" id="pg-vote">
+  <div class="vi">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:10px">
+      <button class="bkb" onclick="goBack()">← Zurück</button>
+      <button class="enb" id="endBtn" onclick="endVote()">Abstimmung beenden</button>
     </div>
 
-    <!-- Add option is now inline below the vote list -->
+    <!-- SHARE BAR — always visible -->
+    <div class="vote-share-bar">
+      <span class="vote-share-url" id="voteShareUrl"></span>
+      <button class="vote-share-copy" onclick="copyVoteLink()">🔗 Kopieren</button>
+      <button class="vote-share-wa" onclick="shareWA('vote')">💬 WhatsApp</button>
+      <button class="vote-share-mail" onclick="shareMail('vote')">✉️ Mail</button>
+    </div>
 
-    <!-- Status row -->
     <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap">
       <span class="bdg bak" id="vBadge">Aktiv</span>
       <span style="color:var(--muted);font-size:12px" id="vCode"></span>
     </div>
     <h2 class="vt" id="vTitle"></h2>
-
-    <!-- Wheel + vote panel -->
     <div class="vg">
       <div class="wc">
         <div class="wrl" id="wLabel">—</div>
@@ -285,6 +322,12 @@
         <div class="vlc">
           <div class="ptt">Abstimmen</div>
           <div id="vOptList"></div>
+          <!-- Add option row — hidden when ended -->
+          <div class="vote-add-row" id="voteAddRow">
+            <input type="text" class="vote-add-inp" id="voteAddInp" placeholder="Antwort hinzufügen…" onkeydown="if(event.key==='Enter')addVoteOpt()">
+            <button class="vote-add-btn" onclick="addVoteOpt()">+ Hinzufügen</button>
+          </div>
+          <div class="max-note" id="voteMaxNote" style="display:none">Maximum von 10 Antworten erreicht</div>
         </div>
         <div class="rc">
           <div class="ptt">Ergebnisse</div>
@@ -305,7 +348,7 @@
       <input type="text" class="si" placeholder="Suchen…" id="srch" oninput="renderArch()">
       <select class="fs" id="fSt" onchange="renderArch()">
         <option value="">Alle Status</option>
-        <option>Aktiv</option><option>Beendet</option>
+        <option>Sammeln</option><option>Aktiv</option><option>Beendet</option>
       </select>
     </div>
     <div class="ag" id="archGrid"><div class="es">Laden…</div></div>
@@ -317,10 +360,8 @@
 
 <script>
 const C=['#40594f','#a1baf5','#9698dc','#ecf38f','#6db088','#c4d4f8','#b8b9e8','#f2f7a0','#df663a','#f5a88a'];
-const MAX_TOTAL = 15;   // max options total
-const MAX_PER_PERSON = 4; // max each person can add
 
-// ── FALLBACKS ────────────────────────────────────────────────────────────────
+// ── FALLBACKS — object-first ─────────────────────────────────────────────────
 function fallback(q){
   const t=q.toLowerCase();
   if(/schokolade|schoki|praline|tafel/i.test(t)) return['Lindt Excellence','Ritter Sport Marzipan','Milka Oreo','Ferrero Rocher','Tony Chocolonely','Green & Black'];
@@ -354,11 +395,8 @@ function fallback(q){
 
 // ── STATE ────────────────────────────────────────────────────────────────────
 let polls=[],curPoll=null,curId=null,uVote=null,chartI=null;
-let vUnsub=null,aUnsub=null;
+let vUnsub=null,aUnsub=null,collectUnsub=null;
 let wAngle=0,wVel=0,wSpin=false,wStop=false;
-let collectOpen=false;
-// Track how many options this device has added in this session
-let myAddedCount=0;
 
 // ── FIREBASE ─────────────────────────────────────────────────────────────────
 const getDB=()=>window._db;
@@ -381,6 +419,7 @@ function go(id){
 }
 function goBack(){
   if(vUnsub){vUnsub();vUnsub=null;}
+  if(collectUnsub){collectUnsub();collectUnsub=null;}
   go('archiv');
 }
 
@@ -401,7 +440,7 @@ function renderOpts(){
     l.appendChild(d);
   });
 }
-function addOpt(){if(opts.length<MAX_TOTAL){opts.push({v:''});renderOpts();}}
+function addOpt(){if(opts.length<10){opts.push({v:''});renderOpts();}}
 function rmOpt(i){opts.splice(i,1);renderOpts();}
 
 // ── CLAUDE API ────────────────────────────────────────────────────────────────
@@ -418,18 +457,19 @@ async function callClaude(prompt){
 async function genAI(){
   const q=document.getElementById('qIn').value.trim();
   if(!q){showToast('Bitte zuerst eine Frage eingeben');return;}
-  const btn=document.getElementById('aiBtn');btn.disabled=true;
+  const btn=document.getElementById('aiBtn');
+  btn.disabled=true;
   document.getElementById('aiLoad').style.display='flex';
   const seed=Math.floor(Math.random()*9999);
   try{
     const prompt=`Seed:${seed}. Frage: "${q}"
-WICHTIG: Finde das HAUPTNOMEN (das Objekt). Das Verb ist irrelevant.
+WICHTIG: Finde das HAUPTNOMEN (das Objekt, worüber entschieden wird). Das Verb ist irrelevant.
 Beispiele:
-- "Welche SCHOKOLADE kaufen?" → ["Lindt Excellence","Milka Oreo","Ritter Sport","Tony's Chocolonely","Ferrero Rocher","Green & Black"]
-- "Welches AUTO kaufen?" → ["VW Golf","BMW 3er","Tesla Model 3","Toyota Yaris","Skoda Octavia","Audi A3"]
-- "Was heute ANZIEHEN?" → ["Casual Jeans","Elegantes Kleid","Oversized Hoodie","Smart Casual","Streetwear","Monochrom"]
-- "Was ESSEN heute Abend?" → ["Miso-Aubergine","Pad Thai","Griechischer Salat","Kokos-Curry","Falafel Bowl","Shakshuka"]
-Frage: "${q}" → 6 konkrete, kurze Optionen (1-4 Wörter, Deutsch).
+- "Welche SCHOKOLADE kaufen?" → Schokos: ["Lindt Excellence","Milka Oreo","Ritter Sport","Tony's Chocolonely","Ferrero Rocher","Green & Black"]
+- "Welches AUTO kaufen?" → Autos: ["VW Golf","BMW 3er","Tesla Model 3","Toyota Yaris","Skoda Octavia","Audi A3"]
+- "Was heute ANZIEHEN?" → Outfits: ["Casual Jeans","Elegantes Kleid","Oversized Hoodie","Smart Casual","Streetwear","Monochrom"]
+- "Was ESSEN heute Abend?" → Gerichte: ["Miso-Aubergine","Pad Thai","Griechischer Salat","Kokos-Curry","Falafel Bowl","Shakshuka"]
+Jetzt: "${q}" → 6 konkrete, kurze Optionen (1-4 Wörter, Deutsch).
 NUR JSON-Array: ["Opt1","Opt2","Opt3","Opt4","Opt5","Opt6"]`;
     const raw=await callClaude(prompt);
     const m=raw.match(/\[[\s\S]*?\]/);
@@ -437,18 +477,19 @@ NUR JSON-Array: ["Opt1","Opt2","Opt3","Opt4","Opt5","Opt6"]`;
     const ideas=JSON.parse(m[0]);
     if(Array.isArray(ideas)&&ideas.length>=2&&ideas.every(x=>typeof x==='string'&&x.length>0)){
       opts=ideas.slice(0,8).map(v=>({v:String(v).trim()}));
-    }else throw new Error('bad');
+    }else throw new Error('bad format');
   }catch(e){console.warn('Fallback:',e.message);opts=fallback(q).map(v=>({v}));}
   renderOpts();
   document.getElementById('aiLoad').style.display='none';
   btn.disabled=false;
 }
 
-// ── START VOTE ────────────────────────────────────────────────────────────────
-async function startVote(){
+// ── START COLLECT ─────────────────────────────────────────────────────────────
+async function startCollect(){
   const q=document.getElementById('qIn').value.trim();
   const clean=opts.map(o=>o.v.trim()).filter(Boolean);
-  const errEl=document.getElementById('errMsg');errEl.style.display='none';
+  const errEl=document.getElementById('errMsg');
+  errEl.style.display='none';
   if(!q){showToast('Bitte eine Frage eingeben');return;}
   const btn=document.getElementById('stBtn');
   btn.disabled=true;btn.textContent='Wird erstellt…';
@@ -457,14 +498,12 @@ async function startVote(){
     catch(e){errEl.textContent='Firebase nicht erreichbar. Bitte Seite neu laden.';errEl.style.display='block';btn.disabled=false;btn.textContent='Weiter & Link teilen →';return;}
   }
   const code='#'+Math.random().toString(36).substr(2,6).toUpperCase();
-  const poll={code,question:q,category:'Sonstiges',
-    options:clean.map((v,i)=>({name:v,votes:0,color:C[i%C.length]})),
-    status:'Aktiv',created:new Date().toISOString()};
+  const poll={code,question:q,category:'Sonstiges',options:clean.map((v,i)=>({name:v,votes:0,color:C[i%C.length]})),status:'Sammeln',phase:'collect',created:new Date().toISOString()};
   try{
     const fid=await fbSave(poll);
     poll._fid=fid;
     btn.disabled=false;btn.textContent='Weiter & Link teilen →';
-    openVote(poll);
+    openCollect(poll);
   }catch(e){
     console.error(e);
     errEl.textContent='Fehler: '+e.message+'. Bitte Firebase-Regeln prüfen.';
@@ -473,18 +512,63 @@ async function startVote(){
   }
 }
 
-// ── OPEN VOTE ─────────────────────────────────────────────────────────────────
+// ── COLLECT PHASE ─────────────────────────────────────────────────────────────
+function openCollect(poll){
+  if(collectUnsub){collectUnsub();collectUnsub=null;}
+  curPoll=poll;curId=poll._fid;
+  document.getElementById('collectQ').textContent=poll.question;
+  const url=location.origin+location.pathname+'?poll='+poll._fid;
+  document.getElementById('collectUrl').textContent=url;
+  renderCollectOpts();
+  go('collect');
+  collectUnsub=fbOne(curId,up=>{
+    curPoll=up;renderCollectOpts();
+    if(up.phase==='vote')openVote(up);
+  });
+}
+function renderCollectOpts(){
+  const list=document.getElementById('collectOptList');
+  const o=curPoll.options||[];
+  document.getElementById('optCountNote').textContent=o.length+' / 10 Antworten';
+  list.innerHTML=o.map((x,i)=>`<div class="opt-chip"><div class="opt-chip-dot" style="background:${x.color}"></div><span class="opt-chip-name">${x.name}</span></div>`).join('');
+  const full=o.length>=10;
+  document.getElementById('addOptRow').style.display=full?'none':'flex';
+  document.getElementById('maxNote').style.display=full?'block':'none';
+}
+async function addCollectOpt(){
+  const inp=document.getElementById('newOptInp');
+  const val=inp.value.trim();
+  if(!val){showToast('Bitte einen Text eingeben');return;}
+  if((curPoll.options||[]).length>=10){showToast('Maximum erreicht');return;}
+  const newO=[...curPoll.options,{name:val,votes:0,color:C[curPoll.options.length%C.length]}];
+  inp.value='';
+  document.getElementById('addOptBtn').disabled=true;
+  try{await fbUpd(curId,{options:newO});}
+  catch(e){showToast('Fehler');}
+  document.getElementById('addOptBtn').disabled=false;
+}
+async function startVotingPhase(){
+  if((curPoll.options||[]).length<2){showToast('Mindestens 2 Antworten nötig');return;}
+  try{await fbUpd(curId,{status:'Aktiv',phase:'vote'});}
+  catch(e){showToast('Fehler: '+e.message);}
+}
+
+// ── VOTE ──────────────────────────────────────────────────────────────────────
 function openVote(poll){
   if(vUnsub){vUnsub();vUnsub=null;}
-  curPoll=poll;curId=poll._fid;uVote=null;myAddedCount=0;collectOpen=false;myAddedIndices=[];
+  if(collectUnsub){collectUnsub();collectUnsub=null;}
+  curPoll=poll;curId=poll._fid;uVote=null;
   document.getElementById('vTitle').textContent=poll.question;
   document.getElementById('vCode').textContent=poll.code;
-  document.getElementById('voteShareUrl').textContent=getUrl();
-  setBadge(poll.status);updateTopUI(poll.status);
+  const url=location.origin+location.pathname+'?poll='+poll._fid;
+  document.getElementById('voteShareUrl').textContent=url;
+  setBadge(poll.status);
+  updateVoteUI(poll.status);
   renderVOpts();drawW();renderRes();
   go('vote');
   vUnsub=fbOne(curId,up=>{
-    curPoll=up;setBadge(up.status);updateTopUI(up.status);
+    curPoll=up;setBadge(up.status);
+    updateVoteUI(up.status);
     renderVOpts();drawW();renderRes();
   });
 }
@@ -492,96 +576,47 @@ function setBadge(s){
   const b=document.getElementById('vBadge');
   b.textContent=s;b.className='bdg '+(s==='Aktiv'?'bak':'bnd');
 }
-function updateTopUI(status){
+function updateVoteUI(status){
   const ended=status==='Beendet';
-  // End button: hide when already ended
-  const endBtn=document.getElementById('endBtn');
-  if(endBtn) endBtn.style.display=ended?'none':'block';
+  // Hide/show add-option row
+  const addRow=document.getElementById('voteAddRow');
+  const maxNote=document.getElementById('voteMaxNote');
+  if(ended){
+    addRow.style.display='none';
+    maxNote.style.display='none';
+  }else{
+    const full=(curPoll.options||[]).length>=10;
+    addRow.style.display=full?'none':'flex';
+    maxNote.style.display=full?'block':'none';
+  }
+  // End button
+  document.getElementById('endBtn').style.display=ended?'none':'block';
 }
-
-
-async function addOption(){
-  if(curPoll.status==='Beendet'){showToast('Abstimmung beendet');return;}
-  if((curPoll.options||[]).length>=MAX_TOTAL){showToast('Maximum von '+MAX_TOTAL+' erreicht');return;}
-  if(myAddedCount>=MAX_PER_PERSON){showToast('Du hast dein Limit von '+MAX_PER_PERSON+' erreicht');return;}
-  const inp=document.getElementById('collectInp');
-  if(!inp){showToast('Eingabefeld nicht gefunden');return;}
-  const val=inp.value.trim();
-  if(!val){showToast('Bitte einen Text eingeben');return;}
-  if(curPoll.options.find(o=>o.name.toLowerCase()===val.toLowerCase())){showToast('Diese Option gibt es schon');return;}
-  const newO=[...curPoll.options,{name:val,votes:0,color:C[curPoll.options.length%C.length]}];
-  inp.value='';
-  try{
-    await fbUpd(curId,{options:newO});
-    myAddedIndices.push(newO.length-1);
-    myAddedCount++;
-    showToast('Antwort hinzugefügt!');
-  }catch(e){showToast('Fehler: '+e.message);}
-}
-
-// ── VOTE ──────────────────────────────────────────────────────────────────────
-// Track indices added this session so user can delete their own
-let myAddedIndices = [];
 
 function renderVOpts(){
   const l=document.getElementById('vOptList');l.innerHTML='';
-  const ended=curPoll.status==='Beendet';
   curPoll.options.forEach((o,i)=>{
     const d=document.createElement('div');d.className='vo'+(uVote===i?' vd':'');
-    const canDelete=!ended&&myAddedIndices.includes(i);
     d.innerHTML=`
       <div class="ol"><div class="odd" style="background:${o.color}"></div><span class="on2">${o.name}</span></div>
-      <div style="display:flex;align-items:center;gap:6px">
+      <div style="display:flex;align-items:center;gap:9px">
         <span class="oc">${o.votes}</span>
         <button class="vib${uVote===i?' vd':''}" onclick="castVote(${i})">${uVote===i?'✓':'Stimme'}</button>
-        ${canDelete?`<button onclick="deleteOpt(${i})" title="Löschen" style="background:none;border:none;cursor:pointer;color:#ccc;font-size:15px;padding:2px 5px;line-height:1;transition:color .15s" onmouseover="this.style.color='#df663a'" onmouseout="this.style.color='#ccc'">✕</button>`:''}
       </div>`;
     l.appendChild(d);
   });
-
-  // Remove old inline add rows
-  ['inlineAddRow','inlineAddNote'].forEach(id=>{const el=document.getElementById(id);if(el)el.remove();});
-
-  // Add option input — right below the list, inside the same card
-  const totalFull=(curPoll.options||[]).length>=MAX_TOTAL;
-  const personFull=myAddedCount>=MAX_PER_PERSON;
-
-  if(!ended){
-    if(!totalFull&&!personFull){
-      const row=document.createElement('div');
-      row.id='inlineAddRow';
-      row.style.cssText='display:flex;gap:8px;margin-top:14px;padding-top:14px;border-top:1px solid rgba(0,0,0,.06);';
-      row.innerHTML='<input type="text" id="collectInp" placeholder="Eigene Antwort hinzufügen… (noch '+(MAX_PER_PERSON-myAddedCount)+' möglich)" onkeydown="if(event.key===\'Enter\')addOption()" style="flex:1;padding:9px 13px;border-radius:10px;border:1.5px solid rgba(0,0,0,.08);background:white;font-family:DM Sans,sans-serif;font-size:13px;outline:none;transition:border-color .2s">'
-        +'<button onclick="addOption()" style="padding:9px 16px;border-radius:10px;border:none;cursor:pointer;background:var(--forest);color:var(--lime);font-family:DM Sans,sans-serif;font-size:12px;font-weight:500;white-space:nowrap">+ Hinzufügen</button>';
-      l.parentElement.appendChild(row);
-      const note=document.createElement('div');
-      note.id='inlineAddNote';
-      note.style.cssText='font-size:11px;color:var(--muted);margin-top:6px;text-align:center;';
-      note.textContent=(curPoll.options||[]).length+' / '+MAX_TOTAL+' Antworten';
-      l.parentElement.appendChild(note);
-    }else{
-      const note=document.createElement('div');
-      note.id='inlineAddNote';
-      note.style.cssText='font-size:11px;color:var(--muted);margin-top:10px;padding-top:10px;border-top:1px solid rgba(0,0,0,.06);text-align:center;';
-      note.textContent=totalFull?'Maximum von '+MAX_TOTAL+' Antworten erreicht':'Du hast dein Limit von '+MAX_PER_PERSON+' Antworten erreicht';
-      l.parentElement.appendChild(note);
-    }
-  }
 }
 
-async function deleteOpt(i){
-  if(!myAddedIndices.includes(i)){showToast('Nur eigene Antworten können gelöscht werden');return;}
-  if(curPoll.status==='Beendet'){showToast('Abstimmung beendet');return;}
-  if(curPoll.options.length<=2){showToast('Mindestens 2 Antworten nötig');return;}
-  const newO=curPoll.options.filter((_,x)=>x!==i);
-  // Remap indices: all indices > i shift down by 1
-  myAddedIndices=myAddedIndices.filter(x=>x!==i).map(x=>x>i?x-1:x);
-  myAddedCount=Math.max(0,myAddedCount-1);
-  // Adjust uVote
-  if(uVote===i)uVote=null;
-  else if(uVote!==null&&uVote>i)uVote--;
-  try{await fbUpd(curId,{options:newO});showToast('Antwort gelöscht');}
-  catch(e){showToast('Fehler: '+e.message);}
+async function addVoteOpt(){
+  if(curPoll.status==='Beendet'){showToast('Abstimmung bereits beendet');return;}
+  const inp=document.getElementById('voteAddInp');
+  const val=inp.value.trim();
+  if(!val){showToast('Bitte einen Text eingeben');return;}
+  if((curPoll.options||[]).length>=10){showToast('Maximum von 10 erreicht');return;}
+  const newO=[...curPoll.options,{name:val,votes:0,color:C[curPoll.options.length%C.length]}];
+  inp.value='';
+  try{await fbUpd(curId,{options:newO});showToast('Option hinzugefügt!');}
+  catch(e){showToast('Fehler beim Hinzufügen');}
 }
 
 async function castVote(i){
@@ -591,27 +626,36 @@ async function castVote(i){
   renderVOpts();renderRes();
   try{await fbUpd(curId,{options:newO});}catch(e){showToast('Speicherfehler');}
 }
-
 async function endVote(){
   try{await fbUpd(curId,{status:'Beendet'});showToast('Abstimmung beendet');}
   catch{showToast('Fehler');}
 }
 
-// ── SHARE ─────────────────────────────────────────────────────────────────────
+// ── SHARE HELPERS ─────────────────────────────────────────────────────────────
 function getUrl(){return location.origin+location.pathname+'?poll='+curId;}
-function copyLink(){
-  const url=getUrl();
+
+function copyCollectLink(){
+  copyToClipboard(getUrl());
+}
+function copyVoteLink(){
+  copyToClipboard(getUrl());
+}
+function copyToClipboard(url){
   navigator.clipboard?.writeText(url).then(()=>showToast('Link kopiert! 🔗')).catch(()=>{
     const el=document.createElement('textarea');el.value=url;document.body.appendChild(el);el.select();document.execCommand('copy');document.body.removeChild(el);showToast('Link kopiert! 🔗');
   });
 }
-function shareWA(){
-  const msg=encodeURIComponent('Mach mit bei unserer Abstimmung!\n'+(curPoll?.question||'')+'\n👉 '+getUrl());
+function shareWA(ctx){
+  const url=getUrl();
+  const q=curPoll?.question||'';
+  const msg=encodeURIComponent('Mach mit bei unserer Abstimmung!\n'+q+'\n👉 '+url);
   window.open('https://wa.me/?text='+msg,'_blank');
 }
-function shareMail(){
+function shareMail(ctx){
+  const url=getUrl();
+  const q=curPoll?.question||'';
   const sub=encodeURIComponent('Mach bei unserer Abstimmung mit!');
-  const body=encodeURIComponent('Hallo!\n\n'+(curPoll?.question||'')+'\n\n'+getUrl()+'\n\nKein Account nötig — einfach klicken!');
+  const body=encodeURIComponent('Hallo!\n\nMach mit bei unserer Abstimmung:\n'+q+'\n\n'+url+'\n\nKein Account nötig — einfach klicken und mitmachen!');
   window.open('mailto:?subject='+sub+'&body='+body);
 }
 
@@ -674,29 +718,21 @@ function launchConfetti(){
 
 // ── AI VOTE ───────────────────────────────────────────────────────────────────
 async function genAIVote(){
-  if(curPoll.status==='Beendet'){showToast('Abstimmung beendet');return;}
-  if((curPoll.options||[]).length>=MAX_TOTAL){showToast('Maximum von '+MAX_TOTAL+' bereits erreicht');return;}
-  if(myAddedCount>=MAX_PER_PERSON){showToast('Dein Limit von '+MAX_PER_PERSON+' ist erreicht');return;}
+  if(curPoll.status==='Beendet'){showToast('Abstimmung beendet — keine neuen Ideen');return;}
+  if((curPoll.options||[]).length>=10){showToast('Maximum von 10 bereits erreicht');return;}
   showToast('KI denkt nach…');const seed=Math.floor(Math.random()*9999);
   try{
     const raw=await callClaude(`Seed:${seed}. Frage:"${curPoll.question}". Bestimme das Hauptobjekt und schlage 4 weitere konkrete Optionen vor (1-4 Wörter, Deutsch). Nur JSON-Array:["O1","O2","O3","O4"]`);
     const m=raw.match(/\[[\s\S]*?\]/);if(!m)throw new Error();
     const ideas=JSON.parse(m[0]);
     if(Array.isArray(ideas)&&ideas.length){
-      const no=[...curPoll.options];
-      let added=0;
-      ideas.forEach(v=>{
-        if(no.length<MAX_TOTAL&&myAddedCount+added<MAX_PER_PERSON&&!no.find(o=>o.name===String(v).trim())){
-          no.push({name:String(v).trim(),votes:0,color:C[no.length%C.length]});added++;
-        }
-      });
-      if(added>0){await fbUpd(curId,{options:no});myAddedCount+=added;showToast(added+' KI-Ideen hinzugefügt!');}
-      else showToast('Limit erreicht oder keine neuen Ideen');
+      const no=[...curPoll.options];ideas.forEach(v=>{if(no.length<10)no.push({name:String(v).trim(),votes:0,color:C[no.length%C.length]});});
+      await fbUpd(curId,{options:no});showToast('KI-Ideen hinzugefügt!');
     }
   }catch{
-    const extras=fallback(curPoll.question).slice(0,2);const no=[...curPoll.options];let added=0;
-    extras.forEach(v=>{if(no.length<MAX_TOTAL&&myAddedCount+added<MAX_PER_PERSON&&!no.find(o=>o.name===v)){no.push({name:v,votes:0,color:C[no.length%C.length]});added++;}});
-    if(added>0){await fbUpd(curId,{options:no}).catch(()=>{});myAddedCount+=added;showToast('Ideen hinzugefügt!');}
+    const extras=fallback(curPoll.question).slice(0,3);const no=[...curPoll.options];
+    extras.forEach(v=>{if(no.length<10&&!no.find(o=>o.name===v))no.push({name:v,votes:0,color:C[no.length%C.length]});});
+    await fbUpd(curId,{options:no}).catch(()=>{});showToast('Ideen hinzugefügt!');
   }
 }
 
@@ -710,8 +746,8 @@ function renderArch(){
   if(!f.length){g.innerHTML='<div class="es">Keine Abstimmungen gefunden</div>';return;}
   g.innerHTML=f.map(p=>{
     const tot=p.options.reduce((s,o)=>s+o.votes,0);
-    const pl=p.status==='Aktiv'?'🗳 Aktiv':'✓ Beendet';
-    const pc=p.status==='Aktiv'?'phase-aktiv':'phase-done';
+    const pl=p.status==='Sammeln'?'🔗 Sammeln':p.status==='Aktiv'?'🗳 Aktiv':'✓ Beendet';
+    const pc=p.status==='Sammeln'?'phase-collect':p.status==='Aktiv'?'phase-vote':'phase-done';
     return`<div class="acd" onclick="openFromArch('${p._fid}')">
       <div class="at2"><span class="phase-badge ${pc}">${pl}</span></div>
       <div class="aq">${p.question}</div>
@@ -720,7 +756,7 @@ function renderArch(){
     </div>`;
   }).join('');
 }
-function openFromArch(fid){const p=polls.find(x=>x._fid===fid);if(p)openVote(p);}
+function openFromArch(fid){const p=polls.find(x=>x._fid===fid);if(!p)return;if(p.status==='Sammeln')openCollect(p);else openVote(p);}
 
 // ── TOAST ─────────────────────────────────────────────────────────────────────
 function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('on');setTimeout(()=>t.classList.remove('on'),3000);}
@@ -731,7 +767,9 @@ function checkUrl(){
   const id=new URLSearchParams(location.search).get('poll');
   if(!id)return;
   const{doc:D,getDoc:G}=getFB();
-  G(D(getDB(),'polls',id)).then(s=>{if(s.exists())openVote({...s.data(),_fid:s.id});}).catch(err=>console.error('URL load:',err));
+  G(D(getDB(),'polls',id)).then(s=>{
+    if(s.exists()){const p={...s.data(),_fid:s.id};if(p.status==='Sammeln')openCollect(p);else openVote(p);}
+  }).catch(err=>console.error('URL load:',err));
 }
 if(window._fbReady)checkUrl();
 else document.addEventListener('fbReady',checkUrl,{once:true});

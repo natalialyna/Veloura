@@ -166,11 +166,8 @@
     .nvotes{color:var(--muted);font-size:13px;text-align:center;padding:18px 0;}
 
     /* Add option row on vote page */
-    .vote-add-row{display:flex;gap:8px;margin-top:14px;padding-top:14px;border-top:1px solid rgba(0,0,0,.06);}
-    .vote-add-inp{flex:1;padding:9px 13px;border-radius:10px;border:1.5px solid rgba(0,0,0,.08);background:white;font-family:'DM Sans',sans-serif;font-size:13px;outline:none;transition:border-color .2s;}
-    .vote-add-inp:focus{border-color:var(--forest);}
-    .vote-add-btn{padding:9px 16px;border-radius:10px;border:none;cursor:pointer;background:var(--forest);color:var(--lime);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;white-space:nowrap;transition:all .2s;}
-    .vote-add-btn:hover:not(:disabled){transform:translateY(-1px);}
+            .vote-add-inp:focus{border-color:var(--forest);}
+        .vote-add-btn:hover:not(:disabled){transform:translateY(-1px);}
     .vote-add-btn:disabled{opacity:.5;cursor:not-allowed;}
 
     /* ARCHIVE */
@@ -193,6 +190,11 @@
     .phase-vote{background:rgba(236,243,143,.5);color:var(--forest);}
     .phase-done{background:#f0f0f0;color:var(--muted);}
 
+    .add-row{display:flex;gap:8px;margin-top:14px;padding-top:14px;border-top:1px solid rgba(0,0,0,.06);}
+    .add-inp{flex:1;padding:9px 13px;border-radius:10px;border:1.5px solid rgba(0,0,0,.08);background:white;font-family:'DM Sans',sans-serif;font-size:13px;outline:none;transition:border-color .2s;}
+    .add-inp:focus{border-color:var(--forest);}
+    .add-btn{padding:9px 16px;border-radius:10px;border:none;cursor:pointer;background:var(--forest);color:var(--lime);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;white-space:nowrap;}
+    .add-note{font-size:11px;color:var(--muted);margin-top:6px;text-align:center;}
     .toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(110px);background:var(--forest);color:var(--lime);padding:11px 24px;border-radius:50px;font-size:13px;font-weight:500;z-index:400;transition:transform .3s ease;box-shadow:0 8px 28px rgba(64,89,79,.28);}
     .toast.on{transform:translateX(-50%) translateY(0);}
     #cc{position:fixed;inset:0;pointer-events:none;z-index:999;display:none;}
@@ -322,12 +324,13 @@
         <div class="vlc">
           <div class="ptt">Abstimmen</div>
           <div id="vOptList"></div>
-          <!-- Add option row — hidden when ended -->
-          <div class="vote-add-row" id="voteAddRow">
-            <input type="text" class="vote-add-inp" id="voteAddInp" placeholder="Antwort hinzufügen…" onkeydown="if(event.key==='Enter')addVoteOpt()">
-            <button class="vote-add-btn" onclick="addVoteOpt()">+ Hinzufügen</button>
+          <!-- Static add-row controlled by updateAddRow() -->
+          <div class="add-row" id="addRow" style="display:none">
+            <input type="text" id="addInp" class="add-inp" placeholder="Antwort hinzufügen…"
+              onkeydown="if(event.key==='Enter')addOpt2()">
+            <button class="add-btn" onclick="addOpt2()">+ Hinzufügen</button>
           </div>
-          <div class="max-note" id="voteMaxNote" style="display:none">Maximum von 10 Antworten erreicht</div>
+          <div class="add-note" id="addNote" style="display:none"></div>
         </div>
         <div class="rc">
           <div class="ptt">Ergebnisse</div>
@@ -364,6 +367,8 @@ const C=['#40594f','#a1baf5','#9698dc','#ecf38f','#6db088','#c4d4f8','#b8b9e8','
 // ── FALLBACKS — object-first ─────────────────────────────────────────────────
 function fallback(q){
   const t=q.toLowerCase();
+  if(/pflanzenmilch|hafermilch|mandelmilch|oatmilk|sojamilch|kokosmilch|reismilch/i.test(t))
+    return['Oatly Barista','Alpro Soja','Hafermilch Barista','Mandelmilch','Kokosmilch','Reismilch'];
   if(/schokolade|schoki|praline|tafel/i.test(t)) return['Lindt Excellence','Ritter Sport Marzipan','Milka Oreo','Ferrero Rocher','Tony Chocolonely','Green & Black'];
   if(/auto|fahrzeug|wagen|pkw|e-auto|suv|cabrio/i.test(t)) return['VW Golf','BMW 3er','Toyota Yaris','Tesla Model 3','Skoda Octavia','Hyundai i30'];
   if(/schuh|sneaker|boot|sandale|stiefel/i.test(t)) return['Nike Air Max','New Balance 574','Adidas Samba','Veja V-10','Salomon XT-6','On Cloud 5'];
@@ -395,6 +400,8 @@ function fallback(q){
 
 // ── STATE ────────────────────────────────────────────────────────────────────
 let polls=[],curPoll=null,curId=null,uVote=null,chartI=null;
+let myAddedCount=0,myAddedIndices=[];
+const MAX_TOTAL=15,MAX_PER=4;
 let vUnsub=null,aUnsub=null,collectUnsub=null;
 let wAngle=0,wVel=0,wSpin=false,wStop=false;
 
@@ -462,261 +469,41 @@ async function genAI(){
   document.getElementById('aiLoad').style.display='flex';
   const seed=Math.floor(Math.random()*9999);
   try{
-    const prompt=`Seed:${seed}. Frage: "${q}"
-WICHTIG: Finde das HAUPTNOMEN (das Objekt, worüber entschieden wird). Das Verb ist irrelevant.
-Beispiele:
-- "Welche SCHOKOLADE kaufen?" → Schokos: ["Lindt Excellence","Milka Oreo","Ritter Sport","Tony's Chocolonely","Ferrero Rocher","Green & Black"]
-- "Welches AUTO kaufen?" → Autos: ["VW Golf","BMW 3er","Tesla Model 3","Toyota Yaris","Skoda Octavia","Audi A3"]
-- "Was heute ANZIEHEN?" → Outfits: ["Casual Jeans","Elegantes Kleid","Oversized Hoodie","Smart Casual","Streetwear","Monochrom"]
-- "Was ESSEN heute Abend?" → Gerichte: ["Miso-Aubergine","Pad Thai","Griechischer Salat","Kokos-Curry","Falafel Bowl","Shakshuka"]
-Jetzt: "${q}" → 6 konkrete, kurze Optionen (1-4 Wörter, Deutsch).
-NUR JSON-Array: ["Opt1","Opt2","Opt3","Opt4","Opt5","Opt6"]`;
-    const raw=await callClaude(prompt);
-    const m=raw.match(/\[[\s\S]*?\]/);
+    const examples=[
+      '"Welche Pflanzenmilch?" → ["Oatly Barista","Alpro Soja","Hafermilch Barista","Mandelmilch","Kokosmilch","Reismilch"]',
+      '"Welches Auto kaufen?" → ["VW Golf","BMW 3er","Tesla Model 3","Toyota Corolla","Skoda Octavia","Audi A3"]',
+      '"Welche Schokolade?" → ["Lindt 70%","Milka Oreo","Ritter Sport","Tony Chocolonely","Ferrero Rocher","Valrhona"]',
+      '"Was essen?" → ["Pasta Carbonara","Miso-Aubergine","Griechischer Salat","Ramen","Kokos-Curry","Falafel Bowl"]',
+      '"Was anziehen?" → ["Casual Jeans","Elegantes Kleid","Oversized Blazer","Smart Casual","Streetwear","Monochrom"]',
+      '"Wohin reisen?" → ["Lissabon","Kyoto","Kopenhagen","Barcelona","Island","Marrakesch"]'
+    ].join('\n');
+    const userMsg='Frage: "'+q+'" (Seed: '+seed+')\n\nFinde das Hauptsubstantiv der Frage und nenne 6 echte, konkrete Beispiele.\n\n'+examples+'\n\nAntworte NUR mit JSON-Array: ["Opt1","Opt2","Opt3","Opt4","Opt5","Opt6"]';
+    const res=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:400,
+        system:'Du generierst Abstimmungsoptionen. Antworte IMMER nur mit einem validen JSON-Array. Niemals generische Platzhalter wie Option 1.',
+        messages:[{role:'user',content:userMsg}]
+      })
+    });
+    if(!res.ok)throw new Error('API '+res.status);
+    const data=await res.json();
+    const raw=data.content?.filter(c=>c.type==='text').map(c=>c.text).join('').replace(/```json|```/g,'').trim()||'';
+    const m=raw.match(/\[\s\S]*?\]/);
     if(!m)throw new Error('no array');
     const ideas=JSON.parse(m[0]);
-    if(Array.isArray(ideas)&&ideas.length>=2&&ideas.every(x=>typeof x==='string'&&x.length>0)){
+    if(Array.isArray(ideas)&&ideas.length>=2&&ideas.every(x=>typeof x==='string'&&x.length>1&&!/^(option|beispiel)\s*\d/i.test(x))){
       opts=ideas.slice(0,8).map(v=>({v:String(v).trim()}));
-    }else throw new Error('bad format');
-  }catch(e){console.warn('Fallback:',e.message);opts=fallback(q).map(v=>({v}));}
+    }else throw new Error('bad: '+JSON.stringify(ideas));
+  }catch(e){console.warn('KI Fallback:',e.message);opts=fallback(q).map(v=>({v}));}
   renderOpts();
   document.getElementById('aiLoad').style.display='none';
   btn.disabled=false;
 }
 
-// ── START COLLECT ─────────────────────────────────────────────────────────────
-async function startCollect(){
-  const q=document.getElementById('qIn').value.trim();
-  const clean=opts.map(o=>o.v.trim()).filter(Boolean);
-  const errEl=document.getElementById('errMsg');
-  errEl.style.display='none';
-  if(!q){showToast('Bitte eine Frage eingeben');return;}
-  const btn=document.getElementById('stBtn');
-  btn.disabled=true;btn.textContent='Wird erstellt…';
-  if(!window._fbReady){
-    try{await Promise.race([new Promise(r=>document.addEventListener('fbReady',r,{once:true})),new Promise((_,rej)=>setTimeout(()=>rej(new Error('Timeout')),8000))]);}
-    catch(e){errEl.textContent='Firebase nicht erreichbar. Bitte Seite neu laden.';errEl.style.display='block';btn.disabled=false;btn.textContent='Weiter & Link teilen →';return;}
-  }
-  const code='#'+Math.random().toString(36).substr(2,6).toUpperCase();
-  const poll={code,question:q,category:'Sonstiges',options:clean.map((v,i)=>({name:v,votes:0,color:C[i%C.length]})),status:'Sammeln',phase:'collect',created:new Date().toISOString()};
-  try{
-    const fid=await fbSave(poll);
-    poll._fid=fid;
-    btn.disabled=false;btn.textContent='Weiter & Link teilen →';
-    openCollect(poll);
-  }catch(e){
-    console.error(e);
-    errEl.textContent='Fehler: '+e.message+'. Bitte Firebase-Regeln prüfen.';
-    errEl.style.display='block';
-    btn.disabled=false;btn.textContent='Weiter & Link teilen →';
-  }
-}
 
-// ── COLLECT PHASE ─────────────────────────────────────────────────────────────
-function openCollect(poll){
-  if(collectUnsub){collectUnsub();collectUnsub=null;}
-  curPoll=poll;curId=poll._fid;
-  document.getElementById('collectQ').textContent=poll.question;
-  const url=location.origin+location.pathname+'?poll='+poll._fid;
-  document.getElementById('collectUrl').textContent=url;
-  renderCollectOpts();
-  go('collect');
-  collectUnsub=fbOne(curId,up=>{
-    curPoll=up;renderCollectOpts();
-    if(up.phase==='vote')openVote(up);
-  });
-}
-function renderCollectOpts(){
-  const list=document.getElementById('collectOptList');
-  const o=curPoll.options||[];
-  document.getElementById('optCountNote').textContent=o.length+' / 10 Antworten';
-  list.innerHTML=o.map((x,i)=>`<div class="opt-chip"><div class="opt-chip-dot" style="background:${x.color}"></div><span class="opt-chip-name">${x.name}</span></div>`).join('');
-  const full=o.length>=10;
-  document.getElementById('addOptRow').style.display=full?'none':'flex';
-  document.getElementById('maxNote').style.display=full?'block':'none';
-}
-async function addCollectOpt(){
-  const inp=document.getElementById('newOptInp');
-  const val=inp.value.trim();
-  if(!val){showToast('Bitte einen Text eingeben');return;}
-  if((curPoll.options||[]).length>=10){showToast('Maximum erreicht');return;}
-  const newO=[...curPoll.options,{name:val,votes:0,color:C[curPoll.options.length%C.length]}];
-  inp.value='';
-  document.getElementById('addOptBtn').disabled=true;
-  try{await fbUpd(curId,{options:newO});}
-  catch(e){showToast('Fehler');}
-  document.getElementById('addOptBtn').disabled=false;
-}
-async function startVotingPhase(){
-  if((curPoll.options||[]).length<2){showToast('Mindestens 2 Antworten nötig');return;}
-  try{await fbUpd(curId,{status:'Aktiv',phase:'vote'});}
-  catch(e){showToast('Fehler: '+e.message);}
-}
-
-// ── VOTE ──────────────────────────────────────────────────────────────────────
-function openVote(poll){
-  if(vUnsub){vUnsub();vUnsub=null;}
-  if(collectUnsub){collectUnsub();collectUnsub=null;}
-  curPoll=poll;curId=poll._fid;uVote=null;
-  document.getElementById('vTitle').textContent=poll.question;
-  document.getElementById('vCode').textContent=poll.code;
-  const url=location.origin+location.pathname+'?poll='+poll._fid;
-  document.getElementById('voteShareUrl').textContent=url;
-  setBadge(poll.status);
-  updateVoteUI(poll.status);
-  renderVOpts();drawW();renderRes();
-  go('vote');
-  vUnsub=fbOne(curId,up=>{
-    curPoll=up;setBadge(up.status);
-    updateVoteUI(up.status);
-    renderVOpts();drawW();renderRes();
-  });
-}
-function setBadge(s){
-  const b=document.getElementById('vBadge');
-  b.textContent=s;b.className='bdg '+(s==='Aktiv'?'bak':'bnd');
-}
-function updateVoteUI(status){
-  const ended=status==='Beendet';
-  // Hide/show add-option row
-  const addRow=document.getElementById('voteAddRow');
-  const maxNote=document.getElementById('voteMaxNote');
-  if(ended){
-    addRow.style.display='none';
-    maxNote.style.display='none';
-  }else{
-    const full=(curPoll.options||[]).length>=10;
-    addRow.style.display=full?'none':'flex';
-    maxNote.style.display=full?'block':'none';
-  }
-  // End button
-  document.getElementById('endBtn').style.display=ended?'none':'block';
-}
-
-function renderVOpts(){
-  const l=document.getElementById('vOptList');l.innerHTML='';
-  curPoll.options.forEach((o,i)=>{
-    const d=document.createElement('div');d.className='vo'+(uVote===i?' vd':'');
-    d.innerHTML=`
-      <div class="ol"><div class="odd" style="background:${o.color}"></div><span class="on2">${o.name}</span></div>
-      <div style="display:flex;align-items:center;gap:9px">
-        <span class="oc">${o.votes}</span>
-        <button class="vib${uVote===i?' vd':''}" onclick="castVote(${i})">${uVote===i?'✓':'Stimme'}</button>
-      </div>`;
-    l.appendChild(d);
-  });
-}
-
-async function addVoteOpt(){
-  if(curPoll.status==='Beendet'){showToast('Abstimmung bereits beendet');return;}
-  const inp=document.getElementById('voteAddInp');
-  const val=inp.value.trim();
-  if(!val){showToast('Bitte einen Text eingeben');return;}
-  if((curPoll.options||[]).length>=10){showToast('Maximum von 10 erreicht');return;}
-  const newO=[...curPoll.options,{name:val,votes:0,color:C[curPoll.options.length%C.length]}];
-  inp.value='';
-  try{await fbUpd(curId,{options:newO});showToast('Option hinzugefügt!');}
-  catch(e){showToast('Fehler beim Hinzufügen');}
-}
-
-async function castVote(i){
-  if(curPoll.status!=='Aktiv'){showToast('Abstimmung bereits beendet');return;}
-  const newO=curPoll.options.map((o,x)=>({...o,votes:x===i?o.votes+1:(uVote===x?Math.max(0,o.votes-1):o.votes)}));
-  uVote=i;curPoll={...curPoll,options:newO};
-  renderVOpts();renderRes();
-  try{await fbUpd(curId,{options:newO});}catch(e){showToast('Speicherfehler');}
-}
-async function endVote(){
-  try{await fbUpd(curId,{status:'Beendet'});showToast('Abstimmung beendet');}
-  catch{showToast('Fehler');}
-}
-
-// ── SHARE HELPERS ─────────────────────────────────────────────────────────────
-function getUrl(){return location.origin+location.pathname+'?poll='+curId;}
-
-function copyCollectLink(){
-  copyToClipboard(getUrl());
-}
-function copyVoteLink(){
-  copyToClipboard(getUrl());
-}
-function copyToClipboard(url){
-  navigator.clipboard?.writeText(url).then(()=>showToast('Link kopiert! 🔗')).catch(()=>{
-    const el=document.createElement('textarea');el.value=url;document.body.appendChild(el);el.select();document.execCommand('copy');document.body.removeChild(el);showToast('Link kopiert! 🔗');
-  });
-}
-function shareWA(ctx){
-  const url=getUrl();
-  const q=curPoll?.question||'';
-  const msg=encodeURIComponent('Mach mit bei unserer Abstimmung!\n'+q+'\n👉 '+url);
-  window.open('https://wa.me/?text='+msg,'_blank');
-}
-function shareMail(ctx){
-  const url=getUrl();
-  const q=curPoll?.question||'';
-  const sub=encodeURIComponent('Mach bei unserer Abstimmung mit!');
-  const body=encodeURIComponent('Hallo!\n\nMach mit bei unserer Abstimmung:\n'+q+'\n\n'+url+'\n\nKein Account nötig — einfach klicken und mitmachen!');
-  window.open('mailto:?subject='+sub+'&body='+body);
-}
-
-// ── RESULTS ───────────────────────────────────────────────────────────────────
-function renderRes(){
-  const tot=curPoll.options.reduce((s,o)=>s+o.votes,0);
-  const ar=document.getElementById('resArea'),cc=document.getElementById('resChart');
-  if(!tot){ar.innerHTML='<div class="nvotes">Noch keine Stimmen abgegeben</div>';cc.style.display='none';if(chartI){chartI.destroy();chartI=null;}return;}
-  ar.innerHTML=curPoll.options.map(o=>{
-    const p=Math.round(o.votes/tot*100);
-    return`<div style="margin-bottom:8px">
-      <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px">
-        <span style="display:flex;align-items:center;gap:5px"><span style="width:7px;height:7px;border-radius:50%;background:${o.color};display:inline-block"></span>${o.name}</span>
-        <span style="font-weight:600">${p}%</span>
-      </div>
-      <div style="background:#f0f0f0;border-radius:50px;height:6px;overflow:hidden">
-        <div style="width:${p}%;height:100%;background:${o.color};border-radius:50px;transition:width .6s ease"></div>
-      </div></div>`;
-  }).join('');
-  cc.style.display='block';
-  if(chartI)chartI.destroy();
-  chartI=new Chart(cc,{type:'doughnut',data:{labels:curPoll.options.map(o=>o.name),datasets:[{data:curPoll.options.map(o=>o.votes||.001),backgroundColor:curPoll.options.map(o=>o.color),borderWidth:0}]},options:{plugins:{legend:{display:false}},cutout:'65%',animation:{duration:500}}});
-}
-
-// ── WHEEL ─────────────────────────────────────────────────────────────────────
-function drawW(){
-  const cv=document.getElementById('wCanvas'),ctx=cv.getContext('2d');
-  const cx=135,cy=135,r=128;ctx.clearRect(0,0,270,270);
-  const n=curPoll.options.length,arc=(2*Math.PI)/n;
-  for(let i=0;i<n;i++){
-    const s=wAngle+i*arc,e=s+arc,o=curPoll.options[i];
-    ctx.beginPath();ctx.moveTo(cx,cy);ctx.arc(cx,cy,r,s,e);ctx.closePath();ctx.fillStyle=o.color;ctx.fill();
-    ctx.save();ctx.globalAlpha=.12;const g=ctx.createRadialGradient(cx,cy,6,cx,cy,r);g.addColorStop(0,'white');g.addColorStop(1,'transparent');ctx.fillStyle=g;ctx.beginPath();ctx.moveTo(cx,cy);ctx.arc(cx,cy,r,s,e);ctx.closePath();ctx.fill();ctx.restore();
-    ctx.save();ctx.translate(cx,cy);ctx.rotate(s+arc/2);ctx.textAlign='right';ctx.fillStyle='#fff';ctx.font='bold 11px DM Sans,sans-serif';ctx.shadowColor='rgba(0,0,0,.3)';ctx.shadowBlur=4;
-    ctx.fillText(o.name.length>10?o.name.substr(0,10)+'…':o.name,r-7,4);ctx.restore();
-  }
-  ctx.beginPath();ctx.arc(cx,cy,10,0,2*Math.PI);ctx.fillStyle='white';ctx.fill();
-  ctx.beginPath();ctx.arc(cx,cy,5,0,2*Math.PI);ctx.fillStyle='#ccc';ctx.fill();
-  document.getElementById('wLabel').textContent=curPoll.options[getSeg()]?.name||'—';
-}
-function getSeg(){const n=curPoll.options.length,arc=(2*Math.PI)/n;return Math.floor((((-Math.PI/2-wAngle)%(2*Math.PI)+2*Math.PI)%(2*Math.PI))/arc)%n;}
-function spinW(){if(wSpin)return;wSpin=true;wStop=false;wVel=.15+Math.random()*.1;document.getElementById('spBtn').disabled=true;document.getElementById('stpBtn').disabled=false;animW();}
-function stopW(){wStop=true;document.getElementById('stpBtn').disabled=true;}
-function animW(){
-  if(!wSpin)return;wVel=wStop?wVel*.965:Math.min(wVel+.004,.18);wAngle+=wVel;drawW();
-  if(wStop&&wVel<.002){
-    wSpin=false;wStop=false;document.getElementById('spBtn').disabled=false;document.getElementById('stpBtn').disabled=true;
-    const w=getSeg();castVote(w);showToast('🎯 '+curPoll.options[w].name+' wurde gewählt!');launchConfetti();return;
-  }
-  requestAnimationFrame(animW);
-}
-
-// ── CONFETTI ──────────────────────────────────────────────────────────────────
-function launchConfetti(){
-  const cv=document.getElementById('cc');cv.width=innerWidth;cv.height=innerHeight;cv.style.display='block';
-  const ctx=cv.getContext('2d');const cols=['#ecf38f','#a1baf5','#9698dc','#df663a','#40594f','#f5a88a'];
-  const p=Array.from({length:100},()=>({x:Math.random()*cv.width,y:-20,r:4+Math.random()*5,col:cols[0|Math.random()*cols.length],rot:Math.random()*Math.PI*2,vx:(Math.random()-.5)*4,vy:2+Math.random()*3,vr:(Math.random()-.5)*.15,rect:Math.random()>.5}));
-  let f=0;(function dr(){ctx.clearRect(0,0,cv.width,cv.height);let alive=false;p.forEach(q=>{q.x+=q.vx;q.y+=q.vy;q.rot+=q.vr;q.vy+=.08;if(q.y<cv.height+20)alive=true;ctx.save();ctx.globalAlpha=Math.max(0,1-f/80);ctx.translate(q.x,q.y);ctx.rotate(q.rot);ctx.fillStyle=q.col;if(q.rect)ctx.fillRect(-q.r,-q.r/2,q.r*2,q.r);else{ctx.beginPath();ctx.arc(0,0,q.r,0,Math.PI*2);ctx.fill();}ctx.restore();});f++;if(alive&&f<100)requestAnimationFrame(dr);else{ctx.clearRect(0,0,cv.width,cv.height);cv.style.display='none';}})();
-}
-
-// ── AI VOTE ───────────────────────────────────────────────────────────────────
 async function genAIVote(){
   if(curPoll.status==='Beendet'){showToast('Abstimmung beendet — keine neuen Ideen');return;}
   if((curPoll.options||[]).length>=10){showToast('Maximum von 10 bereits erreicht');return;}
@@ -741,20 +528,33 @@ function startArch(){if(aUnsub){renderArch();return;}if(!window._fbReady){docume
 function renderArch(){
   const q=(document.getElementById('srch')?.value||'').toLowerCase();
   const st=document.getElementById('fSt')?.value||'';
-  const f=polls.filter(p=>(!q||p.question.toLowerCase().includes(q))&&(!st||p.status===st));
+  const f=polls.filter(p=>!p.deleted&&(!q||p.question.toLowerCase().includes(q))&&(!st||p.status===st));
   const g=document.getElementById('archGrid');
   if(!f.length){g.innerHTML='<div class="es">Keine Abstimmungen gefunden</div>';return;}
   g.innerHTML=f.map(p=>{
     const tot=p.options.reduce((s,o)=>s+o.votes,0);
     const pl=p.status==='Sammeln'?'🔗 Sammeln':p.status==='Aktiv'?'🗳 Aktiv':'✓ Beendet';
     const pc=p.status==='Sammeln'?'phase-collect':p.status==='Aktiv'?'phase-vote':'phase-done';
+    const delBtn=isOwner(p)?`<button onclick="deletePoll('${p._fid}',event)" style="background:none;border:1px solid #f0cac0;cursor:pointer;color:var(--coral);font-size:11px;padding:3px 10px;border-radius:20px">Löschen</button>`:'';
     return`<div class="acd" onclick="openFromArch('${p._fid}')">
-      <div class="at2"><span class="phase-badge ${pc}">${pl}</span></div>
+      <div class="at2" style="display:flex;justify-content:space-between;align-items:center"><span class="phase-badge ${pc}">${pl}</span>${delBtn}</div>
       <div class="aq">${p.question}</div>
       <div class="av">👥 ${tot} Stimmen · ${p.options.length} Antworten</div>
       <div class="ads">${p.options.map(o=>`<div class="adot" style="background:${o.color}"></div>`).join('')}</div>
     </div>`;
   }).join('');
+}
+function isOwner(p){
+  return p.ownerToken&&sessionStorage.getItem('owner_'+p._fid)===p.ownerToken;
+}
+async function deletePoll(fid,e){
+  e.stopPropagation();
+  const p=polls.find(x=>x._fid===fid);
+  if(!p)return;
+  if(!isOwner(p)){showToast('Nur der Ersteller kann löschen');return;}
+  if(!confirm('Abstimmung "'+p.question+'" wirklich löschen?'))return;
+  try{await fbUpd(fid,{deleted:true,status:'Beendet'});showToast('Gelöscht!');}
+  catch(err){showToast('Fehler: '+err.message);}
 }
 function openFromArch(fid){const p=polls.find(x=>x._fid===fid);if(!p)return;if(p.status==='Sammeln')openCollect(p);else openVote(p);}
 
